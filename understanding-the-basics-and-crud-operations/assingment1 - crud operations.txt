@@ -1,0 +1,48 @@
+# Create database patients
+
+> use hospital
+
+# Insert a patient 
+
+> db.patients.insertOne(
+	{
+    		firstName: "DummyName1",
+    		lastName: "DummySurname1",
+    		age: 30,
+    		history: [
+        		{
+        	    	disease: "cold",
+        	    	symptoms: "headaches, nausea, cold, fever",
+        	    	treatment: "rest"
+        		},
+        		{
+        	    	disease: "flu",
+        	    	symptoms: "sweats, headaches, nausea, cold, fever, shivers",
+        	    	treatment: "antibiotics, rest"
+        		},
+    		]
+	}
+) 
+
+# Insert two more patients
+
+> db.patients.insertMany(
+	[
+	{firstName: "DummyName2", lastName: "DummySurname2", age: 30, history: [{disease: "Covid19", symptoms: "sweats, headaches, nausea, cold, fever, shivers", treatment: "antibiotics, rest"}]},
+	{firstName: "DummyName3", lastName: "DummySurname3", age: 18, history: []},
+	{firstName: "DummyName4", lastName: "DummySurname4", age: 80, history: [{disease: "Covid19", symptoms: "headaches, nausea, cold, fever", treatment: "rest"}, {disease: "influenza", symptoms: "headaches, nausea, shivers, cold, fever, fatigue", treatment: "rest"}]}
+	]
+)
+
+# Update one patient with new Data
+
+> db.patients.updateOne({_id: ObjectId("5f74c88e742f302b6b694e09")}, {$set: {firstName: "newDummyName3", lastName: "newDummySurname3", age: 16, history: [{disease: "Pneumonia", symptoms: "headaches, nausea, shivers, cold, fever, fatigue, caugh", treatment: "antibiotics"}]}})
+
+# Find all patiens that are older than 30 
+
+> db.patients.find({age: {$gt: 30}}) 
+
+# Delete all patients who got cold as a disease
+> db.patients.deleteMany({"history.disease": "cold"})
+
+
