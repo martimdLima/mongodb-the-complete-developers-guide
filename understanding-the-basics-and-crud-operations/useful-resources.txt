@@ -3,3 +3,6 @@ https://docs.mongodb.com/manual/tutorial/getting-started/
 
 [MongoDB Drivers]
 https://docs.mongodb.com/ecosystem/drivers/
+
+[Schema Validation] 
+https://docs.mongodb.com/manual/core/schema-validation/

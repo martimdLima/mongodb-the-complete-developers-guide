@@ -1,0 +1,5 @@
+[Data Type Limits]
+https://docs.mongodb.com/manual/reference/limits/
+
+[Suported Types]
+https://docs.mongodb.com/manual/reference/bson-types/

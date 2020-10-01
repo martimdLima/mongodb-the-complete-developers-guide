@@ -1,0 +1,291 @@
+# Relations
+
+## One to One Relations - Nested
+```sh
+> use hospital
+
+> db.patients.insertOne(
+    }
+        name: "dummy", 
+        age: 30, 
+        diseaseSummary: "summary-dummy-1"
+    }
+)
+
+> db.diseases.insertOne(
+    {
+        _id: "summary-dummy-1", 
+        diseases: ["dummyDisease1", "dummyDisease2"]
+    }
+)
+
+> db.patients.findOne({name: "dummy"}).diseaseSummary
+
+> var dsid = db.patients.findOne({name: "dummy"}).diseaseSummary
+
+> dsid
+
+>  db.diseases.find({_id: dsid})
+
+> db.patients.deleteMany({})
+
+> db. patients.insertOne(
+    {
+        name: "dummy", 
+        age: 30, 
+        diseases: ["disease1", "disease2"}
+    }
+)
+```
+
+## One to One Relations - References
+
+```sh
+> use carData
+
+> db.persons.insertOne(
+    {
+        name: "dummy", 
+        car: {model: "ZTY", price: 4000}
+    }
+)
+
+> db.persons.findOne()
+
+> db.persons.deleteMany({})
+
+> db.persons.insertOne(
+    {
+        name: "dummy",
+        age: 30,
+        salary: 3000
+    }
+)
+
+> db.cars.insertOne(
+    {
+        model: "ZTY", 
+        price: 4000, 
+        owner: ObjectId("5f75175f742f302b6b694e13")
+    }
+)
+
+> db.persons.find({_id: ObjectId("5f75175f742f302b6b694e13")})
+```
+
+One To Many - Embedded
+
+```sh
+> use support
+
+> db.questionThreads.insertOne({creator: "dummy", question: "Is this a dummy question?", answers: ["q1a1", "q1a2"]})
+
+> db.questionThreads.find().pretty()
+
+> db.answers.insertMany(
+    [
+        {_id: "q1a1", text: "Yes, this is a dummy question"}, 
+        {_id: "q1a2", text: "No, this isn't a dummy question"}
+    ]
+)
+
+> db.answers.find()
+
+> db.questionThreads.deleteMany({})
+
+> db.questionThreads.insertOne(
+    {
+        creator: "dummy", 
+        question: "Is this a dummy question?", 
+        answers: [
+                    {text: "Yes, this is a dummy question"}, 
+                    {text: "No, this isn't a dummy question"}
+                 ]
+    }
+)
+
+> db.questionThreads.findOne()
+
+```
+
+
+One To Many - References
+
+```sh
+
+> use cityData
+
+> db.cities.insertOne({name: "New York City", coordinates: {lat: 21, lng: 55}})
+
+> db.cities.findOne()
+
+> db.citizens.insertMany(
+    [
+        {name: "dummy1" , cityId: ObjectId("5f751ca7958492cdcb480a21")},
+        {name: "dummy2" , cityId: ObjectId("5f751ca7958492cdcb480a21")},
+        {name: "dummy3" , cityId: ObjectId("5f751ca7958492cdcb480a21")},
+        {name: "dummy4" , cityId: ObjectId("5f751ca7958492cdcb480a21")},
+    ]
+)
+
+> db.citizens.find().pretty()
+
+```
+
+#Many To Many - Embedded
+
+```sh
+
+> use shop
+
+> db.products.insertOne(
+    {
+      title: "dummyProduct",
+      price: 23.99  
+    }
+)
+
+> db.customers.insertOne(
+    {
+        name: "dummy",
+        age: 30
+    }
+)
+
+> db.orders.insertOne(
+    {
+        productId: ObjectId("5f751f61958492cdcb480a27"),
+        customerId: ObjectId("5f751f19958492cdcb480a26")
+    }
+)
+
+> db.orders.drop()
+
+> db.orders.find()
+
+> db.customers.updateOne({}, {$set: {orders: [{productId: ObjectId("5f751f61958492cdcb480a27"), quantity: 3}]}})
+
+> db.customers.findOne()
+
+> db.customers.updateOne({}, {$set: {orders: [{title: "dummyProduct", price: 23.99, quantity: 3}]}})
+
+```
+
+# Many To Many - References
+
+```sh
+> use bookRegistry
+
+> db.books.insertOne(
+    {
+        name: "Dummy Book", 
+        authors: [{name: "dummy1", age:30}, {name: "dummy2", age: 40}]
+    }
+)
+
+> db.authors.insertMany(
+    [
+        {name: "dummy1", age: 30, address: "DeathStar"},
+        {name: "dummy2", age: 40, address: "Aldooran"}
+    ]
+)
+
+> db.authors.find().pretty()
+
+> db.books.updateOne({}, {$set: {authors: [ObjectId("5f752335958492cdcb480a2a"), ObjectId("5f752335958492cdcb480a2b")]}})
+
+> db.books.findOne()
+```
+
+# Using "lookUp()" for Merging Reference Relations
+```sh
+> db.books.aggregate([{$lookup: {from: "authors", localField: "authors", foreignField: "_id", as: "creators"}}]).pretty()
+```
+
+# Collection Document Validation
+
+> db.createCollection("posts", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["title", "text", "creator", "comments"],
+      properties: {
+        title: {
+            bsonType: "string",
+            description: "must be a string and is required"
+          },
+          text: {
+            bsonType: "string",
+            description: "must be a string and is required"
+          },
+          creator: {
+              bsonType: "objectId",
+              description: "must be an objectId and is required"
+          },
+          comments: {
+            bsonType: 'array',
+            description: 'must be an array and is required',
+            items: {
+              bsonType: 'object',
+              required: ['text', 'author'],
+              properties: {
+                text: {
+                  bsonType: 'string',
+                  description: 'must be a string and is required'
+                },
+                author: {
+                  bsonType: 'objectId',
+                  description: 'must be an objectid and is required'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+});
+
+# Changing Validation Action
+
+> db.runCommand({
+    collMod: 'posts',
+    validator: {
+      $jsonSchema: {
+        bsonType: 'object',
+        required: ['title', 'text', 'creator', 'comments'],
+        properties: {
+          title: {
+            bsonType: 'string',
+            description: 'must be a string and is required'
+          },
+          text: {
+            bsonType: 'string',
+            description: 'must be a string and is required'
+          },
+          creator: {
+            bsonType: 'objectId',
+            description: 'must be an objectid and is required'
+          },
+          comments: {
+            bsonType: 'array',
+            description: 'must be an array and is required',
+            items: {
+              bsonType: 'object',
+              required: ['text', 'author'],
+              properties: {
+                text: {
+                  bsonType: 'string',
+                  description: 'must be a string and is required'
+                },
+                author: {
+                  bsonType: 'objectId',
+                  description: 'must be an objectid and is required'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    validationAction: 'warn'
+});

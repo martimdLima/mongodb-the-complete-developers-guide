@@ -1,0 +1,29 @@
+# Planning the Example Exercixe
+
+
+# Implementing the Example Exercixe
+
+> use blog
+
+> db.users.insertMany(
+    [
+        {name: "dummy", age: 30, email: "dummy@dummy.com"},
+        {name: "dummy2", age: 35, email: "dummy2@dummy.com"},
+        {name: "dummy3", age: 49, email: "dummy3@dummy.com"},
+        {name: "dummy4", age: 22, email: "dummy4@dummy.com"},
+        {name: "dummy5", age: 19, email: "dummy5@dummy.com"},
+    ]
+)
+
+> db.posts.insertOne(
+    {
+        title: "Post Title", 
+        text: "Some dummy post text", 
+        tag: ["new", "tech"], 
+        creator: ObjectId("5f75cd52ae20e131a9073eca"), 
+        comments: [{text: "Some comment text", author: ObjectId("5f75cd52ae20e131a9073ec8")}]
+    }
+)
+
+> db.posts.findOne()
+
