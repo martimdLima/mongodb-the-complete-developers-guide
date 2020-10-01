@@ -1,0 +1,291 @@
+# Read Operations
+
+<br/>
+
+# Query & Projection Operators
+
+<br/>
+
+## Comparison Query Operators
+
+<br/>
+
+> Purpose - Locate Data
+
+<br/>
+
+> Types - Comparison, Evalution, Logical, Array, Element, Comments, Geospatial
+
+<br/>
+
+## Understanding findOne() and find()
+
+<br/>
+
+> findOne()
+
+<br/>
+
+> returns the first document that meets the criteria
+
+<br/>
+
+```sh
+> db.movies.findOne()
+```
+
+<br/>
+
+> using a filter
+
+<br/>
+
+```sh
+> db.movies.findOne({name: "The Last Ship"})
+```
+
+<br/>
+
+> find()
+
+<br/>
+
+> find() returns a cursor
+
+<br/>
+
+```sh
+> db.movies.find()
+```
+
+<br/>
+
+> using a filter
+
+<br/>
+
+```sh
+> db.movies.find({name: "The Last Ship"})
+> db.movies.find({runtime: 60})
+```
+
+<br/>
+
+## Working with Comparison Operators
+
+<br/>
+
+> finding values that are equal to the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$eq: 70}})
+```
+
+<br/>
+
+> finding values that aren't equal to the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$ne: 70}})
+```
+
+<br/>
+
+> finding values that are lower than the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$lt: 40}})
+```
+
+<br/>
+
+> finding values that are greater than the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$gt: 40}})
+```
+
+<br/>
+
+> finding values that are lower or equal than the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$lte: 40}})
+```
+
+<br/>
+
+> finding values that are greater or equal than the specified value
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$gte: 40}})
+```
+
+<br/>
+
+## Querying Embedded Fields & Arrays
+
+<br/>
+
+> querying all documents that have the field average embedded in the rating field
+
+<br/>
+
+```sh
+> db.movies.find({"rating.average": {$gt: 7.0}})
+```
+
+<br/>
+
+> querying all documents that have the genre drama/Drama value in the field genre which is an array
+
+<br/>
+
+```sh
+> db.movies.find({genres: "drama"})
+> db.movies.find({genres: "Drama"})
+```
+
+<br/>
+
+> querying all documents that have and genre array equaling Drama
+
+<br/>
+
+```sh
+> db.movies.find({genres: ["Drama"]}).pretty()
+```
+
+<br/>
+
+### Understanding "$in" and "$nin"
+
+<br/>
+
+> The $in operator selects the documents where the value of a field equals any value in the specified array.
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$in: [30, 42]}})
+
+<br/>
+
+```
+> $nin selects the documents where:
+>    * the field value is not in the specified array or
+>    * the field does not exist.
+
+<br/>
+
+```sh
+> db.movies.find({runtime: {$nin: [30, 42]}})
+```
+
+<br/>
+
+## Comparison Query Operators
+
+<br/>
+
+### "$or" and "$nor"
+
+<br/>
+
+> "$or"
+> The $or operator performs a logical OR operation on an array of two or more <expressions> 
+> and selects the documents that satisfy at least one of the <expressions>. 
+
+<br/>
+
+```sh
+> db.movies.find(
+    {$or: [
+        {"rating.average": {$lt: 5}}, 
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+```
+
+<br/>
+
+> "$nor"
+> $nor performs a logical NOR operation on an array of one or more query expression 
+> and selects the documents that fail all the query expressions in the array. 
+
+<br/>
+
+```sh
+> db.movies.find(
+    {$nor: [
+        {"rating.average": {$lt: 5}}, 
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+```
+
+<br/>
+
+### "$and"
+
+<br/>
+
+> $and performs a logical AND operation on an array of one or more expressions (e.g. <expression1>, <expression2>, etc.) 
+> and selects the documents that satisfy all the expressions in the array. The $and operator uses short-circuit evaluation. 
+> If the first expression (e.g. <expression1>) evaluates to false, MongoDB will not evaluate the remaining expressions.
+
+<br/>
+
+```sh
+> db.movies.find(
+    {$and: [
+        {"rating.average": {$gt: 9}}, 
+        {genres: "Drama"}
+          ]
+    }
+)
+```
+
+<br/>
+
+### "$not"
+
+<br/>
+
+> $not performs a logical NOT operation on the specified <operator-expression> and 
+> selects the documents that do not match the <operator-expression>. 
+> This includes documents that do not contain the field.
+
+<br/>
+
+```sh
+> db.movies.find(
+    {
+        runtime: {$not: {$eq: 60}}
+    }
+).pretty()
+```
+
+<br/>
+
+## Element Query Operators
+
+
+
+
+
+

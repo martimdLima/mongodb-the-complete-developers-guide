@@ -1,0 +1,97 @@
+> use companyData
+
+> db.companies.insertOne(
+    {
+        name: "dummy Corp",
+        sector: "Industrial Chemicals",
+        numEmployees: 32,
+        products: ["Pharmaceutical Products", "Beauty Products"]
+    }
+)
+
+> db.companies.insertMany(
+    [
+        {
+            name: "dummy Corp2",
+            sector: "Lab Chemicals",
+            numEmployees: 32,
+            products: ["Reagents", "Starters", "Cleaning chemicals", "Solvents"]
+        },
+        {
+            name: "dummy Corp3",
+            sector: "Auto",
+            numEmployees: 43,
+            products: ["cars", "car parts"] 
+        },
+        {
+            name: "dummy Corp4",
+            sector: "Auto",
+            numEmployees: 10,
+            products: ["pcbs", "electronic parts"]
+        },
+        {
+            name: "dummy Corp5",
+            sector: "Food",
+            numEmployees: 90,
+            products: ["cookies", "chips", "cakes"] 
+        }
+    ]
+)
+
+> db.companies.insertMany(
+    [
+        {
+            _id: ObjectId("5f760a4aae20e131a9073ee1"),
+            name: "dummy Corp4",
+            sector: "Lab Chemicals",
+            numEmployees: 32,
+            products: ["Reagents", "Starters", "Cleaning chemicals", "Solvents"]
+        },
+        {
+            _id: ObjectId("5f760a4aae20e131a9073ee2"),
+            name: "dummy Corp5",
+            sector: "Auto",
+            numEmployees: 43,
+            products: ["cars", "car parts"] 
+        },
+        {
+            name: "dummy Corp6",
+            sector: "Auto",
+            numEmployees: 10,
+            products: ["pcbs", "electronic parts"]
+        },
+        {
+            name: "dummy Corp7",
+            sector: "Food",
+            numEmployees: 90,
+            products: ["cookies", "chips", "cakes"] 
+        }
+    ],
+    {
+        ordered: false
+    }
+)
+
+> db.companies.insertOne(
+        {
+            name: "dummy Corp8",
+            sector: "Computers",
+            numEmployees: 650,
+            products: ["Computers", "Laptops"]
+        },
+        {
+            writeConcern: {w: 1, j: true}
+        }
+)
+
+> db.companies.insertOne(
+        {
+            name: "dummy Corp9",
+            sector: "Graphic Cards",
+            numEmployees: 300,
+            products: ["Graphic Cards", "Connectors"] 
+        },
+        {
+            writeConcern: {w: 1, j: false}
+        }
+)

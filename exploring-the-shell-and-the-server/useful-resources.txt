@@ -1,0 +1,8 @@
+[Config Files] 
+https://docs.mongodb.com/manual/reference/configuration-options/
+
+[Shell (mongo) Options] 
+https://docs.mongodb.com/manual/reference/program/mongo/
+
+[Server (mongod) Options] 
+https://docs.mongodb.com/manual/reference/program/mongod/
