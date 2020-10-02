@@ -1,0 +1,34 @@
+> Import the attached database
+
+> mongoimport boxoffice.json -d boxOffice -c movieStats --jsonArray --drop
+
+> Search all movies that have a rating higher than 9.2 and a runtime lower than 100 minutes
+
+> db.movieStats.find(
+    {$and: [
+        {"meta.rating": {$gt: 9.2}}, 
+        {"meta.runtime": {$lt: 100}}
+          ]
+    }
+).pretty()
+
+> Search all movies that have a genre of "drama" or "action"
+
+> db.movieStats.find(
+    {$or: [
+        {genre: "drama"}, 
+        {genre: "action"}
+          ]
+    }
+).pretty()
+
+> Search all movies that have a genre of "drama" or "action"
+
+> db.movieStats.find(
+    {
+        $expr: 
+            {
+                gt: ["$visitors", "$expectedVisitors"]
+            }
+    }
+).pretty()

@@ -1,0 +1,15 @@
+> Import the attached database
+
+> mongoimport boxoffice-extended.json -d boxOffice -c exmoviestarts --jsonArray --drop
+
+> Find all movies with exactly two genres
+
+> db.exmoviestarts.find({genre: {$size: 2}}).pretty()
+
+> Find all movies which aired in 2018
+
+> db.exmoviestarts.find({"meta.aired": 2018}).pretty()
+
+> Find all movies which have ratings greater than 8 but lower than 10
+
+> db.exmoviestarts.find({ ratings: { $elemMatch: { $gt: 8, $lt: 10 } } }).pretty()
