@@ -1,0 +1,31 @@
+Assigment 5 - Update Operations
+
+> Use db activities
+
+```sh
+> use activities
+```
+
+> update a document where the name is team3
+
+```sh
+> db.sports.updateMany({title: "Footbal"}, {$set: {title: "Football", requiresTeam: true}}, {upsert: true})
+
+> db.sports.updateMany({title: "Voleyball"}, {$set: {title: "Voleyball", requiresTeam: true}}, {upsert: true})
+
+> db.sports.updateMany({title: "Baseball"}, {$set: {title: "Baseball", requiresTeam: false}}, {upsert: true})
+
+> db.sports.updateMany({title: "Tenis"}, {$set: {title: "Tenis", requiresTeam: false}}, {upsert: true})
+```
+
+> Update all documents which required a team by adding a new field minimum amount of players
+
+```sh
+> db.sports.updateMany({requiresTeam: true}, {$set: {minplayers: ""}})
+```
+
+> Update all documents which required a team by increasing the minimum amount of players
+
+```sh
+> db.sports.updateMany({requiresTeam: true}, {$set: {minplayers: 10}}) 
+```
