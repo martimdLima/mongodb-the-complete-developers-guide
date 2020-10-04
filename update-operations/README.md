@@ -374,6 +374,8 @@ If the \$pop operator removes the last item in the <field>, the <field> will the
 The $addToSet operator adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array.
 </p>
 
+<br/>
+
 ```sh
 > db.users.updateOne({name: "dummy4"}, {$addToSet: {hobbies: {title: "Hiking", frequency: 2}}})
 ```
