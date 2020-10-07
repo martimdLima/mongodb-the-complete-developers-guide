@@ -1,0 +1,67 @@
+# Assignment 6 - Geospatial Data
+
+Mercado Peixe -8.65534, 40.64253
+São Bernardo -8.64395, 40.63029
+Magalhaes Lima -8.63267, 40.64594
+
+## Insert 3 points in the otherplaces collection
+
+> db.otherplaces.insertMany(
+    [
+       {name: "Mercado Peixe", location: { type: "Point", coordinates: [ -8.65534, 40.64253 ] }},
+       {name: "Sao Bernardo", location: { type: "Point", coordinates: [ -8.64395, 40.63029 ] }},
+       {name: "Magalhaes Lima", location: { type: "Point", coordinates: [ -8.63267, 40.64594 ] }}  
+    ]
+)
+
+## create a index for the collection
+
+> db.otherplaces.createIndex({location: "2dsphere"})
+
+point - -8.65024, 40.63964
+
+## find the nearest points between a min and max distance
+
+> db.otherplaces.find({location: {$near: {$geometry: {type: "Point", coordinates: [-8.65024, 40.63964]}, $maxDistance: 2000, $minDistance: 800 }}}).pretty()
+
+## pick an area that contains the points insert in the first task
+
+pt1 - -8.6716, 40.63875
+pt2 - -8.62298, 40.61663
+pt3 - -8.61491, 40.64995
+pt4 - -8.63719, 40.65799
+
+> const pt1 = [ -8.6716, 40.63875 ] 
+> const pt2 = [ -8.62298, 40.61663 ] 
+> const pt3 = [ -8.61491, 40.64995 ] 
+> const pt4 = [ -8.63719, 40.65799 ]
+
+> db.otherareas.insertOne({name: "Aveiro", area: { type: "Polygon", coordinates: [[pt1, pt2, pt3, pt4, pt1]] }})
+
+> db.otherareas.createIndex({area: "2dsphere"})
+
+> db.otherplaces.find({location: {$geoWithin: {$geometry: {type: "Polygon", coordinates: [[pt1, pt2, pt3, pt4, pt1]]}}}})
+
+## Create a second area
+
+pt5 - -8.6677, 40.64189
+pt6 - -8.64779, 40.63336
+pt7 - -8.63397, 40.64339
+pt8 - -8.65328, 40.65322
+
+> const pt5 = [ -8.6677, 40.64189 ] 
+> const pt6 = [ -8.64779, 40.63336 ] 
+> const pt7 = [ -8.63397, 40.64339 ] 
+> const pt8 = [ -8.65328, 40.65322 ]
+
+> db.otherareas.insertOne({name: "Aveiro Sub", area: { type: "Polygon", coordinates: [[pt5, pt6, pt7, pt8, pt5]] }})
+
+## Find all the areas in the collection that contains the choosen point
+
+point - -8.64581, 40.64736 
+
+> db.otherareas.find({area: {$geoIntersects: {$geometry: {type: "Point", coordinates: [ -8.64581, 40.64736 ] }}}})
+
+
+
+

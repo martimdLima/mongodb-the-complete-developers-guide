@@ -1,0 +1,5 @@
+[Official Geospatial Docs]:
+https://docs.mongodb.com/manual/geospatial-queries/
+
+[Geospatial Query Operators]:
+ https://docs.mongodb.com/manual/reference/operator/query-geospatial/
