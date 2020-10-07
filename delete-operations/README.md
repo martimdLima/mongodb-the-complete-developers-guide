@@ -42,17 +42,6 @@ To delete all documents from a collection, pass an empty filter document {} to t
 You can specify criteria, or filters, that identify the documents to delete. The filters use the same syntax as read operations.
 </p>
 
-
-```sh
-> db.users.deleteMany({age: {$gt: 30}, isSporty: true})
-```
-
-<br/>
-
-```sh
-> db.users.deleteMany({totalAge: {$gt: 30}, isSporty: true})
-```
-
 <br/>
 
 ```sh
