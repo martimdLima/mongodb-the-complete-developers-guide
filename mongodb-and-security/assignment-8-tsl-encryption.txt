@@ -1,0 +1,14 @@
+> use admin
+
+> user with full db and user privileges
+> db.createUser({user: "testuserdbadmin", pwd: "test", roles: ["userAdminAnyDatabase"]})
+
+> user with full db privileges
+> db.createUser({user: "testdbadmin", pwd: "test", roles: ["dbAdmin"]})
+
+> user with full user privileges
+> db.createUser({user: "testuseradmin", pwd: "test", roles: ["userAdmin"]})
+
+> user with restricted permissions - only read/write in customers and sales dbs
+> db.createUser( { user: "testdev", pwd: "test", roles: [ { role: "readWrite", db: "customers" }, { role: "readWrite", db: "sales" } ] })
+
