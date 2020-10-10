@@ -7,15 +7,9 @@
 
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
-#+begin_export html
-<div class="right">
-  <a href="https://github.com/fniessen/org-html-themes/blob/master/demo/example.org" class="fa fa-github"> Edit on GitHub</a>
-</div>
-#+end_export
-
 -----
 
-* Basics & Crud Operations :basics:
+* Basics & Crud Operations
   :PROPERTIES:
   :CATEGORY: Basics
   :END:
@@ -152,7 +146,7 @@ find() doesn't return an array of all the documents in a collection, but a curso
 
 ** Projections
 
-#+BEGIN_SRC
+#+BEGIN_SRC javascript
 // Using projections to return all the documents with the choosen properties
 > db.dbname.find({}, {key: value}).pretty()
 
@@ -163,7 +157,7 @@ find() doesn't return an array of all the documents in a collection, but a curso
 
 ** Working with nested documents
 
-#+BEGIN_SRC
+#+BEGIN_SRC javascript
 // Update a document with a nested document
 > db.dbname.updateMany({}, {$set: {key: {nestedKey1: "nestedValue1", nestedKey2: "nestedValue2"}}})
 
@@ -174,14 +168,14 @@ find() doesn't return an array of all the documents in a collection, but a curso
 
 ** Working with arrays
 
-#+BEGIN_SRC
+#+BEGIN_SRC javascript
 > db.dbname.updateOne({key: "val"}, {$set: {newKey: ["val1", "val2"]}})
 #+END_SRC
 
 
 ** Acessing structured data
 
-#+BEGIN_SRC
+#+BEGIN_SRC javascript
 // Acessing a specific field of a document
  > db.dbname.findOne({key: "val"}).key2
 
@@ -198,7 +192,7 @@ find() doesn't return an array of all the documents in a collection, but a curso
 
 -----
 
-* Schemas & Relations - How to Structure Documents :schemasandrelations:
+* Schemas & Relations - How to Structure Documents
   :PROPERTIES:
   :CATEGORY: Schemas & Relations
   :END:
@@ -291,7 +285,7 @@ When not working with the shell but a MongoDB driver for your app programming la
 * Exploring the Shell and the Server
 
 
-* Create Operations :createOperations:
+* Create Operations
  :PROPERTIES:
   :CATEGORY: Understanding create Operations
   :END:
@@ -375,7 +369,7 @@ This second argument is a document used to configure this operation.
 In this case, it will fail the first two values and insert the last two values.
 
 #+begin_src javascript
-> db.hobbies.insertMany(
+db.hobbies.insertMany(
     [
         {_id: "sports", name: "Sports"},
         {_id: "cooking", name: "Cooking"},
@@ -453,73 +447,2083 @@ mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
 #+END_SRC
 
 
-* Read Operations :readOperations:
+* Read Operations
  :PROPERTIES:
   :CATEGORY: Understanding read Operations
   :END:
 
 
-* Update Operations :updateOperations:
+
+* Query & Projection Operators
+
+
+** Comparison Query Operators
+
++ Purpose - Locate Data
++ Types - Comparison, Evalution, Logical, Array, Element, Comments, Geospatial
+
+
+** Understanding findOne() and find()
+
+**** findOne()
+
+returns the first document that meets the criteria
+
+
+#+BEGIN_SRC javascrip
+> db.movies.findOne()
+#+END_SRC
+
+using a filter
+
+
+#+BEGIN_SRC javascrip
+> db.movies.findOne({name: "The Last Ship"})
+#+END_SRC
+
+**** find()
+
+find() returns a cursor
+
+#+BEGIN_SRC javascrip
+> db.movies.find()
+#+END_SRC
+
+using a filter
+
+#+BEGIN_SRC javascrip
+> db.movies.find({name: "The Last Ship"})
+> db.movies.find({runtime: 60})
+#+END_SRC
+
+
+
+** Working with Comparison Operators
+
+
+finding values that are equal to the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$eq: 70}})
+#+END_SRC
+
+
+finding values that aren't equal to the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$ne: 70}})
+#+END_SRC
+
+
+finding values that are lower than the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$lt: 40}})
+#+END_SRC
+
+
+finding values that are greater than the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$gt: 40}})
+#+END_SRC
+
+
+finding values that are lower or equal than the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$lte: 40}})
+#+END_SRC
+
+
+finding values that are greater or equal than the specified value
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$gte: 40}})
+#+END_SRC
+
+
+** Querying Embedded Fields & Arrays
+
+
+querying all documents that have the field average embedded in the rating field
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({"rating.average": {$gt: 7.0}})
+#+END_SRC
+
+
+querying all documents that have the genre drama/Drama value in the field genre which is an array
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({genres: "drama"})
+> db.movies.find({genres: "Drama"})
+#+END_SRC
+
+
+querying all documents that have and genre array equaling Drama
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({genres: ["Drama"]}).pretty()
+#+END_SRC
+
+
+*** Understanding "$in" and "$nin"
+
+
+The $in operator selects the documents where the value of a field equals any value in the specified array.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$in: [30, 42]}})
+#+END_SRC
+
+$nin selects the documents where:
+    + the field value is not in the specified array or
+    + the field does not exist.
+
+#+BEGIN_SRC javascrip
+> db.movies.find({runtime: {$nin: [30, 42]}})
+#+END_SRC
+
+
+** Comparison Query Operators
+
+*** "$or" and "$nor"
+
+**** "$or"
+
+The $or operator performs a logical OR operation on an array of two or more <expressions> and selects the documents that satisfy at least one of the <expressions>.
+
+#+BEGIN_SRC javascrip
+> db.movies.find(
+    {$or: [
+        {"rating.average": {$lt: 5}},
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+#+END_SRC
+
+
+**** "$nor"
+
+$nor performs a logical NOR operation on an array of one or more query expression and selects the documents that fail all the query expressions in the array.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find(
+    {$nor: [
+        {"rating.average": {$lt: 5}},
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+#+END_SRC
+
+
+*** "$and"
+
+$and performs a logical AND operation on an array of one or more expressions (e.g. <expression1>, <expression2>, etc.) and selects the documents that satisfy all the expressions in the array. The $and operator uses short-circuit evaluation.
+If the first expression (e.g. <expression1>) evaluates to false, MongoDB will not evaluate the remaining expressions.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find(
+    {$and: [
+        {"rating.average": {$gt: 9}},
+        {genres: "Drama"}
+          ]
+    }
+
+#+END_SRC
+
+
+*** "$not"
+
+$not performs a logical NOT operation on the specified <operator-expression> and selects the documents that do not match the <operator-expression>.
+This includes documents that do not contain the field.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find(
+    {
+        runtime: {$not: {$eq: 60}}
+    }
+)
+#+END_SRC
+
+
+** Element Query Operators
+
+
+*** "$exists"
+
+When <boolean> is true, $exists matches the documents that contain the field, including documents where the field value is null.
+If <boolean> is false, the query returns only the documents that do not contain the field.
+
+
+#+BEGIN_SRC javascrip
+> use user
+
+> db.users.insertMany(
+    [
+        {
+            name: "dummy",
+            hobbies:
+                [
+                    {title: "Sports", frequency: 3},
+                    {title: "Cooking", frequency: 5}
+                ],
+            phone: 985438732
+        },
+                {
+            name: "dummy2",
+            hobbies:
+                [
+                    {title: "Music", frequency: 9},
+                    {title: "Cinema", frequency: 5}
+                ],
+            phone: "985543732",
+            age: 30
+        }
+    ]
+)
+
+> db.users.find({age: {$exists: true}}).pretty()
+
+> db.users.find({age: {$exists: true, $gte: 30}}).pretty()
+
+> db. users.insertOne(
+            {
+            name: "dummy3",
+            hobbies:
+                [
+                    {title: "Yoga", frequency: 5},
+                    {title: "Dancing", frequency: 2}
+                ],
+            phone: 981234732,
+            age: null
+        },
+)
+
+> db.users.find({age: {$exists: true, $ne: null}})
+
+#+END_SRC
+
+
+*** "$type"
+
+$type selects documents where the value of the field is an instance of the specified BSON type(s).
+Querying by data type is useful when dealing with highly unstructured data where data types are not predictable.
+
+
+#+BEGIN_SRC javascrip
+> db.users.find({phone: {$type: "number"}})
+
+> db.users.find({phone: {$type: "string"}})
+
+> db.users.find({phone: {$type: ["double", "string"]}})
+#+END_SRC
+
+
+** Evaluation Query Operators
+
+
+*** "$regex"
+
+Provides regular expression capabilities for pattern matching strings in queries.
+MongoDB uses Perl compatible regular expressions (i.e. “PCRE” ) version 8.42 with UTF-8 support.
+
+In MongoDB, you can also use regular expression objects (i.e. /pattern/) to specify regular expressions.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({summary: {$regex: /musical/}})
+#+END_SRC
+
+
+*** "$expr"
+
+Allows the use of aggregation expressions within the query language.
+The arguments can be any valid aggregation expression.
+
+
+#+BEGIN_SRC javascrip
+//find all documents where the field volume is bigger than the field target
+> use financialData
+
+> db.sales.insertMany(
+    [
+        {volume: 100, target: 120},
+        {volume: 89, target: 80},
+        {volume: 200, target: 177}
+    ]
+)
+
+> db.sales.find({$expr: {$gt: ["$volume", "$target"]}}).pretty()
+#+END_SRC
+
+
+#+BEGIN_SRC javascrip
+find all documents that meet the condition
+> db.sales.find(
+    {
+  $expr: {
+    $gt: [
+      {
+        $cond: {
+          if: { $gte: [$volume, 190] },
+          then: { $subtract: [$volume, 10] },
+          else: $volume
+        }
+      },
+      $target
+    ]
+  }
+}
+)
+#+END_SRC
+
+
+** Array Query Operators
+
+*** "$size"
+
+The $size operator matches any array with the number of elements specified by the argument.
+
+$size does not accept ranges of values. To select documents based on fields with different numbers of elements,
+create a counter field that you increment when you add elements to a field.
+
+
+#+BEGIN_SRC javascrip
+> db.users.find({hobbies: {$size: 3}})
+#+END_SRC
+
+
+*** "$all"
+
+The $all operator selects the documents where the value of a field is an array that contains all the specified elements.
+
+
+#+BEGIN_SRC javascrip
+> db.movieStats.find({genre: {$all: ["action", "thriller"]}})
+#+END_SRC
+
+
+*** "$elemMatch"
+
+The $elemMatch operator matches documents that contain an array field with at least one element that matches all the specified query criteria.
+If you specify only a single <query> condition in the $elemMatch expression, and are not using the $not or $ne operators inside of $elemMatch,
+$elemMatch can be omitted. See Single Query Condition.
+
+
+
+#+BEGIN_SRC javascrip
+> db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}}).pretty()
+#+END_SRC
+
+
+** Cursors
+
+
+*** next()
+
+Returns the next document in a cursor.
+
+
+#+BEGIN_SRC javascrip
+> use movieData
+
+> const dataCursor = db.movies.find()
+
+> dataCursor.next()
+#+END_SRC
+
+
+*** hasNext()
+
+Returns true if the cursor has documents and can be iterated.
+
+
+#+BEGIN_SRC javascrip
+> dataCursor.hasNext()
+#+END_SRC
+
+
+
+*** forEach()
+
+Applies a JavaScript function for every document in a cursor.
+
+
+#+BEGIN_SRC javascrip
+> dataCursor.forEach(doc => {
+    printjson(doc)
+})
+#+END_SRC
+
+
+*** sort()
+
+Returns results ordered according to a sort specification.
+
+lower to higher: 1
+
+higher to lower: -1
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find().sort({"ratings.average": 1}).pretty()
+
+> db.movies.find().sort({"ratings.average": 1, runtime: -1}).pretty()
+#+END_SRC
+
+
+*** skip()
+
+Returns a cursor that begins returning results only after passing or skipping a number of documents.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find().sort({"ratings.average": 1, runtime: -1}).skip(10).pretty()
+#+END_SRC
+
+
+
+*** limit()
+
+Constrains the size of a cursor’s result set.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find().sort({"ratings.average": 1, runtime: -1}).skip(10).limit(10).pretty()
+#+END_SRC
+
+
+** Projection Operators
+
+
+*** $ (projection)
+
+
+The positional $ operator limits the contents of an <array> to return either:
+
+    + The first element that matches the query condition on the array.
+    + The first element if no query condition is specified for the array (Starting in MongoDB 4.4).
+
+Use $ in the projection document of the find() method or the findOne() method when you only need one particular array element in selected documents.
+
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({}, {name: 1, genres: 1, runtime: 1, rating: 1}).pretty()
+
+> db.movies.find({genres: "Drama"}, {"genres.$": 1}).pretty()
+
+> db.movies.find({genres: {$all: ["Drama", "Horror"]}}, {"genres.$": 1})
+#+END_SRC
+
+
+
+*** $elemMatch (projection)
+
+
+The $elemMatch operator limits the contents of an <array> field from the query results to contain only the first element matching the $elemMatch condition
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({genres: "Drama"}, {genres: {$elemMatch: {$eq: "Horror"}}}).pretty()
+#+END_SRC
+
+
+
+*** $slice (projection)
+
+
+The $slice projection operator specifies the number of elements in an array to return in the query result.
+
+
+$slice: <number>
+    * Specify a positive number n to return the first n elements.
+    * Specify a negative number n to return the last n elements.
+
+
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: 2}, name: 1})
+#+END_SRC
+
+
+$slice: [ < number to skip >, < number to return > ]
+Specifies the number of elements to return in the <arrayField> after skipping the specified number of elements starting from the first element.
+You must specify both elements.
+
+
+#+BEGIN_SRC javascrip
+> db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: [1, 2]}, name: 1})
+#+END_SRC
+
+
+* Update Operations
  :PROPERTIES:
   :CATEGORY: Understanding update Operations
   :END:
 
+* Update Operations
 
-* Delete Operations :deleteOperations:
+** Update Operators
+
+*** \$set
+
+The $set operator replaces the value of a field with the specified value.
+
+If the field does not exist, $set will add a new field with the specified value, provided that the new field does not violate a type constraint.
+If you specify a dotted path for a non-existent field, $set will create the embedded documents as needed to fulfill the dotted path to the field.
+
+
+#+BEGIN_SRC javascript
+// Updating one field in one document
+> db.users.updateOne({_id: ObjectId("5f765f11224c6744c2b0a946")}, {$set: {hobbies: [{title: "Sports", frequency: 5}, {title: "Music", frequency: 7}, {title: "Football", frequency: 2}]}})
+
+// Updating one field in many documents
+> db.users.updateMany({"hobbies.title": "Sports"}, {$set: {isSporty: true}})
+
+// Updating multiple fields in one document
+> db.users.updateOne({_id: ObjectId("5f765f11224c6744c2b0a946")}, {$set: {age: 42, phone: 985348777}})
+#+END_SRC
+
+
+*** \$inc
+
+The $inc operator increments a field by a specified value.
+
+The $inc operator accepts positive and negative values.
+If the field does not exist, $inc creates the field and sets the field to the specified value.
+Use of the $inc operator on a field with a null value will generate an error.
+$inc is an atomic operation within a single document.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy2"}, {$inc: {age: 2}})
+#+END_SRC
+
+
+*** \$min
+
+
+The $min updates the value of the field to a specified value if the specified value is less than the current value of the field.
+The $min operator can compare values of different types, using the BSON comparison order.
+
+If the field does not exist, the \$min operator sets the field to the specified value.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy5"}, {$min: {age: 40}})
+#+END_SRC
+
+
+*** \$max
+
+
+The $max operator updates the value of the field to a specified value if the specified value is greater than the current value of the field. The $max operator can compare values of different types, using the BSON comparison order.
+
+If the field does not exist, the \$max operator sets the field to the specified value.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy2"}, {$max: {age: 40}})
+#+END_SRC
+
+
+*** \$mull
+
+
+Multiply the value of a field by a number.
+
+If the field does not exist in a document, \$mul creates the field and sets the value to zero of the same numeric type as the multiplier.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy2"}, {$mul: {age: 2}})
+#+END_SRC
+
+
+*** \$unset
+
+
+The $unset operator deletes a particular field.
+
+If the field does not exist, then \$unset does nothing (i.e. no operation).
+
+When used with $ to match an array element, $unset replaces the matching element with null rather than removing the matching element from the array. This behavior keeps consistent the array size and element positions.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateMany({isSporty: true}, {$unset: {phone: ""}})
+#+END_SRC
+
+
+*** \$rename
+
+
+The $rename operator updates the name of a field.
+
+The $rename operator logically performs an $unset of both the old name and the new name, and then performs a \$set operation with the new name. As such, the operation may not preserve the order of the fields in the document; i.e. the renamed field may move within the document.
+
+If the document already has a field with the <newName>, the \$rename operator removes that field and renames the specified <field> to <newName>.
+
+If the field to rename does not exist in a document, \$rename does nothing (i.e. no operation).
+
+For fields in embedded documents, the $rename operator can rename these fields as well as move the fields in and out of embedded documents. $rename does not work if these fields are in array elements.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateMany({}, {$rename: {age: "totalAge"}})
+#+END_SRC
+
+
+*** upsert()
+
+
+If updateOne(), updateMany(), or replaceOne() includes upsert : true and no documents match the specified filter, then the operation creates a new document and inserts it. If there are matching documents, then the operation modifies or replaces the matching document or documents.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy4"}, {$set: {age: 29, hobbies: [{title: "Nice dinning", frequency: 3}], isSporty: true}}, {upsert: true})
+#+END_SRC
+
+
+** Array Update Operators
+
+*** \$
+
+The positional $ operator identifies an element in an array to update without explicitly specifying the position of the element in the array.
+
+    + To project, or return, an array element from a read operation, see the $ projection operator instead.
+    + To update all elements in an array, see the all positional operator $[] instead.
+    + To update all elements that match an array filter condition or conditions, see the filtered positional operator instead $[<identifier>].
+
+
+#+BEGIN_SRC javascript
+> db.users.updateMany({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}}, {$set: {"hobbies.$.highFrequency": true}})
+#+END_SRC
+
+
+*** \$[]
+
+The all positional operator $[] indicates that the update operator should modify all elements in the specified array field.
+
+If an upsert operation results in an insert, the query must include an exact equality match on the array field in order to use the \$[] positional operator in the update statement.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateMany({totalAge: {$gt: 30}}, {$inc: {"hobbies.$[].frequency": -1}})
+#+END_SRC
+
+
+*** \$[<identifier>]
+
+The filtered positional operator $[<identifier>] identifies the array elements that match the arrayFilters conditions for an update operation, e.g. db.collection.update() and db.collection.findAndModify().
+
+
+#+BEGIN_SRC javascript
+> db.users.updateMany({"hobbies.frequency": {$gt: 2}}, {$set: {"hobbies.$[el].highFrequency": false}}, {arrayFilters: [{"el.frequency": {$gt: 2}} ]})
+#+END_SRC
+
+
+*** \$push
+
+The $push operator appends a specified value to an array.
+
+f the field is absent in the document to update, \$push adds the array field with the value as its element.
+
+If the field is not an array, the operation will fail.
+
+If the value is an array, $push appends the whole array as a single element. To add each element of the value separately, use the $each modifier with \$push. For an example, see Append Multiple Values to an Array.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy4"}, {$push: {hobbies: {title: "Nice dinning", frequency: 2}}})
+#+END_SRC
+
+
+*** \$each
+
+The $each modifier is available for use with the $addToSet operator and the $push operator.
+
+Use with the \$addToSet operator to add multiple values to an array <field> if the values do not exist in the <field>.
+
+Use with the \$push operator to append multiple values to an array <field>.
+
+The $push operator can use $each modifier with other modifiers.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy4"}, {$push: {hobbies: {$each: [{title: "nice dinning", frequency: 2}, {title: "Sports", frequency: 2}]}}})
+#+END_SRC
+
+
+*** \$sort
+
+The $sort modifier orders the elements of an array during a $push operation.
+
+To use the $sort modifier, it must appear with the $each modifier. You can pass an empty array [] to the $each modifier such that only the $sort modifier has an effect.
+
+The $sort modifier can sort array elements that are not documents. In previous versions, the $sort modifier required the array elements be documents.
+
+If the array elements are documents, the modifier can sort by either the whole document or by a specific field in the documents. In previous versions, the \$sort modifier can only sort by a specific field in the documents.
+
+Trying to use the $sort modifier without the $each modifier results in an error. The $sort no longer requires the $slice modifier.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy3"}, {$push: {hobbies: {$each: [{title: "Yoga", frequency: 2}, {title: "Dancing", frequency: 2}], $sort: {frequency: -1}}}})
+#+END_SRC
+
+
+*** \$slice
+
+The $slice modifier limits the number of array elements during a $push operation. To project, or return, a specified number of array elements from a read operation, see the $slice projection operator instead.
+
+To use the $slice modifier, it must appear with the $each modifier. You can pass an empty array [] to the $each modifier such that only the $slice modifier has an effect.
+
+The order in which the modifiers appear is immaterial. Previous versions required the $each modifier to appear as the first modifier if used in conjunction with $slice. For a list of modifiers available for \$push, see Modifiers.
+
+Trying to use the $slice modifier without the $each modifier results in an error.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy3"}, {$push: {hobbies: {$each: [{title: "Yoga", frequency: 2}, {title: "Dancing", frequency: 2}], $sort: {frequency: -1}, $slice: 1}}})
+#+END_SRC
+
+
+*** \$pull
+
+The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
+
+If you specify a <condition> and the array elements are embedded documents, \$pull operator applies the <condition> as if each array element were a document in a collection. See Remove Items from an Array of Documents for an example.
+
+If the specified <value> to remove is an array, \$pull removes only the elements in the array that match the specified <value> exactly, including order.
+
+If the specified <value> to remove is a document, \$pull removes only the elements in the array that have the exact same fields and values. The ordering of the fields can differ.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy5"}, {$pull: {hobbies: {title: "Music"}}})
+#+END_SRC
+
+*** \$sort
+
+
+
+
+The $pop operator removes the first or last element of an array. Pass $pop a value of -1 to remove the first element of an array and 1 to remove the last element in an array.
+
+The \$pop operation fails if the <field> is not an array.
+
+If the \$pop operator removes the last item in the <field>, the <field> will then hold an empty array.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy4"}, {$pop: {hobbies: 1}})
+#+END_SRC
+
+
+*** $addToSet
+
+The $addToSet operator adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array.
+
+
+#+BEGIN_SRC javascript
+> db.users.updateOne({name: "dummy4"}, {$addToSet: {hobbies: {title: "Hiking", frequency: 2}}})
+#+END_SRC
+
+
+
+* Delete Operations
  :PROPERTIES:
   :CATEGORY: Understanding delete Operations
   :END:
 
 
+* Delete Operations
 
-* Indexes :indexes:
+** deleteOne()
+
+Delete Only One Document that Matches a Condition.
+
+To delete at most a single document that matches a specified filter (even though multiple documents may match the specified filter) use the db.collection.deleteOne() method.
+
+
+#+BEGIN_SRC javascript
+> db.users.deleteOne({name: "Chris"})
+#+END_SRC
+
+
+** deleteMany()
+
+Removes all documents that match the filter from a collection.
+
+To delete all documents from a collection, pass an empty filter document {} to the db.collection.deleteMany() method.
+
+#+BEGIN_SRC javascript
+> db.users.deleteMany({})
+#+END_SRC
+
+You can specify criteria, or filters, that identify the documents to delete. The filters use the same syntax as read operations.
+
+#+BEGIN_SRC javascript
+> db.users.deleteMany({totalAge: {$exists: false}, isSporty: true})
+#+END_SRC
+
+
+** drop()
+
+Removes a collection or view from the database. The method also removes any indexes associated with the dropped collection.
+The method provides a wrapper around the drop command.
+
+Should only be done by sysAdmins
+
+> Drops the collection
+#+END_SRC
+> db.users.drop()
+#+END_SRC
+
+
+** dropDatabase()
+
+Removes the current database, deleting the associated data files.
+
+> Drops the database
+#+END_SRC
+> db.dropDatabase()
+#+END_SRC
+
+
+* Indexes
  :PROPERTIES:
   :CATEGORY: Indexes
   :END:
 
 
-* GeoSpatial Data :geospatialData:
+* Working With Indexes
+
+Indexes support the efficient execution of queries in MongoDB. Without indexes, MongoDB must perform a collection scan, i.e. scan every document in a collection, to select those documents that match the query statement. If an appropriate index exists for a query, MongoDB can use the index to limit the number of documents it must inspect.
+
+Indexes are special data structures that store a small portion of the collection’s data set in an easy to traverse form.
+The index stores the value of a specific field or set of fields, ordered by the value of the field.
+The ordering of the index entries supports efficient equality matches and range-based query operations.
+In addition, MongoDB can return sorted results by using the ordering in the index.
+
+
+#+CAPTION: Example of working with indexes
+#+NAME:   working-with-indexes
+[[https://docs.mongodb.com/manual/_images/index-for-sort.bakedsvg.svg]]
+
+
+Fundamentally, indexes in MongoDB are similar to indexes in other database systems.
+MongoDB defines indexes at the collection level and supports indexes on any field or sub-field of the documents in a MongoDB collection.
+
+
+** Query Diagnosis and Query Planning
+
+*** db.collection.explain()
+
+ Returns information on the query plan for the following methods:
++ aggregate()
++ count()
++ find()
++ remove()
++ update()
++ distinct()
++ findAndModify()
++ mapReduce()
+
+
+The db.collection.explain() method has the following parameter:
++ verbosity - Optional. Specifies the verbosity mode for the explain output. The possible modes are:
+    + "queryPlanner" (Default)
+    + "executionStats"
+    + "allPlansExecution"
+
+
+#+BEGIN_SRC javascript
+> db.contacts.explain("executionStats").find({"dob.age": {$gt: 60}})
+#+END_SRC
+
+
+
+** Single Find Indexes
+
+MongoDB provides complete support for indexes on any field in a collection of documents. By default, all collections have an index on the _id field, and applications and users may add additional indexes to support important queries and operations.
+
+
+#+CAPTION: Single Find Index Example
+#+NAME:   single-find-index
+[[https://docs.mongodb.com/manual/_images/index-ascending.bakedsvg.svg]]
+
+*** createIndex()
+
+Creates indexes on collections.
+
+db.collection.createIndex() takes the following parameters:
++ keys - A document that contains the field and value pairs where the field is the index key and the value describes the type of index for that field. For an   ascending index on a field, specify a value of 1; for descending index, specify a value of -1.
++ options - Optional. A document that contains a set of options that controls the creation of the index.
++ commitQuorum - Optional. The minimum number of data-bearing voting replica set members (i.e. commit quorum), including the primary, that must report a successful index build before the primary marks the indexes as ready. A “voting” member is any replica set member where members[n].votes is greater than 0.
+
+
+#+BEGIN_SRC javascript
+> db.contacts.createIndex({"dob.age": 1})
+#+END_SRC
+
+** dropIndex()
+
+Drops or removes the specified index from a collection. The db.collection.dropIndex() method provides a wrapper around the dropIndexes command.
+
+The db.collection.dropIndex() method takes the following parameter:
++ index - Optional. Specifies the index to drop. You can specify the index either by the index name or by the index specification document.
+
+#+BEGIN_SRC javascript
+> db.contacts.dropIndex({"dob.age": 1})
+#+END_SRC
+
+** Compound Indexes
+
+MongoDB supports compound indexes, where a single index structure holds references to multiple fields within a collection’s documents.
+The following diagram illustrates an example of a compound index on two fields:
+
+![Compound Indexes](https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg)
+
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   compound-index
+[(https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg[]]
+
+Compound indexes can support queries that match on multiple fields.
+
+*** Create a Compound Index
+
+#+BEGIN_SRC javascript
+> db.contacts.createIndex({"dob.age": 1, gender: 1})
+
+> db.contacts.explain("executionStats").find({"dob.age": 35, gender: "male"})
+#+END_SRC
+
+The value of the field in the index specification describes the kind of index for that field.
+For example, a value of 1 specifies an index that orders items in ascending order.
+A value of -1 specifies an index that orders items in descending order.
+
+*** Sorting Indexes
+
+#+BEGIN_SRC javascript
+> db.contacts.explain().find({"dob.age": 35}).sort({gender: 1})
+#+END_SRC
+
+*** getIndexes()
+
+Returns an array that holds a list of documents that identify and describe the existing indexes on the collection, including hidden indexes.
+You must call db.collection.getIndexes() on a collection.
+
+#+BEGIN_SRC javascript
+> db.contacts.getIndexes()
+#+END_SRC
+
+** Index Properties
+
+*** Unique Indexes
+
+The unique property for an index causes MongoDB to reject duplicate values for the indexed field.
+Other than the unique constraint, unique indexes are functionally interchangeable with other MongoDB indexes.
+
+
+#+BEGIN_SRC javascript
+> db.contacts.createIndex({email: 1}, {unique: true})
+#+END_SRC
+
+*** Partial Indexes
+
+Partial indexes only index the documents in a collection that meet a specified filter expression.
+By indexing a subset of the documents in a collection, partial indexes have lower storage requirements and reduced performance costs for index creation and maintenance.
+
+Partial indexes offer a superset of the functionality of sparse indexes and should be preferred over sparse indexes.
+
+
+#+BEGIN_SRC javascript
+> db.contacts.createIndex({"dob.age": 1}, {partialFilterExpression: {gender: "male"}})
+
+> db.contacts.explain().find({"dob.age": {$gt: 60}, gender: "male"})
+#+END_SRC
+
+
+
+*** Sparse Indexes
+
+The sparse property of an index ensures that the index only contain entries for documents that have the indexed field. The index skips documents that do not have the indexed field.
+
+You can combine the sparse index option with the unique index option to prevent inserting documents that have duplicate values for the indexed field(s) and skip indexing documents that lack the indexed field(s).
+
+
+#+BEGIN_SRC javascript
+> db.users.insertMany(
+    [
+        {name: "user1", email: "user1@test.com"},
+        {name: "user2"}
+    ]
+)
+
+> db.users.createIndex({email: 1}, {unique: true})
+
+// This will throw an duplicate key error, because the null value is already used
+*+BEGIN_SRC javascript
+> db.users.insertOne({name: "user3"})
+
+// To avoid this defaul behaviour
+> db.users.dropIndex({email: 1}, {unique: true})
+
+> db.users.createIndex({email: 1}, {unique: true, partialFilterExpression: {email: {$exists: true}}})
+
+// Now the insertion of an user without an email succeds without any errors
+> db.users.insertOne({name: "user3"})
+#+END_SRC
+
+*** TTL Indexes
+
+TTL indexes are special indexes that MongoDB can use to automatically remove documents from a collection after a certain amount of time.
+This is ideal for certain types of information like machine generated event data, logs, and session information that only need to persist in a database for a finite amount of time.
+
+#+BEGIN_SRC javascript
+//inserts s recored with the current Date
+> db.sessions.insertOne({data: "randomData1", createdAt: new Date()})
+
+//create a index with the expireAfterSeconds to remove documents after a finite amount of time
+> db.sessions.createIndex({createdAt: 1}, {expireAfterSeconds: 10})
+
+//this new record will be delete after 10 seconds
+> db.sessions.insertOne({data: "randomData2", createdAt: new Date()})
+#+END_SRC
+
+*** Text Indexes
+
+To create a text index, use the db.collection.createIndex() method. To index a field that contains a string or an array of string elements, include the field and specify the string literal "text" in the index document.
+
+
+#+BEGIN_SRC javascript
+> db.products.insertMany(
+    [
+        {title: "product1", description: "Some random description"},
+        {title: "product2", description: "Another random description"},
+        {title: "product3", description: "Yet another random description"}
+    ]
+)
+
+> db.products.find().pretty()
+
+> db.products.createIndex({description: "text"})
+
+> db.products.find({$text: {$search: "description"}}).pretty()
+
+> db.products.find({$text: {$search: "\"another random description\""}}).pretty()
+#+END_SRC
+
+
+**** Create Compound Text Indexes
+
+You can index multiple fields for the text index. The following example creates a text index on the fields subject and comments.
+
+
+#+BEGIN_SRC javascript
+> db.products.dropIndex("description_text")
+
+> db.products.createIndex({title: "text", description: "text"})
+
+> db.products.insertOne({title: "item", description: "A specific item description"})
+
+> db.products.find({$text: {$search: "item"}})
+#+END_SRC
+
+
+
+**** Text Indexes and sorting
+
+#+BEGIN_SRC javascript
+> db.products.find({$text: {$search: "random description"}}, {score: {$meta: "textScore"}}).pretty()
+
+
+> db.products.find({$text: {$search: "random description"}}, {score: {$meta: "textScore"}}).sort({score: {$meta: "textScore"}}).pretty()
+#+END_SRC
+
+
+
+**** Using Text Indexes to exclude words
+#+BEGIN_SRC javascript
+> db.products.insertMany(
+    [
+        {title: "product5", description: "a description"},
+        {title: "product6", description: "a specific description"},
+        {title: "product7", description: "a special description"}
+    ]
+)
+
+> db.products.find({$text: {$search: "description -random"}}).pretty()
+#+END_SRC
+
+**** Seting default language and specifying Weights
+#+BEGIN_SRC javascript
+> db.products.dropIndex("title_text_description_text")
+
+> db.products.createIndex({title: "text", description: "text"}, {default_language: "english", weights: {title: 1, description: 10}})
+
+> db.products.find({$text: {$search: "specific"}}, {score: {$meta: "textScore"}}).pretty()
+#+END_SRC
+
+**** Building Indexes
+
+#+BEGIN_SRC javascript
+> mongo credit-rating.js
+
+> db.ratings.createIndex({age: 1}, {background: true})
+#+END_SRC
+
+** Query Optimization
+
+*** Covered Query
+
+A covered query is a query that can be satisfied entirely using an index and does not have to examine any documents. An index covers a query when all of the following apply:
+
++ all the fields in the query are part of an index, **and**
++ all the fields returned in the results are in the same index.
++ no fields in the query are equal to **null** (i.e. {**"field"** : **null**} or {**"field"** : {**$eq** : **null**}} ).
+
+
+#+BEGIN_SRC javascript
+> db.customers.insertMany(
+    [
+        {name: "user1", age: 30, salary: 3000},
+        {name: "user2", age: 40, salary: 5000}
+    ]
+)
+
+> db.customers.createIndex({name: 1})
+#+END_SRC
+
+
+#+BEGIN_SRC javascript
+// Returns all the fields that are also the indexed fields
+> db.customers.explain("executionStats").find({name: "user1"}, {_id: 0, name: 1})
+#+END_SRC
+
+
+#+BEGIN_SRC javascript
+> db.customers.getIndexes()
+
+> db.customers.createIndexes({age: 1, name: 1})
+#+END_SRC
+
+
+** Query Plans
+
+For a query, the MongoDB query optimizer chooses and caches the most efficient query plan given the available indexes.
+The evaluation of the most efficient query plan is based on the number of “work units” (works) performed by the query execution plan when the query planner evaluates candidate plans.
+
+The associated plan cache entry is used for subsequent queries with the same query shape.
+
+*** Query Plan and Cache Information
+
+To view the query plan information for a given query, you can use db.collection.explain() or the cursor.explain() .
+
+Starting in MongoDB 4.2, you can use the $planCacheStats aggregation stage to view plan cache information for a collection.
+Plan Cache Flushes
+
+The query plan cache does not persist if a mongod restarts or shuts down. In addition:
+
++ Catalog operations like index or collection drops clear the plan cache.
++ Least recently used (LRU) cache replacement mechanism clears the least recently accessed cache entry, regardless of state.
+
+Users can also:
+
++ Manually clear the entire plan cache using the PlanCache.clear() method.
++ Manually clear specific plan cache entries using the PlanCache.clearPlansByQuery() method.
+
+
+** Multi-Key Indexes
+
+To index a field that holds an array value, MongoDB creates an index key for each element in the array. These multikey indexes support efficient queries against array fields. Multikey indexes can be constructed over arrays that hold both scalar values [1] (e.g. strings, numbers) and nested documents.
+
+#+CAPTION: an example of a multikey index
+#+NAME:   index-multikey
+[[https://docs.mongodb.com/manual/_images/index-multikey.bakedsvg.svg]]
+
+#+BEGIN_SRC javascript
+> db.contacts.insertOne({name: "user1", hobbies: ["hobbie1", "hoobie2"], addresses: [{street: "street nowhere"}, {street: "street anywhere"}]})
+
+> db.contacts.find().pretty()
+
+> db.contacts.createIndex({hobbies: 1})
+
+> db.contacts.find({hobbies: "hobbie1"}).pretty()
+
+> db.contacts.explain("executionStats").find({hobbies: "hobbie1"})
+
+> db.contacts.createIndex({addresses: 1})
+
+> db.contacts.explain("executionStats").find({"addresses.street": "street nowhere"})
+
+> db.contacts.explain("executionStats").find({addresses: {street: "street nowhere"}})
+#+END_SRC
+
+
+*** Create Multikey Index
+
+To create a multikey index, use the db.collection.createIndex() method.
+
+MongoDB automatically creates a multikey index if any indexed field is an array; you do not need to explicitly specify the multikey type.
+
+*** Index Bounds
+
+If an index is multikey, then computation of the index bounds follows special rules.
+
+*** Unique Multikey Index
+
+For unique indexes, the unique constraint applies across separate documents in the collection rather than within a single document.
+
+Because the unique constraint applies to separate documents, for a unique multikey index, a document may have array elements that result in repeating index key values as long as the index key values for that document do not duplicate those of another document.
+
+*** Limitations
+
+For a compound multikey index, each indexed document can have at most one indexed field whose value is an array.
+
++ You cannot create a compound multikey index if more than one to-be-indexed field of a document is an array.
++ Or, if a compound multikey index already exists, you cannot insert a document that would violate this restriction.
+
+
+* GeoSpatial Data
  :PROPERTIES:
   :CATEGORY: GeoSpatil Data and Operations
   :END:
 
 
-* Numeric Data :numericData:
+* Working with GeoSpatial Data
+
+To specify GeoJSON data, use an embedded document with:
+
++ a field named type that specifies the GeoJSON object type and
+
++ a field named coordinates that specifies the object’s coordinates.
+    If specifying latitude and longitude coordinates, list the longitude first and then latitude:
+    + Valid longitude values are between -180 and 180, both inclusive.
+    + Valid latitude values are between -90 and 90, both inclusive.
+
+** Creating GeoJSON Data
+
+#+BEGIN_SRC javascript
+> use awesomeplaces
+
+> db.places.insertOne({name: "Torre dos Clerigos", location: { type: "Point", coordinates: [ -8.6167872, 41.1456793 ] }})
+#+END_SRC
+
+
+#+BEGIN_SRC javascript
+// Adding a Geospatial Index
+> db.places.createIndex({location: "2dsphere"})
+#+END_SRC
+
+** Running Geo Queries
+
+#+BEGIN_SRC javascript
+> db.places.find({location: {$near: {$geometry: {type: "Point", coordinates: [-8.6188578, 41.1458833]}}}})
+
+> db.places.find({location: {$near: {$geometry: {type: "Point", coordinates: [-8.6188578, 41.1458833]}, $maxDistance: 200, $minDistance: 100 }}}).pretty()
+
+#+END_SRC
+
+** Adding additional locations
+
+#+BEGIN_SRC javascript
+> db.places.insertMany(
+    [
+       {name: "Aliados", location: { type: "Point", coordinates: [ -8.6172163, 41.1474184 ] }},
+       {name: "Palacio Cristal", location: { type: "Point", coordinates: [ -8.6224198, 41.1468932 ] }},
+       {name: "Alfandega do porto", location: { type: "Point", coordinates: [ -8.6224198, 41.1447926 ] }}
+    ]
+)
+
+> const p1 = [ -8.60643 ,41.1508 ]
+> const p2 = [-8.61197, 41.14106]
+> const p3 = [ -8.63302, 41.14778]
+> const p4 = [ -8.61628, 41.1589]
+
+> db.places.find({location: {$geoWithin: {$geometry: {type: "Polygon", coordinates: [[p1, p2, p3, p4, p1]]}}}})
+#+END_SRC
+
+** Finding if a user inside a specific area
+
+#+BEGIN_SRC javascript
+> db.areas.insertOne({name: "Porto", area: { type: "Polygon", coordinates: [[p1, p2, p3, p4, p1]] }})
+
+> db.areas.createIndex({area: "2dsphere"})
+
+> db.areas.find({area: {$geoIntersects: {$geometry: {type: "Point", coordinates: [ -8.62224, 41.15858 ] }}}})
+#+END_SRC
+
+** Finding Places Within a Certain Radius
+
+#+BEGIN_SRC
+> db.places.find({location: {$geoWithin: {$centerSphere: [[-8.62224, 41.15858], 1 / 6378.1] }}})
+#+END_SRC
+
+* Numeric Data
  :PROPERTIES:
   :CATEGORY: Numeric Data
   :END:
 
 
-* Aggregation Framework :aggregationFramework:
+* Working With Numeric Data
+
+ MongoDB Numeric Data types supported:
+
++ **double**
++ **32-bit integer**
++ **64-bit integer**
++ **decimal**
+
+** Integer
+
+Simple plain numbers without decimal points, 32 bytes or 64 bytes, are saved as Int and retrieves as same.
+
+*** 32-bit integer
+
+#+BEGIN_SRC javascript
+> db.persons.insertOne({age: NumberInt(32)})
+
+> optimal method
+> db.persons.insertOne({age: NumberInt("32")})
+#+END_SRC
+
+*** 64-bit integer
+
+#+BEGIN_SRC javascript
+> db.companies.insertOne({valuation: NumberLong(5000000000)})
+
+> optimal method
+> db.companies.insertOne({valuation: NumberLong("5000000000")})
+#+END_SRC
+
+** Doing Maths with Floats int32s & int64
+
+#+BEGIN_SRC javascript
+> db.accounts.insertOne({name: "testUser", amount: NumberInt("10")})
+
+> db.accounts.updateOne({}, {$inc:  {amount: NumberInt("10")}})
+#+END_SRC
+
+
+#+BEGIN_SRC javascript
+> db.companies.insertOne({valuation: NumberLong("25432000000")})
+
+> db.companies.updateOne({}, {$inc:  {valuation: NumberLong("360555")}})
+#+END_SRC
+
+** Double
+
+Double is implemented for storing floating-point data in MongoDB.
+
+#+BEGIN_SRC javascript
+> db.science.insertOne({a: NumberDecimal("3.141592"), b: NumberDecimal("3.141")})
+
+> db.science.aggregate([{$project: {result: {$subtract: ["$a", "$b"]}}}])
+#+END_SRC
+
+
+* Aggregation Framework
  :PROPERTIES:
   :CATEGORY: Aggregation Framework
   :END:
 
 
+Aggregation operations process data records and return computed results.
+Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result.
+MongoDB provides three ways to perform aggregation: the aggregation pipeline, the map-reduce function, and single purpose aggregation methods.
 
 
-* MongoDB & Securtiy :security:
+** Pipeline Concept
+
+In UNIX command, shell pipeline means the possibility to execute an operation on some input and use the output as the input for the next command and so on. MongoDB also supports same concept in aggregation framework. There is a set of possible stages and each of those is taken as a set of documents as an input and produces a resulting set of documents (or the final resulting JSON document at the end of the pipeline). This can then in turn be used for the next stage and so on.
+
+
+Following are the possible stages in aggregation framework:
++ $project − Used to select some specific fields from a collection.
++ $match − This is a filtering operation and thus this can reduce the amount of documents that are given as input to the next stage
++ $group − This does the actual aggregation as discussed above.
++ $sort − Sorts the documents.
++ $skip − With this, it is possible to skip forward in the list of documents for a given amount of documents.
++ $limit − This limits the amount of documents to look at, by the given number starting from the current positions.
++ $unwind − This is used to unwind document that are using arrays. When using an array, the data is kind of pre-joined and this operation will be undone with this to have individual documents again. Thus with this stage we will increase the amount of documents for the next stage.
+
+
+** Group Stage
+
+
+Groups input documents by the specified _id expression and for each distinct grouping, outputs a document.
+The _id field of each output document contains the unique group by value.
+The output documents can also contain computed fields that hold the values of some accumulator expression.
+
+
+#+BEGIN_SRC javascript
+> mongoimport persons.json -d analytics -c persons --jsonArray
+
+> db.persons.aggregate(
+    [
+        { $match: {gender: "female"}}
+    ]
+).pretty()
+#+END_SRC
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        { $match: {gender: "female"}},
+        { $group: { _id: { state: "$location.state" }, totalPersons: { $sum: 1} }}
+    ]
+).pretty()
+
+> db.persons.find({"location.state": "sinop"}).pretty()
+#+END_SRC
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        { $match: {gender: "female"}},
+        { $group: { _id: { state: "$location.state" }, totalPersons: { $sum: 1} }},
+        { $sort: { totalPersons: -1 }}
+    ]
+).pretty()
+#+END_SRC
+
+** Project Stage
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        { $project:
+            { _id: 0, fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: ["$name.first", 0, 1]}},
+                    { $substrCP: ["$name.first", 1, { $subtract: [ {$strLenCP: "$name.first"}, 1 ] } ]},
+                    " ",
+                    { $toUpper: { $substrCP: ["$name.last", 0, 1]}},
+                    { $substrCP: ["$name.last", 1, { $subtract: [ {$strLenCP: "$name.last"}, 1 ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Turning the Location Into a geoJSON Object
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: 0,
+                name: 1,
+                email: 1,
+                location: {
+                    type: "Point",
+                    coordinates: [
+                        { $convert: { input: "$location.coordinates.longitude", to: "double", onError: 0.0, onNull: 0.0}},
+                        { $convert: { input:  "$location.coordinates.latitude", to: "double", onError: 0.0, onNull: 0.0}}
+                    ]
+                }
+            }
+        },
+        { $project:
+            { gender: 1, email: 1, location: 1, fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: ["$name.first", 0, 1]}},
+                    { $substrCP: ["$name.first", 1, { $subtract: [ {$strLenCP: "$name.first"}, 1 ] } ]},
+                    " ",
+                    { $toUpper: { $substrCP: ["$name.last", 0, 1]}},
+                    { $substrCP: ["$name.last", 1, { $subtract: [ {$strLenCP: "$name.last"}, 1 ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Transforming the Birthdate
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: 0,
+                name: 1,
+                email: 1,
+                birthdate: { $convert: { input: "$dob.date", to: "date", onError: 0.0, onNull: 0.0 } },
+                age: "$dob.age",
+                location: {
+                    type: "Point",
+                    coordinates: [
+                        { $convert: { input: "$location.coordinates.longitude", to: "double", onError: 0.0, onNull: 0.0}},
+                        { $convert: { input:  "$location.coordinates.latitude", to: "double", onError: 0.0, onNull: 0.0}}
+                    ]
+                }
+            }
+        },
+        { $project: {
+            gender: 1,
+            email: 1,
+            location: 1,
+            birthdate: 1,
+            age: 1,
+            fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: ["$name.first", 0, 1]}},
+                    { $substrCP: ["$name.first", 1, { $subtract: [ {$strLenCP: "$name.first"}, 1 ] } ]},
+                    " ",
+                    { $toUpper: { $substrCP: ["$name.last", 0, 1]}},
+                    { $substrCP: ["$name.last", 1, { $subtract: [ {$strLenCP: "$name.last"}, 1 ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Using Shortcuts for Transformations
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: 0,
+                name: 1,
+                email: 1,
+                birthdate: { $toDate: "$dob.date" },
+                age: "$dob.age",
+                location: {
+                    type: "Point",
+                    coordinates: [
+                        { $convert: { input: "$location.coordinates.longitude", to: "double", onError: 0.0, onNull: 0.0}},
+                        { $convert: { input:  "$location.coordinates.latitude", to: "double", onError: 0.0, onNull: 0.0}}
+                    ]
+                }
+            }
+        },
+        { $project: {
+            gender: 1,
+            email: 1,
+            location: 1,
+            birthdate: 1,
+            age: 1,
+            fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: ["$name.first", 0, 1]}},
+                    { $substrCP: ["$name.first", 1, { $subtract: [ {$strLenCP: "$name.first"}, 1 ] } ]},
+                    " ",
+                    { $toUpper: { $substrCP: ["$name.last", 0, 1]}},
+                    { $substrCP: ["$name.last", 1, { $subtract: [ {$strLenCP: "$name.last"}, 1 ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+
+** Understanding the $isoWeekYear Operator
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: 0,
+                name: 1,
+                email: 1,
+                birthdate: { $toDate: "$dob.date" },
+                age: "$dob.age",
+                location: {
+                    type: "Point",
+                    coordinates: [
+                        { $convert: { input: "$location.coordinates.longitude", to: "double", onError: 0.0, onNull: 0.0}},
+                        { $convert: { input:  "$location.coordinates.latitude", to: "double", onError: 0.0, onNull: 0.0}}
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                gender: 1,
+                email: 1,
+                location: 1,
+                birthdate: 1,
+                age: 1,
+                fullName: {
+                    $concat: [
+                        { $toUpper: { $substrCP: ["$name.first", 0, 1]}},
+                        { $substrCP: ["$name.first", 1, { $subtract: [ {$strLenCP: "$name.first"}, 1 ] } ]},
+                        " ",
+                        { $toUpper: { $substrCP: ["$name.last", 0, 1]}},
+                        { $substrCP: ["$name.last", 1, { $subtract: [ {$strLenCP: "$name.last"}, 1 ] } ]}
+                        ]
+                }
+            }
+        },
+        {
+            $group: { _id: { birthYear: { $isoWeekYear: "$birthdate"} }, numPersons: { $sum: 1 } },
+        },
+        {
+            $sort: { numPersons: -1}
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Pushing Elements Into Newly Created Arrays
+
+#+BEGIN_SRC javascript
+> mongoimport array-data.json -d analytics -c friends --jsonArray
+
+> db.friends.aggregate(
+    [
+        { $group: { _id: { age: "$age"}, allHobbies: { $push: "$hobbies" } } }
+    ]
+).pretty()
+
+#+END_SRC
+
+
+** unWind Stage
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        { $unwind: "$hobbies"},
+        { $group: { _id: { age: "$age"}, allHobbies: { $push: "$hobbies" } } }
+    ]
+).pretty()
+#+END_SRC
+
+** addToSet Stage
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        { $unwind: "$hobbies"},
+        { $group: { _id: { age: "$age"}, allHobbies: { $addToSet: "$hobbies" } } }
+    ]
+).pretty()
+#+END_SRC
+
+** slice operator
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        { $project: { _id: 0, examScore: { $slice: ["$examScores", 2, 1]}}}
+    ]
+).pretty()
+#+END_SRC
+
+** $slice operator
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        { $project: { _id: 0, numScores: { $size: "$examScores"}}}
+    ]
+).pretty()
+#+END_SRC
+
+** $filter operator
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        {
+            $project: {
+                _id: 0,
+                scores: { $filter: { input: "$examScores", as: "sc", cond: { $gt: ["$$sc.score", 60] }}}
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Aplying Multiple Operations to an array
+
+#+BEGIN_SRC javascript
+> db.friends.aggregate(
+    [
+        { $unwind: "$examScores"},
+        { $project: { _id: 1, name: 1, age: 1, score: "$examScores.score"}},
+        { $sort: { score: -1}},
+        { $group: { _id: "$_id", name: { $first: "$name"}, maxScore: { $max: "$score"}}},
+        { $sort: { maxScore: -1}}
+    ]
+).pretty()
+#+END_SRC
+
+** $bucket Stage
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $bucket: {
+                groupBy: "$dob.age",
+                boundaries: [0, 18, 30, 50, 80, 120],
+                output: {
+                    numPersons: { $sum: 1 },
+                    averageAge: { $avg: '$dob.age' }
+                }
+            }
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Aditional Stages
+
+#+BEGIN_SRC javascript
+> db.persons.aggregate(
+    [
+        {
+            $match: {
+                gender: "male"
+            }
+        },
+        {
+             $project: {
+                 _id: 0,
+                 name: { $concat: ["$name.first", " ", "$name.last"]},
+                 gender: 1,
+                 birthdate: { $toDate: "$dob.date"}
+            }
+        },
+        {
+            $sort: {
+                birthdate: 1
+            }
+        },
+        {
+            $skip: 10
+        },
+        {
+            $limit: 10
+        }
+    ]
+).pretty()
+#+END_SRC
+
+** Writing Pipelines into a new collection
+
+#+BEGIN_SRC javascript
+db.persons.aggregate([
+    {
+      $project: {
+        _id: 0,
+        name: 1,
+        email: 1,
+        birthdate: { $toDate: '$dob.date' },
+        age: "$dob.age",
+        location: {
+          type: 'Point',
+          coordinates: [
+            {
+              $convert: {
+                input: '$location.coordinates.longitude',
+                to: 'double',
+                onError: 0.0,
+                onNull: 0.0
+              }
+            },
+            {
+              $convert: {
+                input: '$location.coordinates.latitude',
+                to: 'double',
+                onError: 0.0,
+                onNull: 0.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      $project: {
+        gender: 1,
+        email: 1,
+        location: 1,
+        birthdate: 1,
+        age: 1,
+        fullName: {
+          $concat: [
+            { $toUpper: { $substrCP: ['$name.first', 0, 1] } },
+            {
+              $substrCP: [
+                '$name.first',
+                1,
+                { $subtract: [{ $strLenCP: '$name.first' }, 1] }
+              ]
+            },
+            ' ',
+            { $toUpper: { $substrCP: ['$name.last', 0, 1] } },
+            {
+              $substrCP: [
+                '$name.last',
+                1,
+                { $subtract: [{ $strLenCP: '$name.last' }, 1] }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    { $out: "transformedPersons" }
+  ]).pretty();
+#+END_SRC
+
+** *geoNear Stage
+
+#+BEGIN_SRC javascript
+> db.transformedPersons.createIndex({location: "2dsphere"})
+
+> db.transformedPersons.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [-18.4, -42.8]
+        },
+        maxDistance: 1000000,
+        query: { age: { $gt: 30 } },
+        distanceField: 'distance'
+      }
+    },
+    { $limit : 10 }
+  ]).pretty()
+
+#+END_SRC
+
+
+* MongoDB & Securtiy
  :PROPERTIES:
   :CATEGORY: Working with mongoDB
   :END:
 
 
-* Performance, Fault Tolerancy & Deployment :performanceAndDeployment:
+MongoDB provides various features, such as authentication, access control, encryption, to secure your MongoDB deployments. Some key security features include:
++ Authentication
++ Authorization
++ TLS/SSL
++ Encryption
+
+
+** Starting mongo servers with authorization
+
+** Create a user
+
+** with admin privileges
+
+#+BEGIN_SRC javascript
+> use admin
+
+> db.createUser({user: "user", pwd: "password", roles: ["userAdminAnyDatabase"]})
+#+END_SRC
+
+
+** with restricted privileges
+
+
+#+BEGIN_SRC javascript
+> use shop
+
+> db.createUser({user: "appdev", pwd: "appdevpwd", roles: ["readWrite"]})
+
+> db.auth("appdev", "appdevpwd")
+
+> db.products.insertOne({name: "Book"})
+#+END_SRC
+
+
+** Update a user
+
+
+#+BEGIN_SRC javascript
+> db.updateUser("appdev", {roles: ["readWrite", {role: "readWrite", db: "blog"}]})
+
+> db.blog.insertOne({title: "Test blog post"})
+#+END_SRC
+
+** Logging to the server with auth
+
+
+#+BEGIN_SRC javascript
+> db.auth("user", "password")
+#+END_SRC
+
+
+** Adding SSL Transport Encryption
+
+
+#+BEGIN_SRC javascript
+> generate a self certified certificate and create a mongodb.pem file
+
+openssl req -newkey rsa:2048 -new -x509 -days 365 -nodes -out mongodb-cert.crt -keyout mongodb-cert.key
+
+cat mongodb-cert.key mongodb-cert.crt >mongodb.pem
+
+> start mongo server with tsl encryption
+> mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.certs/mongodb.pem --dbpath /home/mdlima/
+
+> start mongo client with tsl encryption
+> mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
+#+END_SRC
+
+
+* Performance, Fault Tolerancy & Deployment
  :PROPERTIES:
   :CATEGORY: Performance, Fault Tolerancy and Deployment
   :END:
 
 
-* Transactions :transactions:
+* Performance, Fault Tolerancy & Deployment
+
+** Capped Collections
+
+Capped collections are fixed-size collections that support high-throughput operations that insert and retrieve documents based on insertion order.
+Capped collections work in a way similar to circular buffers: once a collection fills its allocated space, it makes room for new documents by overwriting the oldest documents in the collection.
+
+#+BEGIN_SRC javascript
+> use performance
+
+> db.createCollection("capped", {capped: true, size: 10000, max: 3})
+
+> db.capped.inserOne({name: "user1"})
+
+> db.capped.inserOne({name: "user2"})
+
+> db.capped.insertOne({name: "user3"})
+
+> db.capped.find().sort({$natural: -1}).pretty()
+
+> db.capped.inserOne({name: "user4"})
+#+END_SRC
+
+** Sharding
+
+Sharding is a method for distributing data across multiple machines. MongoDB uses sharding to support deployments with very large data sets and high throughput operations.
+
+Database systems with large data sets or high throughput applications can challenge the capacity of a single server.
+For example, high query rates can exhaust the CPU capacity of the server. Working set sizes larger than the system’s RAM stress the I/O capacity of disk drives.
+
+There are two methods for addressing system growth: vertical and horizontal scaling:
++ Vertical Scaling
++ Horizontal Scaling
+
+
+*** Sharded Cluster
+
+A MongoDB sharded cluster consists of the following components:
+
++ shard: Each shard contains a subset of the sharded data. Each shard can be deployed as a replica set.
++ mongos: The mongos acts as a query router, providing an interface between client applications and the sharded cluster. Starting in MongoDB 4.4, mongos can support hedged reads to minimize latencies.
++ config servers: Config servers store metadata and configuration settings for the cluster.
+
+#+CAPTION: interaction of components within a sharded cluster
+#+NAME:   interaction-ofcomponents-shared-cluster
+[[https://docs.mongodb.com/manual/_images/sharded-cluster-production-architecture.bakedsvg.svg]]
+
+** Using MongoDB Atlas
+
+*** Connecting to the cluster
+
+To create and use a cluster on MongoDB is necessary to:
+
++ create and account, then create a cluster with the desired space and configurations.
++ create a user or users with the desired permissions.
++ allow the ip's necessary for the connection.
++ connect using the link provided.
+
+
+#+BEGIN_SRC javascript
+> mongo "mongodb+sr*V://.8qaxe.mongodb.net/products" --username mdlima
+#+END_SRC
+
+
+* Transactions
  :PROPERTIES:
   :CATEGORY: Transactions in MongoDB
   :END:
 
 
-* Introduction to Stitch :stitch:
+In MongoDB, an operation on a single document is atomic. Because you can use embedded documents and arrays to capture relationships between data in a single document structure instead of normalizing across multiple documents and collections, this single-document atomicity obviates the need for multi-document transactions for many practical use cases.
+
+For situations that require atomicity of reads and writes to multiple documents (in a single or multiple collections), MongoDB supports multi-document transactions. With distributed transactions, transactions can be used across multiple operations, collections, databases, documents, and shards.
+
+#+BEGIN_SRC javascript
+> use blog
+
+> db.users.insertOne({name: "user1"})
+
+> db.posts.insertMany(
+    [
+        {title: "test post one", userId: ObjectId("5f8108c80ad78b612ea094f1")},
+        {title: "test post two", userId: ObjectId("5f8108c80ad78b612ea094f1")}
+    ]
+)
+
+> const session = db.getMongo().startSession()
+
+> session.startTransaction()
+
+> const usersCol = session.getDatabase("blog").users
+
+> const postsCol = session.getDatabase("posts").posts
+
+> db.users.find({ObjectId("5f8102850ad78b612ea094eb")}).pretty()
+
+> usersCol.deleteOne({_id: ObjectId("5f8108c80ad78b612ea094f1")})
+
+> postsCol.deleteMany({userId: ObjectId("5f8107110ad78b612ea094ee")})
+
+// to commit the changes
+> session.commitTransaction()
+
+// to abort the transacation
+> session.abortTransaction()
+#+END_SRC
+
+
+* Introduction to Stitch
  :PROPERTIES:
   :CATEGORY: Introduciton to Stitch
   :END:
 
 
-* Useful Resources and Links :resourcesAndLinks:
+* Useful Resources and Links
