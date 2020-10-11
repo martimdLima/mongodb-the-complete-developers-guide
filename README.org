@@ -4,7 +4,9 @@
 #+DATE:      10-10-2020
 #+LANGUAGE:  en
 #+OPTIONS:   H:4 num:nil toc:2
-
+#+PROPERTY: header-args :dir ~/Documents/org/temp
+#+INCLUDE: code.inc
+#+CALL: init()
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/setup/theme-readtheorg.setup
 
 -----
@@ -2520,10 +2522,86 @@ For situations that require atomicity of reads and writes to multiple documents 
 #+END_SRC
 
 
-* Introduction to Stitch
- :PROPERTIES:
-  :CATEGORY: Introduciton to Stitch
-  :END:
-
-
 * Useful Resources and Links
+
++ [[https://docs.mongodb.com/manual/tutorial/getting-started/][Mongo Docs]]
+
++ [[https://docs.mongodb.com/ecosystem/drivers/][MongoDB Drivers]]
+
++ [[https://docs.mongodb.com/manual/core/schema-validation/][Schema Validation]]
+
++ [[https://docs.mongodb.com/manual/reference/limits/][Data Type Limits]]
+
++ [[https://docs.mongodb.com/manual/reference/bson-types/][Suported Types]]
+
++ [[https://docs.mongodb.com/manual/reference/configuration-options/][Config Files]]
+
++ [[https://docs.mongodb.com/manual/reference/program/mongo/][Shell (mongo) Options]]
+
++ [[https://docs.mongodb.com/manual/reference/program/mongod/][Server (mongod) Options]]
+
++ [[https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/][InsertOne() Method]]
+
++ [[https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/][InsertMany() Method]]
+
++ [[https://docs.mongodb.com/manual/core/write-operations-atomicity/#atomicity][Atomicity]]
+
++ [[https://docs.mongodb.com/manual/reference/write-concern/][Write Concern]]
+
++ [[https://docs.mongodb.com/manual/reference/program/mongoimport/index.html][Using mongoimport]]
+
++ [[https://docs.mongodb.com/manual/reference/method/db.collection.find/][find()]]
+
++ [[https://docs.mongodb.com/manual/tutorial/iterate-a-cursor/][Cursors]]
+
++ [[https://docs.mongodb.com/manual/reference/operator/query/][Query Operator Reference]]
+
++ [[https://docs.mongodb.com/manual/tutorial/update-documents/][Updating Documents]]
+
++ [[https://docs.mongodb.com/manual/tutorial/remove-documents/][Deleting Documents
+  ]]
++ [[https://docs.mongodb.com/manual/core/index-partial/][partialFilterExpressions]]
+
++ [[https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages][Supported default_languages]]
+
++ [[https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/#create-a-text-index-for-a-collection-in-multiple-languages][Different Languages in the same index]]
+
++ [[https://docs.mongodb.com/manual/geospatial-queries/][GeoSpatial Documents]]
+
++ [[https://docs.mongodb.com/manual/reference/operator/query-geospatial/][Geospatial Query Operators]]
+
++ [[https://docs.mongodb.com/manual/core/aggregation-pipeline/][Aggregation Framework Documentation]]
+
++ [[https://docs.mongodb.com/manual/reference/operator/aggregation/cond/][$cond]]
+
++ [[https://stackoverflow.com/questions/618535/difference-between-decimal-float-and-double-in-net][Float vs Double vs Decimal - A Discussion on Precision]]
+
++ [[https://social.msdn.microsoft.com/Forums/vstudio/en-US/d2f723c7-f00a-4600-945a-72da23cbc53d/can-anyone-explain-clearly-about-float-vs-decimal-vs-double-?forum=csharpgeneral][Number Ranges]]
+
++ [[https://docs.mongodb.com/manual/tutorial/model-monetary-data/][Modelling Number/ Monetary Data in MongoDB]]
+
++ [[https://docs.mongodb.com/manual/core/security-encryption-at-rest/][Official "Encryption at Rest" Docs]]
+
++ [[https://docs.mongodb.com/manual/administration/security-checklist/][Official Security Checklist]]
+
++ [[https://www.acunetix.com/blog/articles/tls-security-what-is-tls-ssl-part-1/][What is SSL/ TLS?]]
+
++ [[https://docs.mongodb.com/manual/tutorial/configure-ssl/][Official MongoDB SSL Setup Docs]]
+
++ [[https://docs.mongodb.com/manual/core/authentication/][Official MongoDB Users & Auth Docs]]
+
++ [[https://docs.mongodb.com/manual/core/security-built-in-roles/][Official Built-in Roles Docs]]
+
++ [[https://docs.mongodb.com/manual/core/security-user-defined-roles/][Official Custom Roles Docs]]
+
++ [[https://docs.mongodb.com/manual/replication/][Official Documentation on Replica Sets]]
+
++ [[https://docs.mongodb.com/manual/sharding/][Official Documentation on Sharding]]
+
++ [[https://docs.mongodb.com/manual/core/transactions/][Transactions]]
+
++ [[https://docs.mongodb.com/stitch/][Official Stitch Docs]]
+
++ [[https://docs.mongodb.com/stitch/authentication/userpass/][Complete Stitch Username + Password Auth Flow]]
+
++ [[https://docs.mongodb.com/stitch/reference/partner-services/amazon-service/][Stitch Services (AWS S3)]]

@@ -1,2 +1,0 @@
-# Useful Resources and Links
-* [Transactions](https://docs.mongodb.com/manual/core/transactions/index.html)

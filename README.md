@@ -1,120 +1,119 @@
-- [Basics & Crud Operations](#org539f6f2)
-  - [Check databases / Create a Database](#org89ac109)
-  - [Create a document](#org51ca581)
-  - [Find documents](#orgb98a618)
-  - [Update Documents](#org87bb538)
-  - [Replace Documents](#orgea57f39)
-  - [Delete Documents](#org2563df9)
-  - [Projections](#orgf708831)
-  - [Working with nested documents](#org2df99f9)
-  - [Working with arrays](#org52d1571)
-  - [Acessing structured data](#orgbb7f7e1)
-- [Schemas & Relations - How to Structure Documents](#org9185013)
-  - [Structuring documents](#org489e80a)
-  - [Data Types](#orge372327)
-  - [Database Stats](#org213c89e)
-  - [Check the type of an value](#org33936b0)
-  - [Insert a document with a number with a default 64 bit value](#org44e0c0f)
-  - [Insert a product with a number with an int32 value instead of 64 bit](#org73279d2)
-  - [Important data type limits](#org436473c)
-- [Exploring the Shell and the Server](#org8916118)
-- [Create Operations](#org83a9953)
-  - [insert() Methods](#orgf0c93ac)
-  - [writeConcern](#orgc95e8b0)
-  - [Atomicity](#org6085bec)
-  - [Multi-Document Transactions](#org85b1d82)
-  - [Importing Data](#org05abca0)
-- [Read Operations](#orgd0e18ec)
-- [Query & Projection Operators](#org317e9cb)
-  - [Comparison Query Operators](#org8397bc8)
-  - [Understanding findOne() and find()](#orge283649)
-  - [Working with Comparison Operators](#orge8e5a72)
-  - [Querying Embedded Fields & Arrays](#orga49d057)
-  - [Comparison Query Operators](#org97c9071)
-  - [Element Query Operators](#orgd0bcceb)
-  - [Evaluation Query Operators](#org8b58586)
-  - [Array Query Operators](#org8748141)
-  - [Cursors](#org939f3db)
-  - [Projection Operators](#orgb2f55d6)
-- [Update Operations](#org3ae7b75)
-- [Update Operations](#org21eec22)
-  - [Update Operators](#org40bb3c4)
-  - [Array Update Operators](#orge14a2a5)
-- [Delete Operations](#org95f9c69)
-- [Delete Operations](#orge815e2a)
-  - [deleteOne()](#org632b711)
-  - [deleteMany()](#orgc07c706)
-  - [drop()](#org6a6070b)
-  - [dropDatabase()](#org6cbdb23)
-- [Indexes](#org063240a)
-- [Working With Indexes](#org450165f)
-  - [Query Diagnosis and Query Planning](#orgc3c11da)
-  - [Single Find Indexes](#org5fd08fa)
-  - [dropIndex()](#org5f39d20)
-  - [Compound Indexes](#orge29e427)
-  - [Index Properties](#org706bca0)
-  - [Query Optimization](#org5774734)
-  - [Query Plans](#org4865563)
-  - [Multi-Key Indexes](#org7468916)
-- [GeoSpatial Data](#org89c95db)
-- [Working with GeoSpatial Data](#org9af6a44)
-  - [Creating GeoJSON Data](#orgd4f3fe1)
-  - [Running Geo Queries](#org6af06d9)
-  - [Adding additional locations](#org9f2d586)
-  - [Finding if a user inside a specific area](#org97aa1f8)
-  - [Finding Places Within a Certain Radius](#org56a6398)
-- [Numeric Data](#org031af2e)
-- [Working With Numeric Data](#org246b4b8)
-  - [Integer](#org3ae9371)
-  - [Doing Maths with Floats int32s & int64](#org2d09815)
-  - [Double](#orgac6f6fb)
-- [Aggregation Framework](#orgb3d51ef)
-  - [Pipeline Concept](#org7dc618f)
-  - [Group Stage](#orge6cda25)
-  - [Project Stage](#org95101ab)
-  - [Turning the Location Into a geoJSON Object](#org80c03cd)
-  - [Transforming the Birthdate](#org0f631a0)
-  - [Using Shortcuts for Transformations](#org26aed3e)
-  - [Understanding the $isoWeekYear Operator](#org951d308)
-  - [Pushing Elements Into Newly Created Arrays](#org0d3cff6)
-  - [unWind Stage](#org1083cfc)
-  - [addToSet Stage](#orga217a45)
-  - [slice operator](#orgd610cd4)
-  - [$slice operator](#org1134967)
-  - [$filter operator](#org5506563)
-  - [Aplying Multiple Operations to an array](#org2f31add)
-  - [$bucket Stage](#orgfb4dcab)
-  - [Aditional Stages](#org93cf323)
-  - [Writing Pipelines into a new collection](#orga460ec4)
-  - [\*geoNear Stage](#org60a00d7)
-- [MongoDB & Securtiy](#orgbd24460)
-  - [Starting mongo servers with authorization](#org1e1bcad)
-  - [Create a user](#orgb596b25)
-  - [with admin privileges](#orgf1e7062)
-  - [with restricted privileges](#org32f7b1f)
-  - [Update a user](#org582f98c)
-  - [Logging to the server with auth](#orgdbe091d)
-  - [Adding SSL Transport Encryption](#org2fa6dda)
-- [Performance, Fault Tolerancy & Deployment](#org4ded0fa)
-- [Performance, Fault Tolerancy & Deployment](#orga5330bf)
-  - [Capped Collections](#org34d26e1)
-  - [Sharding](#org9d8208e)
-  - [Using MongoDB Atlas](#org29ed9c8)
-- [Transactions](#orgdd49479)
-- [Introduction to Stitch](#org44875da)
-- [Useful Resources and Links](#orge411098)
+- [Basics & Crud Operations](#orgbaf2e96)
+  - [Check databases / Create a Database](#org3352473)
+  - [Create a document](#org3351352)
+  - [Find documents](#org5a07ac6)
+  - [Update Documents](#org5fdd5e9)
+  - [Replace Documents](#orgdd34708)
+  - [Delete Documents](#orgd1d2f0e)
+  - [Projections](#org5e21e3f)
+  - [Working with nested documents](#orge861fe5)
+  - [Working with arrays](#org0221a8f)
+  - [Acessing structured data](#orgec7b842)
+- [Schemas & Relations - How to Structure Documents](#org60dd7a6)
+  - [Structuring documents](#orgdf1f004)
+  - [Data Types](#org6ec604a)
+  - [Database Stats](#orgfda85b9)
+  - [Check the type of an value](#org9cda73c)
+  - [Insert a document with a number with a default 64 bit value](#org98d8522)
+  - [Insert a product with a number with an int32 value instead of 64 bit](#orgbfa9c7e)
+  - [Important data type limits](#org68e34e6)
+- [Exploring the Shell and the Server](#org95b8979)
+- [Create Operations](#org7d97d15)
+  - [insert() Methods](#org8815b37)
+  - [writeConcern](#orgd281707)
+  - [Atomicity](#org93476f7)
+  - [Multi-Document Transactions](#org40e94b2)
+  - [Importing Data](#org08c31ee)
+- [Read Operations](#org12480dc)
+- [Query & Projection Operators](#orgd14c0d9)
+  - [Comparison Query Operators](#orgf27b97b)
+  - [Understanding findOne() and find()](#org9ab06be)
+  - [Working with Comparison Operators](#orgaa66bcc)
+  - [Querying Embedded Fields & Arrays](#orgb761b00)
+  - [Comparison Query Operators](#orgdf3aca2)
+  - [Element Query Operators](#org38ac9e4)
+  - [Evaluation Query Operators](#orge271961)
+  - [Array Query Operators](#org518388e)
+  - [Cursors](#org243fcd2)
+  - [Projection Operators](#org48d18b3)
+- [Update Operations](#org215eae6)
+- [Update Operations](#org6685534)
+  - [Update Operators](#orgeacb58b)
+  - [Array Update Operators](#org3a26124)
+- [Delete Operations](#orgb1f34be)
+- [Delete Operations](#orgc73f2e5)
+  - [deleteOne()](#orgd9b0737)
+  - [deleteMany()](#org45804ef)
+  - [drop()](#orge06b967)
+  - [dropDatabase()](#org9c255a5)
+- [Indexes](#org752a583)
+- [Working With Indexes](#orgb2ba985)
+  - [Query Diagnosis and Query Planning](#org357b240)
+  - [Single Find Indexes](#org9664954)
+  - [dropIndex()](#org5e37aa4)
+  - [Compound Indexes](#org7e65ce0)
+  - [Index Properties](#org8840bdd)
+  - [Query Optimization](#org0c7b68a)
+  - [Query Plans](#orga3732db)
+  - [Multi-Key Indexes](#org7041c6f)
+- [GeoSpatial Data](#org63a0289)
+- [Working with GeoSpatial Data](#org30dcdbe)
+  - [Creating GeoJSON Data](#org4456b20)
+  - [Running Geo Queries](#org6528c3c)
+  - [Adding additional locations](#org71830ff)
+  - [Finding if a user inside a specific area](#orgd7bb040)
+  - [Finding Places Within a Certain Radius](#orgcffa1ca)
+- [Numeric Data](#org8943759)
+- [Working With Numeric Data](#org9cba691)
+  - [Integer](#org4122994)
+  - [Doing Maths with Floats int32s & int64](#orgf4c21a3)
+  - [Double](#org54742ca)
+- [Aggregation Framework](#org84013b1)
+  - [Pipeline Concept](#org620bef0)
+  - [Group Stage](#org973d3d2)
+  - [Project Stage](#org0298d0f)
+  - [Turning the Location Into a geoJSON Object](#org507ab12)
+  - [Transforming the Birthdate](#org53e86e1)
+  - [Using Shortcuts for Transformations](#org1df846a)
+  - [Understanding the $isoWeekYear Operator](#org3843f91)
+  - [Pushing Elements Into Newly Created Arrays](#org11fa94d)
+  - [unWind Stage](#orgab1f6af)
+  - [addToSet Stage](#org9612695)
+  - [slice operator](#orga78cd7a)
+  - [$slice operator](#orgdcc0e25)
+  - [$filter operator](#org55a0d42)
+  - [Aplying Multiple Operations to an array](#org54ac867)
+  - [$bucket Stage](#org640f58e)
+  - [Aditional Stages](#orgc0b6e30)
+  - [Writing Pipelines into a new collection](#org4eabc7e)
+  - [\*geoNear Stage](#org38d8ef7)
+- [MongoDB & Securtiy](#org032cda4)
+  - [Starting mongo servers with authorization](#orgaa1a96a)
+  - [Create a user](#org0429669)
+  - [with admin privileges](#org86f81b7)
+  - [with restricted privileges](#org4129140)
+  - [Update a user](#orga61b784)
+  - [Logging to the server with auth](#org5d0deb4)
+  - [Adding SSL Transport Encryption](#org87b19a1)
+- [Performance, Fault Tolerancy & Deployment](#org7b0313f)
+- [Performance, Fault Tolerancy & Deployment](#orge413d80)
+  - [Capped Collections](#org8a31447)
+  - [Sharding](#org52d09bf)
+  - [Using MongoDB Atlas](#org4a51c38)
+- [Transactions](#orgc96303d)
+- [Useful Resources and Links](#orgc19aba9)
 
 ---
 
 
-<a id="org539f6f2"></a>
+<a id="orgbaf2e96"></a>
 
 # Basics & Crud Operations
 
 An overview of the basics of mongodb and crud operations
 
 
-<a id="org89ac109"></a>
+<a id="org3352473"></a>
 
 ## Check databases / Create a Database
 
@@ -127,7 +126,7 @@ An overview of the basics of mongodb and crud operations
 ```
 
 
-<a id="org51ca581"></a>
+<a id="org3351352"></a>
 
 ## Create a document
 
@@ -171,7 +170,7 @@ An overview of the basics of mongodb and crud operations
 ```
 
 
-<a id="orgb98a618"></a>
+<a id="org5a07ac6"></a>
 
 ## Find documents
 
@@ -204,7 +203,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org87bb538"></a>
+<a id="org5fdd5e9"></a>
 
 ## Update Documents
 
@@ -220,7 +219,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="orgea57f39"></a>
+<a id="orgdd34708"></a>
 
 ## Replace Documents
 
@@ -235,7 +234,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org2563df9"></a>
+<a id="orgd1d2f0e"></a>
 
 ## Delete Documents
 
@@ -251,7 +250,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="orgf708831"></a>
+<a id="org5e21e3f"></a>
 
 ## Projections
 
@@ -264,7 +263,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org2df99f9"></a>
+<a id="orge861fe5"></a>
 
 ## Working with nested documents
 
@@ -277,7 +276,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org52d1571"></a>
+<a id="org0221a8f"></a>
 
 ## Working with arrays
 
@@ -286,7 +285,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="orgbb7f7e1"></a>
+<a id="orgec7b842"></a>
 
 ## Acessing structured data
 
@@ -307,12 +306,12 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ---
 
 
-<a id="org9185013"></a>
+<a id="org60dd7a6"></a>
 
 # Schemas & Relations - How to Structure Documents
 
 
-<a id="org489e80a"></a>
+<a id="orgdf1f004"></a>
 
 ## Structuring documents
 
@@ -337,7 +336,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="orge372327"></a>
+<a id="org6ec604a"></a>
 
 ## Data Types
 
@@ -357,7 +356,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org213c89e"></a>
+<a id="orgfda85b9"></a>
 
 ## Database Stats
 
@@ -366,7 +365,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org33936b0"></a>
+<a id="org9cda73c"></a>
 
 ## Check the type of an value
 
@@ -375,7 +374,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org44e0c0f"></a>
+<a id="org98d8522"></a>
 
 ## Insert a document with a number with a default 64 bit value
 
@@ -384,7 +383,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org73279d2"></a>
+<a id="orgbfa9c7e"></a>
 
 ## Insert a product with a number with an int32 value instead of 64 bit
 
@@ -393,7 +392,7 @@ find() doesn&rsquo;t return an array of all the documents in a collection, but a
 ```
 
 
-<a id="org436473c"></a>
+<a id="org68e34e6"></a>
 
 ## Important data type limits
 
@@ -416,17 +415,17 @@ If you just use a number (e.g. insertOne({a: 1}), this will get added as a norma
 When not working with the shell but a MongoDB driver for your app programming language (e.g. PHP, .NET, Node.js, &#x2026;), you can use the driver to create these specific numbers.
 
 
-<a id="org8916118"></a>
+<a id="org95b8979"></a>
 
 # Exploring the Shell and the Server
 
 
-<a id="org83a9953"></a>
+<a id="org7d97d15"></a>
 
 # Create Operations
 
 
-<a id="orgf0c93ac"></a>
+<a id="org8815b37"></a>
 
 ## insert() Methods
 
@@ -517,7 +516,7 @@ db.hobbies.insertMany(
 ```
 
 
-<a id="orgc95e8b0"></a>
+<a id="orgd281707"></a>
 
 ## writeConcern
 
@@ -561,14 +560,14 @@ Starting in MongoDB 4.4, replica sets and sharded clusters support setting a glo
 ```
 
 
-<a id="org6085bec"></a>
+<a id="org93476f7"></a>
 
 ## Atomicity
 
 In MongoDB, a write operation is atomic on the level of a single document, even if the operation modifies multiple embedded documents within a single document.
 
 
-<a id="org85b1d82"></a>
+<a id="org40e94b2"></a>
 
 ## Multi-Document Transactions
 
@@ -577,7 +576,7 @@ When a single write operation (e.g. db.collection.updateMany()) modifies multipl
 When performing multi-document write operations, whether through a single write operation or multiple write operations, other operations may interleave.
 
 
-<a id="org05abca0"></a>
+<a id="org08c31ee"></a>
 
 ## Importing Data
 
@@ -588,17 +587,17 @@ mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
 ```
 
 
-<a id="orgd0e18ec"></a>
+<a id="org12480dc"></a>
 
 # Read Operations
 
 
-<a id="org317e9cb"></a>
+<a id="orgd14c0d9"></a>
 
 # Query & Projection Operators
 
 
-<a id="org8397bc8"></a>
+<a id="orgf27b97b"></a>
 
 ## Comparison Query Operators
 
@@ -606,7 +605,7 @@ mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
 -   Types - Comparison, Evalution, Logical, Array, Element, Comments, Geospatial
 
 
-<a id="orge283649"></a>
+<a id="org9ab06be"></a>
 
 ## Understanding findOne() and find()
 
@@ -642,7 +641,7 @@ using a filter
 ```
 
 
-<a id="orge8e5a72"></a>
+<a id="orgaa66bcc"></a>
 
 ## Working with Comparison Operators
 
@@ -683,7 +682,7 @@ finding values that are greater or equal than the specified value
 ```
 
 
-<a id="orga49d057"></a>
+<a id="orgb761b00"></a>
 
 ## Querying Embedded Fields & Arrays
 
@@ -725,7 +724,7 @@ $nin selects the documents where:
 ```
 
 
-<a id="org97c9071"></a>
+<a id="orgdf3aca2"></a>
 
 ## Comparison Query Operators
 
@@ -791,7 +790,7 @@ $not performs a logical NOT operation on the specified <operator-expression> and
 ```
 
 
-<a id="orgd0bcceb"></a>
+<a id="org38ac9e4"></a>
 
 ## Element Query Operators
 
@@ -862,7 +861,7 @@ $type selects documents where the value of the field is an instance of the speci
 ```
 
 
-<a id="org8b58586"></a>
+<a id="orge271961"></a>
 
 ## Evaluation Query Operators
 
@@ -918,7 +917,7 @@ find all documents that meet the condition
 ```
 
 
-<a id="org8748141"></a>
+<a id="org518388e"></a>
 
 ## Array Query Operators
 
@@ -952,7 +951,7 @@ The $elemMatch operator matches documents that contain an array field with at le
 ```
 
 
-<a id="org939f3db"></a>
+<a id="org243fcd2"></a>
 
 ## Cursors
 
@@ -1023,7 +1022,7 @@ Constrains the size of a cursor’s result set.
 ```
 
 
-<a id="orgb2f55d6"></a>
+<a id="org48d18b3"></a>
 
 ## Projection Operators
 
@@ -1075,17 +1074,17 @@ $slice: [ < number to skip >, < number to return > ] Specifies the number of ele
 ```
 
 
-<a id="org3ae7b75"></a>
+<a id="org215eae6"></a>
 
 # Update Operations
 
 
-<a id="org21eec22"></a>
+<a id="org6685534"></a>
 
 # Update Operations
 
 
-<a id="org40bb3c4"></a>
+<a id="orgeacb58b"></a>
 
 ## Update Operators
 
@@ -1191,7 +1190,7 @@ If updateOne(), updateMany(), or replaceOne() includes upsert : true and no docu
 ```
 
 
-<a id="orge14a2a5"></a>
+<a id="org3a26124"></a>
 
 ## Array Update Operators
 
@@ -1328,17 +1327,17 @@ The $addToSet operator adds a value to an array unless the value is already pres
 ```
 
 
-<a id="org95f9c69"></a>
+<a id="orgb1f34be"></a>
 
 # Delete Operations
 
 
-<a id="orge815e2a"></a>
+<a id="orgc73f2e5"></a>
 
 # Delete Operations
 
 
-<a id="org632b711"></a>
+<a id="orgd9b0737"></a>
 
 ## deleteOne()
 
@@ -1351,7 +1350,7 @@ To delete at most a single document that matches a specified filter (even though
 ```
 
 
-<a id="orgc07c706"></a>
+<a id="org45804ef"></a>
 
 ## deleteMany()
 
@@ -1370,7 +1369,7 @@ You can specify criteria, or filters, that identify the documents to delete. The
 ```
 
 
-<a id="org6a6070b"></a>
+<a id="orge06b967"></a>
 
 ## drop()
 
@@ -1381,7 +1380,7 @@ Should only be done by sysAdmins
 > Drops the collection \#+END<sub>SRC</sub> > db.users.drop() \#+END<sub>SRC</sub>
 
 
-<a id="org6cbdb23"></a>
+<a id="org9c255a5"></a>
 
 ## dropDatabase()
 
@@ -1390,12 +1389,12 @@ Removes the current database, deleting the associated data files.
 > Drops the database \#+END<sub>SRC</sub> > db.dropDatabase() \#+END<sub>SRC</sub>
 
 
-<a id="org063240a"></a>
+<a id="org752a583"></a>
 
 # Indexes
 
 
-<a id="org450165f"></a>
+<a id="orgb2ba985"></a>
 
 # Working With Indexes
 
@@ -1408,7 +1407,7 @@ Indexes are special data structures that store a small portion of the collection
 Fundamentally, indexes in MongoDB are similar to indexes in other database systems. MongoDB defines indexes at the collection level and supports indexes on any field or sub-field of the documents in a MongoDB collection.
 
 
-<a id="orgc3c11da"></a>
+<a id="org357b240"></a>
 
 ## Query Diagnosis and Query Planning
 
@@ -1438,7 +1437,7 @@ The db.collection.explain() method has the following parameter:
 ```
 
 
-<a id="org5fd08fa"></a>
+<a id="org9664954"></a>
 
 ## Single Find Indexes
 
@@ -1462,7 +1461,7 @@ db.collection.createIndex() takes the following parameters:
 ```
 
 
-<a id="org5f39d20"></a>
+<a id="org5e37aa4"></a>
 
 ## dropIndex()
 
@@ -1477,7 +1476,7 @@ The db.collection.dropIndex() method takes the following parameter:
 ```
 
 
-<a id="orge29e427"></a>
+<a id="org7e65ce0"></a>
 
 ## Compound Indexes
 
@@ -1517,7 +1516,7 @@ Returns an array that holds a list of documents that identify and describe the e
 ```
 
 
-<a id="org706bca0"></a>
+<a id="org8840bdd"></a>
 
 ## Index Properties
 
@@ -1673,7 +1672,7 @@ You can index multiple fields for the text index. The following example creates 
 ```
 
 
-<a id="org5774734"></a>
+<a id="org0c7b68a"></a>
 
 ## Query Optimization
 
@@ -1709,7 +1708,7 @@ A covered query is a query that can be satisfied entirely using an index and doe
 ```
 
 
-<a id="org4865563"></a>
+<a id="orga3732db"></a>
 
 ## Query Plans
 
@@ -1735,7 +1734,7 @@ Users can also:
 -   Manually clear specific plan cache entries using the PlanCache.clearPlansByQuery() method.
 
 
-<a id="org7468916"></a>
+<a id="org7041c6f"></a>
 
 ## Multi-Key Indexes
 
@@ -1789,12 +1788,12 @@ For a compound multikey index, each indexed document can have at most one indexe
 -   Or, if a compound multikey index already exists, you cannot insert a document that would violate this restriction.
 
 
-<a id="org89c95db"></a>
+<a id="org63a0289"></a>
 
 # GeoSpatial Data
 
 
-<a id="org9af6a44"></a>
+<a id="org30dcdbe"></a>
 
 # Working with GeoSpatial Data
 
@@ -1807,7 +1806,7 @@ To specify GeoJSON data, use an embedded document with:
     -   Valid latitude values are between -90 and 90, both inclusive.
 
 
-<a id="orgd4f3fe1"></a>
+<a id="org4456b20"></a>
 
 ## Creating GeoJSON Data
 
@@ -1823,7 +1822,7 @@ To specify GeoJSON data, use an embedded document with:
 ```
 
 
-<a id="org6af06d9"></a>
+<a id="org6528c3c"></a>
 
 ## Running Geo Queries
 
@@ -1835,7 +1834,7 @@ To specify GeoJSON data, use an embedded document with:
 ```
 
 
-<a id="org9f2d586"></a>
+<a id="org71830ff"></a>
 
 ## Adding additional locations
 
@@ -1857,7 +1856,7 @@ To specify GeoJSON data, use an embedded document with:
 ```
 
 
-<a id="org97aa1f8"></a>
+<a id="orgd7bb040"></a>
 
 ## Finding if a user inside a specific area
 
@@ -1870,7 +1869,7 @@ To specify GeoJSON data, use an embedded document with:
 ```
 
 
-<a id="org56a6398"></a>
+<a id="orgcffa1ca"></a>
 
 ## Finding Places Within a Certain Radius
 
@@ -1879,12 +1878,12 @@ To specify GeoJSON data, use an embedded document with:
 ```
 
 
-<a id="org031af2e"></a>
+<a id="org8943759"></a>
 
 # Numeric Data
 
 
-<a id="org246b4b8"></a>
+<a id="org9cba691"></a>
 
 # Working With Numeric Data
 
@@ -1896,7 +1895,7 @@ MongoDB Numeric Data types supported:
 -   ****decimal****
 
 
-<a id="org3ae9371"></a>
+<a id="org4122994"></a>
 
 ## Integer
 
@@ -1923,7 +1922,7 @@ Simple plain numbers without decimal points, 32 bytes or 64 bytes, are saved as 
 ```
 
 
-<a id="org2d09815"></a>
+<a id="orgf4c21a3"></a>
 
 ## Doing Maths with Floats int32s & int64
 
@@ -1940,7 +1939,7 @@ Simple plain numbers without decimal points, 32 bytes or 64 bytes, are saved as 
 ```
 
 
-<a id="orgac6f6fb"></a>
+<a id="org54742ca"></a>
 
 ## Double
 
@@ -1953,14 +1952,14 @@ Double is implemented for storing floating-point data in MongoDB.
 ```
 
 
-<a id="orgb3d51ef"></a>
+<a id="org84013b1"></a>
 
 # Aggregation Framework
 
 Aggregation operations process data records and return computed results. Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result. MongoDB provides three ways to perform aggregation: the aggregation pipeline, the map-reduce function, and single purpose aggregation methods.
 
 
-<a id="org7dc618f"></a>
+<a id="org620bef0"></a>
 
 ## Pipeline Concept
 
@@ -1977,7 +1976,7 @@ Following are the possible stages in aggregation framework:
 -   $unwind − This is used to unwind document that are using arrays. When using an array, the data is kind of pre-joined and this operation will be undone with this to have individual documents again. Thus with this stage we will increase the amount of documents for the next stage.
 
 
-<a id="orge6cda25"></a>
+<a id="org973d3d2"></a>
 
 ## Group Stage
 
@@ -2015,7 +2014,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org95101ab"></a>
+<a id="org0298d0f"></a>
 
 ## Project Stage
 
@@ -2040,7 +2039,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org80c03cd"></a>
+<a id="org507ab12"></a>
 
 ## Turning the Location Into a geoJSON Object
 
@@ -2079,7 +2078,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org0f631a0"></a>
+<a id="org53e86e1"></a>
 
 ## Transforming the Birthdate
 
@@ -2125,7 +2124,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org26aed3e"></a>
+<a id="org1df846a"></a>
 
 ## Using Shortcuts for Transformations
 
@@ -2171,7 +2170,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org951d308"></a>
+<a id="org3843f91"></a>
 
 ## Understanding the $isoWeekYear Operator
 
@@ -2223,7 +2222,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org0d3cff6"></a>
+<a id="org11fa94d"></a>
 
 ## Pushing Elements Into Newly Created Arrays
 
@@ -2239,7 +2238,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org1083cfc"></a>
+<a id="orgab1f6af"></a>
 
 ## unWind Stage
 
@@ -2253,7 +2252,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="orga217a45"></a>
+<a id="org9612695"></a>
 
 ## addToSet Stage
 
@@ -2267,7 +2266,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="orgd610cd4"></a>
+<a id="orga78cd7a"></a>
 
 ## slice operator
 
@@ -2280,7 +2279,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org1134967"></a>
+<a id="orgdcc0e25"></a>
 
 ## $slice operator
 
@@ -2293,7 +2292,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org5506563"></a>
+<a id="org55a0d42"></a>
 
 ## $filter operator
 
@@ -2311,7 +2310,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org2f31add"></a>
+<a id="org54ac867"></a>
 
 ## Aplying Multiple Operations to an array
 
@@ -2328,7 +2327,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="orgfb4dcab"></a>
+<a id="org640f58e"></a>
 
 ## $bucket Stage
 
@@ -2350,7 +2349,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="org93cf323"></a>
+<a id="orgc0b6e30"></a>
 
 ## Aditional Stages
 
@@ -2386,7 +2385,7 @@ Groups input documents by the specified \_id expression and for each distinct gr
 ```
 
 
-<a id="orga460ec4"></a>
+<a id="org4eabc7e"></a>
 
 ## Writing Pipelines into a new collection
 
@@ -2457,7 +2456,7 @@ db.persons.aggregate([
 ```
 
 
-<a id="org60a00d7"></a>
+<a id="org38d8ef7"></a>
 
 ## \*geoNear Stage
 
@@ -2482,7 +2481,7 @@ db.persons.aggregate([
 ```
 
 
-<a id="orgbd24460"></a>
+<a id="org032cda4"></a>
 
 # MongoDB & Securtiy
 
@@ -2494,17 +2493,17 @@ MongoDB provides various features, such as authentication, access control, encry
 -   Encryption
 
 
-<a id="org1e1bcad"></a>
+<a id="orgaa1a96a"></a>
 
 ## Starting mongo servers with authorization
 
 
-<a id="orgb596b25"></a>
+<a id="org0429669"></a>
 
 ## Create a user
 
 
-<a id="orgf1e7062"></a>
+<a id="org86f81b7"></a>
 
 ## with admin privileges
 
@@ -2515,7 +2514,7 @@ MongoDB provides various features, such as authentication, access control, encry
 ```
 
 
-<a id="org32f7b1f"></a>
+<a id="org4129140"></a>
 
 ## with restricted privileges
 
@@ -2530,7 +2529,7 @@ MongoDB provides various features, such as authentication, access control, encry
 ```
 
 
-<a id="org582f98c"></a>
+<a id="orga61b784"></a>
 
 ## Update a user
 
@@ -2541,7 +2540,7 @@ MongoDB provides various features, such as authentication, access control, encry
 ```
 
 
-<a id="orgdbe091d"></a>
+<a id="org5d0deb4"></a>
 
 ## Logging to the server with auth
 
@@ -2550,7 +2549,7 @@ MongoDB provides various features, such as authentication, access control, encry
 ```
 
 
-<a id="org2fa6dda"></a>
+<a id="org87b19a1"></a>
 
 ## Adding SSL Transport Encryption
 
@@ -2569,17 +2568,17 @@ cat mongodb-cert.key mongodb-cert.crt >mongodb.pem
 ```
 
 
-<a id="org4ded0fa"></a>
+<a id="org7b0313f"></a>
 
 # Performance, Fault Tolerancy & Deployment
 
 
-<a id="orga5330bf"></a>
+<a id="orge413d80"></a>
 
 # Performance, Fault Tolerancy & Deployment
 
 
-<a id="org34d26e1"></a>
+<a id="org8a31447"></a>
 
 ## Capped Collections
 
@@ -2602,7 +2601,7 @@ Capped collections are fixed-size collections that support high-throughput opera
 ```
 
 
-<a id="org9d8208e"></a>
+<a id="org52d09bf"></a>
 
 ## Sharding
 
@@ -2627,7 +2626,7 @@ A MongoDB sharded cluster consists of the following components:
 ![img](https://docs.mongodb.com/manual/_images/sharded-cluster-production-architecture.bakedsvg.svg "interaction of components within a sharded cluster")
 
 
-<a id="org29ed9c8"></a>
+<a id="org4a51c38"></a>
 
 ## Using MongoDB Atlas
 
@@ -2646,7 +2645,7 @@ To create and use a cluster on MongoDB is necessary to:
 ```
 
 
-<a id="orgdd49479"></a>
+<a id="orgc96303d"></a>
 
 # Transactions
 
@@ -2688,11 +2687,87 @@ For situations that require atomicity of reads and writes to multiple documents 
 ```
 
 
-<a id="org44875da"></a>
-
-# Introduction to Stitch
-
-
-<a id="orge411098"></a>
+<a id="orgc19aba9"></a>
 
 # Useful Resources and Links
+
+-   [Mongo Docs](https://docs.mongodb.com/manual/tutorial/getting-started/)
+
+-   [MongoDB Drivers](https://docs.mongodb.com/ecosystem/drivers/)
+
+-   [Schema Validation](https://docs.mongodb.com/manual/core/schema-validation/)
+
+-   [Data Type Limits](https://docs.mongodb.com/manual/reference/limits/)
+
+-   [Suported Types](https://docs.mongodb.com/manual/reference/bson-types/)
+
+-   [Config Files](https://docs.mongodb.com/manual/reference/configuration-options/)
+
+-   [Shell (mongo) Options](https://docs.mongodb.com/manual/reference/program/mongo/)
+
+-   [Server (mongod) Options](https://docs.mongodb.com/manual/reference/program/mongod/)
+
+-   [InsertOne() Method](https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/)
+
+-   [InsertMany() Method](https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/)
+
+-   [Atomicity](https://docs.mongodb.com/manual/core/write-operations-atomicity/#atomicity)
+
+-   [Write Concern](https://docs.mongodb.com/manual/reference/write-concern/)
+
+-   [Using mongoimport](https://docs.mongodb.com/manual/reference/program/mongoimport/index.html)
+
+-   [find()](https://docs.mongodb.com/manual/reference/method/db.collection.find/)
+
+-   [Cursors](https://docs.mongodb.com/manual/tutorial/iterate-a-cursor/)
+
+-   [Query Operator Reference](https://docs.mongodb.com/manual/reference/operator/query/)
+
+-   [Updating Documents](https://docs.mongodb.com/manual/tutorial/update-documents/)
+
+-   [Deleting Documents ](https://docs.mongodb.com/manual/tutorial/remove-documents/)
+-   [partialFilterExpressions](https://docs.mongodb.com/manual/core/index-partial/)
+
+-   [Supported default<sub>languages</sub>](https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages)
+
+-   [Different Languages in the same index](https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/#create-a-text-index-for-a-collection-in-multiple-languages)
+
+-   [GeoSpatial Documents](https://docs.mongodb.com/manual/geospatial-queries/)
+
+-   [Geospatial Query Operators](https://docs.mongodb.com/manual/reference/operator/query-geospatial/)
+
+-   [Aggregation Framework Documentation](https://docs.mongodb.com/manual/core/aggregation-pipeline/)
+
+-   [$cond](https://docs.mongodb.com/manual/reference/operator/aggregation/cond/)
+
+-   [Float vs Double vs Decimal - A Discussion on Precision](https://stackoverflow.com/questions/618535/difference-between-decimal-float-and-double-in-net)
+
+-   [Number Ranges](https://social.msdn.microsoft.com/Forums/vstudio/en-US/d2f723c7-f00a-4600-945a-72da23cbc53d/can-anyone-explain-clearly-about-float-vs-decimal-vs-double-?forum=csharpgeneral)
+
+-   [Modelling Number/ Monetary Data in MongoDB](https://docs.mongodb.com/manual/tutorial/model-monetary-data/)
+
+-   [Official &ldquo;Encryption at Rest&rdquo; Docs](https://docs.mongodb.com/manual/core/security-encryption-at-rest/)
+
+-   [Official Security Checklist](https://docs.mongodb.com/manual/administration/security-checklist/)
+
+-   [What is SSL/ TLS?](https://www.acunetix.com/blog/articles/tls-security-what-is-tls-ssl-part-1/)
+
+-   [Official MongoDB SSL Setup Docs](https://docs.mongodb.com/manual/tutorial/configure-ssl/)
+
+-   [Official MongoDB Users & Auth Docs](https://docs.mongodb.com/manual/core/authentication/)
+
+-   [Official Built-in Roles Docs](https://docs.mongodb.com/manual/core/security-built-in-roles/)
+
+-   [Official Custom Roles Docs](https://docs.mongodb.com/manual/core/security-user-defined-roles/)
+
+-   [Official Documentation on Replica Sets](https://docs.mongodb.com/manual/replication/)
+
+-   [Official Documentation on Sharding](https://docs.mongodb.com/manual/sharding/)
+
+-   [Transactions](https://docs.mongodb.com/manual/core/transactions/)
+
+-   [Official Stitch Docs](https://docs.mongodb.com/stitch/)
+
+-   [Complete Stitch Username + Password Auth Flow](https://docs.mongodb.com/stitch/authentication/userpass/)
+
+-   [Stitch Services (AWS S3)](https://docs.mongodb.com/stitch/reference/partner-services/amazon-service/)

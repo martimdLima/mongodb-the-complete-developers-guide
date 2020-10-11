@@ -1,8 +1,0 @@
-[Official Aggregation Framework Docs]
-https://docs.mongodb.com/manual/core/aggregation-pipeline/
-
-[MongoDB Optimization of Aggregation Pipelines]
-https://docs.mongodb.com/manual/core/aggregation-pipeline-optimization/
-
-[More about $cond]
-https://docs.mongodb.com/manual/reference/operator/aggregation/cond/
