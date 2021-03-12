@@ -1,0 +1,3979 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-10-11 dom 02:20 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MongoDB - The Complete Guide</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Martim Lima" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.cacheClassElem = elem.className;
+         elem.cacheClassTarget = target.className;
+         target.className = "code-highlighted";
+         elem.className   = "code-highlighted";
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(elem.cacheClassElem)
+         elem.className = elem.cacheClassElem;
+       if(elem.cacheClassTarget)
+         target.className = elem.cacheClassTarget;
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MongoDB - The Complete Guide</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgd81268b">Basics &amp; Crud Operations</a>
+<ul>
+<li><a href="#orgc84c001">Check databases / Create a Database</a></li>
+<li><a href="#org2781a3d">Create a document</a></li>
+<li><a href="#org3172e2d">Find documents</a></li>
+<li><a href="#org3253bb7">Update Documents</a></li>
+<li><a href="#org6966faa">Replace Documents</a></li>
+<li><a href="#org29ce5d3">Delete Documents</a></li>
+<li><a href="#orgaeea9eb">Projections</a></li>
+<li><a href="#org0c5d2c7">Working with nested documents</a></li>
+<li><a href="#org1b29e1c">Working with arrays</a></li>
+<li><a href="#org09aea25">Acessing structured data</a></li>
+</ul>
+</li>
+<li><a href="#org6831964">Schemas &amp; Relations - How to Structure Documents</a>
+<ul>
+<li><a href="#orgace9ee1">Structuring documents</a></li>
+<li><a href="#org165837e">Data Types</a></li>
+<li><a href="#orgcee0a33">Database Stats</a></li>
+<li><a href="#org5cb8eef">Check the type of an value</a></li>
+<li><a href="#orgf58cb18">Insert a document with a number with a default 64 bit value</a></li>
+<li><a href="#org452b0ef">Insert a product with a number with an int32 value instead of 64 bit</a></li>
+<li><a href="#orgbced785">Important data type limits</a></li>
+</ul>
+</li>
+<li><a href="#org2b35f05">Exploring the Shell and the Server</a></li>
+<li><a href="#orge14cdbf">Create Operations</a>
+<ul>
+<li><a href="#org2a9f9ea">insert() Methods</a></li>
+<li><a href="#orgbafa9dd">writeConcern</a></li>
+<li><a href="#org19cea8c">Atomicity</a></li>
+<li><a href="#org5063b75">Multi-Document Transactions</a></li>
+<li><a href="#org629c15f">Importing Data</a></li>
+</ul>
+</li>
+<li><a href="#orgb19db46">Read Operations</a></li>
+<li><a href="#orgbe71bc0">Query &amp; Projection Operators</a>
+<ul>
+<li><a href="#org2b0ee82">Comparison Query Operators</a></li>
+<li><a href="#org58b3a37">Understanding findOne() and find()</a></li>
+<li><a href="#org23743ed">Working with Comparison Operators</a></li>
+<li><a href="#orgba8271a">Querying Embedded Fields &amp; Arrays</a></li>
+<li><a href="#org28d93c9">Comparison Query Operators</a></li>
+<li><a href="#orga639209">Element Query Operators</a></li>
+<li><a href="#orgef156c6">Evaluation Query Operators</a></li>
+<li><a href="#org1cd51fe">Array Query Operators</a></li>
+<li><a href="#orgd03e55e">Cursors</a></li>
+<li><a href="#org6a132b6">Projection Operators</a></li>
+</ul>
+</li>
+<li><a href="#org0535bca">Update Operations</a></li>
+<li><a href="#org8390247">Update Operations</a>
+<ul>
+<li><a href="#orgd92efbf">Update Operators</a></li>
+<li><a href="#orgffa0257">Array Update Operators</a></li>
+</ul>
+</li>
+<li><a href="#org4fa8b76">Delete Operations</a></li>
+<li><a href="#org2949ed5">Delete Operations</a>
+<ul>
+<li><a href="#org23d2845">deleteOne()</a></li>
+<li><a href="#org9b9ad61">deleteMany()</a></li>
+<li><a href="#orgccb1359">drop()</a></li>
+<li><a href="#orgfba82a9">dropDatabase()</a></li>
+</ul>
+</li>
+<li><a href="#org40fe6d6">Indexes</a></li>
+<li><a href="#orgb9b219b">Working With Indexes</a>
+<ul>
+<li><a href="#orgf7a11e7">Query Diagnosis and Query Planning</a></li>
+<li><a href="#org6892a41">Single Find Indexes</a></li>
+<li><a href="#org5c71e33">dropIndex()</a></li>
+<li><a href="#org40da0af">Compound Indexes</a></li>
+<li><a href="#org7b2be99">Index Properties</a></li>
+<li><a href="#org9af450a">Query Optimization</a></li>
+<li><a href="#orgcdbcd65">Query Plans</a></li>
+<li><a href="#orgceeffd2">Multi-Key Indexes</a></li>
+</ul>
+</li>
+<li><a href="#org85a68a6">GeoSpatial Data</a></li>
+<li><a href="#orgc83737b">Working with GeoSpatial Data</a>
+<ul>
+<li><a href="#org1ed93ce">Creating GeoJSON Data</a></li>
+<li><a href="#orgb46767e">Running Geo Queries</a></li>
+<li><a href="#orgc240a70">Adding additional locations</a></li>
+<li><a href="#orgdeb126f">Finding if a user inside a specific area</a></li>
+<li><a href="#org46a50cb">Finding Places Within a Certain Radius</a></li>
+</ul>
+</li>
+<li><a href="#org94f7630">Numeric Data</a></li>
+<li><a href="#orgdf7a466">Working With Numeric Data</a>
+<ul>
+<li><a href="#orge7e5c84">Integer</a></li>
+<li><a href="#org8b67ad6">Doing Maths with Floats int32s &amp; int64</a></li>
+<li><a href="#orga183605">Double</a></li>
+</ul>
+</li>
+<li><a href="#orgff6791e">Aggregation Framework</a>
+<ul>
+<li><a href="#org19e6a5d">Pipeline Concept</a></li>
+<li><a href="#org768a208">Group Stage</a></li>
+<li><a href="#org614ecaa">Project Stage</a></li>
+<li><a href="#orgde4440d">Turning the Location Into a geoJSON Object</a></li>
+<li><a href="#org16ff173">Transforming the Birthdate</a></li>
+<li><a href="#org6671b4d">Using Shortcuts for Transformations</a></li>
+<li><a href="#org6e94390">Understanding the $isoWeekYear Operator</a></li>
+<li><a href="#org3c6db04">Pushing Elements Into Newly Created Arrays</a></li>
+<li><a href="#orge83f6e4">unWind Stage</a></li>
+<li><a href="#org09e50d2">addToSet Stage</a></li>
+<li><a href="#org1de7792">slice operator</a></li>
+<li><a href="#orgf75b809">$slice operator</a></li>
+<li><a href="#org4d14a38">$filter operator</a></li>
+<li><a href="#orgd535cc7">Aplying Multiple Operations to an array</a></li>
+<li><a href="#org23ddbf6">$bucket Stage</a></li>
+<li><a href="#orga9510ad">Aditional Stages</a></li>
+<li><a href="#orgaf0feeb">Writing Pipelines into a new collection</a></li>
+<li><a href="#orgff6c70d">*geoNear Stage</a></li>
+</ul>
+</li>
+<li><a href="#org5d2ab28">MongoDB &amp; Securtiy</a>
+<ul>
+<li><a href="#orgbac54b9">Starting mongo servers with authorization</a></li>
+<li><a href="#org0495fb4">Create a user</a></li>
+<li><a href="#org031d632">with admin privileges</a></li>
+<li><a href="#org68cf12c">with restricted privileges</a></li>
+<li><a href="#orgc3caedc">Update a user</a></li>
+<li><a href="#org46320fc">Logging to the server with auth</a></li>
+<li><a href="#orgca7583e">Adding SSL Transport Encryption</a></li>
+</ul>
+</li>
+<li><a href="#orgd0640ce">Performance, Fault Tolerancy &amp; Deployment</a></li>
+<li><a href="#orgf4be749">Performance, Fault Tolerancy &amp; Deployment</a>
+<ul>
+<li><a href="#org0ab5b25">Capped Collections</a></li>
+<li><a href="#org3747378">Sharding</a></li>
+<li><a href="#org4c1a0d4">Using MongoDB Atlas</a></li>
+</ul>
+</li>
+<li><a href="#org9a818bd">Transactions</a></li>
+<li><a href="#orgb83befd">Useful Resources and Links</a></li>
+</ul>
+</div>
+</div>
+<hr />
+
+<div id="outline-container-orgd81268b" class="outline-2">
+<h2 id="orgd81268b">Basics &amp; Crud Operations</h2>
+<div class="outline-text-2" id="text-orgd81268b">
+<p>
+An overview of the basics of mongodb and crud operations
+</p>
+</div>
+
+<div id="outline-container-orgc84c001" class="outline-3">
+<h3 id="orgc84c001">Check databases / Create a Database</h3>
+<div class="outline-text-3" id="text-orgc84c001">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Show all databases</span>
+&gt;  show dbs
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Use the specified database</span>
+&gt; use dbname
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org2781a3d" class="outline-3">
+<h3 id="org2781a3d">Create a document</h3>
+<div class="outline-text-3" id="text-org2781a3d">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Create a Document</span>
+&gt; db.dbname.insertOne(
+    {name: <span style="color: #2aa198;">"product1"</span>, price: <span style="color: #d33682; font-weight: bold;">12.99</span>}
+)
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Create a document with an embbeded document</span>
+&gt; db.dbname.insertOne(
+    {
+        key1: <span style="color: #2aa198;">"dummy"</span>,
+        key2: <span style="color: #d33682; font-weight: bold;">12.99</span>,
+        key3: <span style="color: #2aa198;">"A dummy product"</span>,
+        key4: {
+            key4subkey1: <span style="color: #2aa198;">"key4subval1"</span>,
+            key4subkey1: key4subkey2
+            }
+    }
+)
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Create various documents in a collection</span>
+&gt; db.dbname.insertMany(
+    [
+        {
+            key1: <span style="color: #2aa198;">"value1"</span>,
+            key2: <span style="color: #2aa198;">"value2"</span>,
+            key3: <span style="color: #2aa198;">"value3"</span>,
+            key4: <span style="color: #2aa198;">"value4"</span>,
+        },
+        {
+            key1: <span style="color: #2aa198;">"value1"</span>,
+            key2: <span style="color: #2aa198;">"value2"</span>,
+            key3: <span style="color: #2aa198;">"value3"</span>,
+            key4: <span style="color: #2aa198;">"value4"</span>,
+        }
+    ]
+)
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3172e2d" class="outline-3">
+<h3 id="org3172e2d">Find documents</h3>
+<div class="outline-text-3" id="text-org3172e2d">
+<p>
+find() doesn&rsquo;t return an array of all the documents in a collection, but a cursor pretty() can only be applied when the result of the operation applied returns a cursor while find() returns a cursor, findOne() returns a document, so it can only be applied to find().
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection</span>
+&gt; db.dbname.find()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection in a prettified form</span>
+&gt; db.dbname.find().pretty()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection and convert it to array (This operation returns every document in a collection, despite the size)</span>
+&gt; db.dbname.find().toArray()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection and apply certain operations on each one</span>
+&gt; db.dbname.find().forEach((colData) =&gt; {printjson(colData)})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection that match a specific key/value</span>
+&gt; db.dbname.find({key: value})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection that are greater than the specificied key/value</span>
+&gt; db.dbname.find({key: {$gt: value}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find one document in a collection that match a specific key/value</span>
+&gt; db.dbname.findOne({key: value})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Find all documents in a collection that is greater than the specific key/value</span>
+&gt; db.dbname.findOne({key: {$gt: value}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org3253bb7" class="outline-3">
+<h3 id="org3253bb7">Update Documents</h3>
+<div class="outline-text-3" id="text-org3253bb7">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Update one document</span>
+&gt; db.dbname.updateOne({key: <span style="color: #2aa198;">"value"</span>}, {$set: {key: <span style="color: #2aa198;">"updtValue"</span>}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Update many documents</span>
+&gt; db.dbname.updateMany({}, {$set: {key: <span style="color: #2aa198;">"updtValue"</span>}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Update a document replacing all key/value pairs</span>
+&gt; db.dbname.update({key: <span style="color: #2aa198;">"value"</span>}, {{key: <span style="color: #2aa198;">"updtValue"</span>}})i
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6966faa" class="outline-3">
+<h3 id="org6966faa">Replace Documents</h3>
+<div class="outline-text-3" id="text-org6966faa">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Replace a document</span>
+&gt; db.dbname.replaceOne(  {
+    key1: <span style="color: #2aa198;">"value1"</span>,
+    key2: <span style="color: #2aa198;">"value2"</span>,
+    key3: <span style="color: #2aa198;">"value3"</span>,
+    key4: <span style="color: #2aa198;">"value4"</span>,
+  })
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org29ce5d3" class="outline-3">
+<h3 id="org29ce5d3">Delete Documents</h3>
+<div class="outline-text-3" id="text-org29ce5d3">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Delete one document</span>
+&gt; db.dbname.deleteOne({key: <span style="color: #2aa198;">"value"</span>})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Delete all documents that have common key/pair values</span>
+&gt; db.dbname.deleteMany({commonKey: <span style="color: #2aa198;">"commonValue"</span>})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Delete many documents</span>
+&gt; db.dbname.deleteMany({})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgaeea9eb" class="outline-3">
+<h3 id="orgaeea9eb">Projections</h3>
+<div class="outline-text-3" id="text-orgaeea9eb">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Using projections to return all the documents with the choosen properties</span>
+&gt; db.dbname.find({}, {key: value}).pretty()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Using projections to return all the documents in the collection with the choosen properties, excluding some</span>
+&gt; db.dbname.find({}, {key: value, _key: value}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0c5d2c7" class="outline-3">
+<h3 id="org0c5d2c7">Working with nested documents</h3>
+<div class="outline-text-3" id="text-org0c5d2c7">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Update a document with a nested document</span>
+&gt; db.dbname.updateMany({}, {$set: {key: {nestedKey1: <span style="color: #2aa198;">"nestedValue1"</span>, nestedKey2: <span style="color: #2aa198;">"nestedValue2"</span>}}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Update a document with a nested document</span>
+&gt; db.dbname.updateMany({}, {$set: {key: {nKey1: <span style="color: #2aa198;">"nVal1"</span>, nKey2: <span style="color: #2aa198;">"nVal2"</span>, nK3: {nk3a: <span style="color: #2aa198;">"nk3aVal"</span>}}}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org1b29e1c" class="outline-3">
+<h3 id="org1b29e1c">Working with arrays</h3>
+<div class="outline-text-3" id="text-org1b29e1c">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.dbname.updateOne({key: <span style="color: #2aa198;">"val"</span>}, {$set: {newKey: [<span style="color: #2aa198;">"val1"</span>, <span style="color: #2aa198;">"val2"</span>]}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org09aea25" class="outline-3">
+<h3 id="org09aea25">Acessing structured data</h3>
+<div class="outline-text-3" id="text-org09aea25">
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Acessing a specific field of a document</span>
+ &gt; db.dbname.findOne({key: <span style="color: #2aa198;">"val"</span>}).key2
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Searching for documents with a specific field</span>
+ &gt; db.dbname.find({key: <span style="color: #2aa198;">"value"</span>}).pretty()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Searching for documents that have a field with a specific subfield and value present</span>
+ &gt; db.dbname.find({<span style="color: #2aa198;">"key.subkey"</span>: <span style="color: #2aa198;">"subkeyVal"</span>}).pretty()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Searching for documents that have a field that has a subfield with a specific subfield and value present</span>
+ &gt; db.dbname.find({<span style="color: #2aa198;">"key.subkey.subsubkey"</span>: <span style="color: #2aa198;">"subsubkeyVal"</span>}).pretty()
+</pre>
+</div>
+
+
+<hr />
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6831964" class="outline-2">
+<h2 id="org6831964">Schemas &amp; Relations - How to Structure Documents</h2>
+<div class="outline-text-2" id="text-org6831964">
+</div>
+
+<div id="outline-container-orgace9ee1" class="outline-3">
+<h3 id="orgace9ee1">Structuring documents</h3>
+<div class="outline-text-3" id="text-orgace9ee1">
+<div class="org-src-container">
+<pre class="src src-javascript"> &gt; db.colname.insertMany([
+  {
+    name: <span style="color: #2aa198;">"Dummy1"</span>,
+    price: <span style="color: #d33682; font-weight: bold;">12.99</span>,
+    details: <span style="color: #d33682; font-weight: bold;">null</span>
+  },
+  {
+    name: <span style="color: #2aa198;">"Dummy1"</span>,
+    price: <span style="color: #d33682; font-weight: bold;">1234</span>,
+    details: <span style="color: #d33682; font-weight: bold;">null</span>
+  },
+  {
+    name: <span style="color: #2aa198;">"Dummy3"</span>,
+    price: <span style="color: #d33682; font-weight: bold;">29.99</span>,
+    details: {name: <span style="color: #2aa198;">"nestedDummy"</span>}
+  }
+])
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org165837e" class="outline-3">
+<h3 id="org165837e">Data Types</h3>
+<div class="outline-text-3" id="text-org165837e">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.colname.insertOne(
+    {
+      name: <span style="color: #2aa198;">"Dummy Corp Inc"</span>,
+      isStartup: <span style="color: #d33682; font-weight: bold;">true</span>,
+      employees: <span style="color: #d33682; font-weight: bold;">35</span>,
+      funding: <span style="color: #d33682; font-weight: bold;">01234567899876543210</span>,
+      details: {ceo: <span style="color: #2aa198;">"Dummy CEO"</span>},
+      tags: [{title: <span style="color: #2aa198;">"test1"</span>}, {title: <span style="color: #2aa198;">"teste2"</span>}],
+      foundingDate: <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Date</span>(),
+      insertedAt: <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Timestamp</span>()
+    }
+)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcee0a33" class="outline-3">
+<h3 id="orgcee0a33">Database Stats</h3>
+<div class="outline-text-3" id="text-orgcee0a33">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.stats()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5cb8eef" class="outline-3">
+<h3 id="org5cb8eef">Check the type of an value</h3>
+<div class="outline-text-3" id="text-org5cb8eef">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; <span style="color: #859900; font-weight: bold;">typeof</span> db.colname.findOne().key
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf58cb18" class="outline-3">
+<h3 id="orgf58cb18">Insert a document with a number with a default 64 bit value</h3>
+<div class="outline-text-3" id="text-orgf58cb18">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.colname.insertOne({key: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org452b0ef" class="outline-3">
+<h3 id="org452b0ef">Insert a product with a number with an int32 value instead of 64 bit</h3>
+<div class="outline-text-3" id="text-org452b0ef">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.colname.insertOne({key: NumberInt(<span style="color: #d33682; font-weight: bold;">1</span>)})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbced785" class="outline-3">
+<h3 id="orgbced785">Important data type limits</h3>
+<div class="outline-text-3" id="text-orgbced785">
+<ul class="org-ul">
+<li><b>Normal integers (int32)</b> can hold a maximum value of +-2,147,483,647</li>
+
+<li><b>Long integers (int64)</b> can hold a maximum value of +-9,223,372,036,854,775,807</li>
+
+<li><b>Text</b> can be as long as you want - the limit is the 16mb restriction for the overall document</li>
+</ul>
+
+<p>
+It&rsquo;s also important to understand the difference between int32 (NumberInt), int64 (NumberLong) and a normal number as you can enter it in the shell.
+The same goes for a normal double and NumberDecimal.
+</p>
+
+<ul class="org-ul">
+<li><b>NumberInt</b> creates a int32 value =&gt; NumberInt(55)</li>
+
+<li><b>NumberLong</b> creates a int64 value =&gt; NumberLong(7489729384792)</li>
+</ul>
+
+<p>
+If you just use a number (e.g. insertOne({a: 1}), this will get added as a normal double into the database.
+The reason for this is that the shell is based on JS which only knows float/ double values and doesn&rsquo;t differ between integers and floats.
+</p>
+
+<ul class="org-ul">
+<li><b>NumberDecimal</b> creates a high-precision double value =&gt; NumberDecimal(&ldquo;12.99&rdquo;) =&gt; This can be helpful for cases where you need (many) exact decimal places for calculations.</li>
+</ul>
+
+<p>
+When not working with the shell but a MongoDB driver for your app programming language (e.g. PHP, .NET, Node.js, &#x2026;), you can use the driver to create these specific numbers.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2b35f05" class="outline-2">
+<h2 id="org2b35f05">Exploring the Shell and the Server</h2>
+</div>
+
+
+<div id="outline-container-orge14cdbf" class="outline-2">
+<h2 id="orge14cdbf">Create Operations</h2>
+<div class="outline-text-2" id="text-orge14cdbf">
+</div>
+
+<div id="outline-container-org2a9f9ea" class="outline-3">
+<h3 id="org2a9f9ea">insert() Methods</h3>
+<div class="outline-text-3" id="text-org2a9f9ea">
+<div class="org-src-container">
+<pre class="src src-javascript">
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org9124305" class="outline-4">
+<h4 id="org9124305">unordered inserts</h4>
+<div class="outline-text-4" id="text-org9124305">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use contactData
+
+&gt; db.persons.insertOne(
+    {
+        name: <span style="color: #2aa198;">"dummy"</span>,
+        age: <span style="color: #d33682; font-weight: bold;">30</span>,
+        hobbies: [<span style="color: #2aa198;">"Sports"</span>, <span style="color: #2aa198;">"Cooking"</span>]
+    }
+)
+
+&gt; db.persons.insertOne(
+    {
+        name: <span style="color: #2aa198;">"dummy2"</span>,
+        age: <span style="color: #d33682; font-weight: bold;">35</span>,
+        hobbies: [<span style="color: #2aa198;">"Music"</span>, <span style="color: #2aa198;">"Cinema"</span>]
+    }
+)
+
+&gt; db.persons.insertMany(
+    [
+        {
+            name: <span style="color: #2aa198;">"dummy4"</span>,
+            age: <span style="color: #d33682; font-weight: bold;">18</span>,
+        },
+                {
+            name: <span style="color: #2aa198;">"dummy4"</span>,
+            age: <span style="color: #d33682; font-weight: bold;">39</span>,
+        },
+    ]
+)
+
+&gt; db.persons.insert(
+        {
+            name: <span style="color: #2aa198;">"dummy5"</span>,
+            age: <span style="color: #d33682; font-weight: bold;">18</span>,
+        }
+)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2e11b5c" class="outline-4">
+<h4 id="org2e11b5c">ordered inserts</h4>
+<div class="outline-text-4" id="text-org2e11b5c">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.hobbies.insertMany(
+    [
+        {_id: <span style="color: #2aa198;">"sports"</span>, name: <span style="color: #2aa198;">"Sports"</span>},
+        {_id: <span style="color: #2aa198;">"cooking"</span>, name: <span style="color: #2aa198;">"Cooking"</span>},
+        {_id: <span style="color: #2aa198;">"cars"</span>, name: <span style="color: #2aa198;">"Cars"</span>},
+    ]
+)
+</pre>
+</div>
+
+<p>
+As it is the default behaviour of mongoDB, if we try to insert a value already added before, it will cancel the operation and output an error,
+but since mongoDB by defaul treats each operation as standalone, it will insert the first value and cancel the others inserts when it gets to the second element.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.hobbies.insertMany(
+    [
+        {_id: <span style="color: #2aa198;">"astronomy"</span>, name: <span style="color: #2aa198;">"astronomy"</span>},
+        {_id: <span style="color: #2aa198;">"cooking"</span>, name: <span style="color: #2aa198;">"Cooking"</span>},
+        {_id: <span style="color: #2aa198;">"hiking"</span>, name: <span style="color: #2aa198;">"Hiking"</span>},
+    ]
+)
+</pre>
+</div>
+
+<p>
+To override this behaviour, we can pass a second argument to insertMany().
+This second argument is a document used to configure this operation.
+In this case, it will fail the first two values and insert the last two values.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">db.hobbies.insertMany(
+    [
+        {_id: <span style="color: #2aa198;">"sports"</span>, name: <span style="color: #2aa198;">"Sports"</span>},
+        {_id: <span style="color: #2aa198;">"cooking"</span>, name: <span style="color: #2aa198;">"Cooking"</span>},
+        {_id: <span style="color: #2aa198;">"astronomy"</span>, name: <span style="color: #2aa198;">"astronomy"</span>},
+        {_id: <span style="color: #2aa198;">"hiking"</span>, name: <span style="color: #2aa198;">"Hiking"</span>},
+    ],
+    {ordered: <span style="color: #d33682; font-weight: bold;">false</span>}
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgbafa9dd" class="outline-3">
+<h3 id="orgbafa9dd">writeConcern</h3>
+<div class="outline-text-3" id="text-orgbafa9dd">
+<p>
+Write concern describes the level of acknowledgment requested from MongoDB for write operations to a standalone mongod or to replica sets or to sharded clusters.
+In sharded clusters, mongos instances will pass the write concern on to the shards.
+</p>
+
+<p>
+Starting in MongoDB 4.4, replica sets and sharded clusters support setting a global default write concern.
+Operations which do not specify an explicit write concern inherit the global default write concern settings.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">w can be set to either 1 or 0, for server acknowledgment.</span>
+&gt; db.persons.insertOne(
+    {
+        name: <span style="color: #2aa198;">"dummy6"</span>,
+        age: <span style="color: #d33682; font-weight: bold;">38</span>,
+    },
+    {
+        writeConcern: {w: <span style="color: #d33682; font-weight: bold;">1</span>}
+    }
+)
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">j can be set to either true or false, to trigger jornaling of the entry</span>
+&gt; db.persons.insertOne(
+    {
+        name: <span style="color: #2aa198;">"dummy7"</span>,
+        age: <span style="color: #d33682; font-weight: bold;">38</span>,
+    },
+    {
+        writeConcern: {w: <span style="color: #d33682; font-weight: bold;">1</span>, j: <span style="color: #d33682; font-weight: bold;">true</span>}
+    }
+)
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">wtimeout can be set to the timeout of the write operation</span>
+&gt; db.persons.insertOne(
+    {
+        name: <span style="color: #2aa198;">"dummy7"</span>,
+        age: <span style="color: #d33682; font-weight: bold;">38</span>,
+    },
+    {
+        writeConcern: {w: <span style="color: #d33682; font-weight: bold;">1</span>, j: <span style="color: #d33682; font-weight: bold;">true</span>, wtimeout: <span style="color: #d33682; font-weight: bold;">2000</span>}
+    }
+)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org19cea8c" class="outline-3">
+<h3 id="org19cea8c">Atomicity</h3>
+<div class="outline-text-3" id="text-org19cea8c">
+<p>
+In MongoDB, a write operation is atomic on the level of a single document,
+even if the operation modifies multiple embedded documents within a single document.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5063b75" class="outline-3">
+<h3 id="org5063b75">Multi-Document Transactions</h3>
+<div class="outline-text-3" id="text-org5063b75">
+<p>
+When a single write operation (e.g. db.collection.updateMany()) modifies multiple documents,
+the modification of each document is atomic, but the operation as a whole is not atomic.
+</p>
+
+<p>
+When performing multi-document write operations, whether through a single write operation or multiple write operations, other operations may interleave.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org629c15f" class="outline-3">
+<h3 id="org629c15f">Importing Data</h3>
+<div class="outline-text-3" id="text-org629c15f">
+<p>
+in the terminal shell
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">mongoimport tv-shows.json -d movieData -c movies --jsonArray --drop
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb19db46" class="outline-2">
+<h2 id="orgb19db46">Read Operations</h2>
+<div class="outline-text-2" id="text-orgb19db46">
+</div>
+</div>
+
+
+
+<div id="outline-container-orgbe71bc0" class="outline-2">
+<h2 id="orgbe71bc0">Query &amp; Projection Operators</h2>
+<div class="outline-text-2" id="text-orgbe71bc0">
+</div>
+<div id="outline-container-org2b0ee82" class="outline-3">
+<h3 id="org2b0ee82">Comparison Query Operators</h3>
+<div class="outline-text-3" id="text-org2b0ee82">
+<ul class="org-ul">
+<li>Purpose - Locate Data</li>
+<li>Types - Comparison, Evalution, Logical, Array, Element, Comments, Geospatial</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org58b3a37" class="outline-3">
+<h3 id="org58b3a37">Understanding findOne() and find()</h3>
+<div class="outline-text-3" id="text-org58b3a37">
+</div>
+<div id="outline-container-org183c373" class="outline-5">
+<h5 id="org183c373">findOne()</h5>
+<div class="outline-text-5" id="text-org183c373">
+<p>
+returns the first document that meets the criteria
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.findOne()
+</pre>
+</div>
+
+<p>
+using a filter
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.findOne({name: "The Last Ship"})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org22e7da5" class="outline-5">
+<h5 id="org22e7da5">find()</h5>
+<div class="outline-text-5" id="text-org22e7da5">
+<p>
+find() returns a cursor
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find()
+</pre>
+</div>
+
+<p>
+using a filter
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({name: "The Last Ship"})
+&gt; db.movies.find({runtime: 60})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org23743ed" class="outline-3">
+<h3 id="org23743ed">Working with Comparison Operators</h3>
+<div class="outline-text-3" id="text-org23743ed">
+<p>
+finding values that are equal to the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$eq: 70}})
+</pre>
+</div>
+
+
+<p>
+finding values that aren&rsquo;t equal to the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$ne: 70}})
+</pre>
+</div>
+
+
+<p>
+finding values that are lower than the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$lt: 40}})
+</pre>
+</div>
+
+
+<p>
+finding values that are greater than the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$gt: 40}})
+</pre>
+</div>
+
+
+<p>
+finding values that are lower or equal than the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$lte: 40}})
+</pre>
+</div>
+
+
+<p>
+finding values that are greater or equal than the specified value
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$gte: 40}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgba8271a" class="outline-3">
+<h3 id="orgba8271a">Querying Embedded Fields &amp; Arrays</h3>
+<div class="outline-text-3" id="text-orgba8271a">
+<p>
+querying all documents that have the field average embedded in the rating field
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({"rating.average": {$gt: 7.0}})
+</pre>
+</div>
+
+
+<p>
+querying all documents that have the genre drama/Drama value in the field genre which is an array
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({genres: "drama"})
+&gt; db.movies.find({genres: "Drama"})
+</pre>
+</div>
+
+
+<p>
+querying all documents that have and genre array equaling Drama
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({genres: ["Drama"]}).pretty()
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org756aef5" class="outline-4">
+<h4 id="org756aef5">Understanding &ldquo;$in&rdquo; and &ldquo;$nin&rdquo;</h4>
+<div class="outline-text-4" id="text-org756aef5">
+<p>
+The $in operator selects the documents where the value of a field equals any value in the specified array.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$in: [30, 42]}})
+</pre>
+</div>
+
+<p>
+$nin selects the documents where:
+</p>
+<ul class="org-ul">
+<li>the field value is not in the specified array or</li>
+<li>the field does not exist.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({runtime: {$nin: [30, 42]}})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org28d93c9" class="outline-3">
+<h3 id="org28d93c9">Comparison Query Operators</h3>
+<div class="outline-text-3" id="text-org28d93c9">
+</div>
+<div id="outline-container-org6cbfaf2" class="outline-4">
+<h4 id="org6cbfaf2">&ldquo;$or&rdquo; and &ldquo;$nor&rdquo;</h4>
+<div class="outline-text-4" id="text-org6cbfaf2">
+</div>
+<div id="outline-container-org1c60a4b" class="outline-5">
+<h5 id="org1c60a4b">&ldquo;$or&rdquo;</h5>
+<div class="outline-text-5" id="text-org1c60a4b">
+<p>
+The $or operator performs a logical OR operation on an array of two or more &lt;expressions&gt; and selects the documents that satisfy at least one of the &lt;expressions&gt;.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find(
+    {$or: [
+        {"rating.average": {$lt: 5}},
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgf1df137" class="outline-5">
+<h5 id="orgf1df137">&ldquo;$nor&rdquo;</h5>
+<div class="outline-text-5" id="text-orgf1df137">
+<p>
+$nor performs a logical NOR operation on an array of one or more query expression and selects the documents that fail all the query expressions in the array.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find(
+    {$nor: [
+        {"rating.average": {$lt: 5}},
+        {"rating.average": {$gt: 9.3}}
+          ]
+    }
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org52b471d" class="outline-4">
+<h4 id="org52b471d">&ldquo;$and&rdquo;</h4>
+<div class="outline-text-4" id="text-org52b471d">
+<p>
+$and performs a logical AND operation on an array of one or more expressions (e.g. &lt;expression1&gt;, &lt;expression2&gt;, etc.) and selects the documents that satisfy all the expressions in the array. The $and operator uses short-circuit evaluation.
+If the first expression (e.g. &lt;expression1&gt;) evaluates to false, MongoDB will not evaluate the remaining expressions.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find(
+    {$and: [
+        {"rating.average": {$gt: 9}},
+        {genres: "Drama"}
+          ]
+    }
+
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org06e8dd9" class="outline-4">
+<h4 id="org06e8dd9">&ldquo;$not&rdquo;</h4>
+<div class="outline-text-4" id="text-org06e8dd9">
+<p>
+$not performs a logical NOT operation on the specified &lt;operator-expression&gt; and selects the documents that do not match the &lt;operator-expression&gt;.
+This includes documents that do not contain the field.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find(
+    {
+        runtime: {$not: {$eq: 60}}
+    }
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga639209" class="outline-3">
+<h3 id="orga639209">Element Query Operators</h3>
+<div class="outline-text-3" id="text-orga639209">
+</div>
+<div id="outline-container-org2a4b3c3" class="outline-4">
+<h4 id="org2a4b3c3">&ldquo;$exists&rdquo;</h4>
+<div class="outline-text-4" id="text-org2a4b3c3">
+<p>
+When &lt;boolean&gt; is true, $exists matches the documents that contain the field, including documents where the field value is null.
+If &lt;boolean&gt; is false, the query returns only the documents that do not contain the field.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; use user
+
+&gt; db.users.insertMany(
+    [
+        {
+            name: "dummy",
+            hobbies:
+                [
+                    {title: "Sports", frequency: 3},
+                    {title: "Cooking", frequency: 5}
+                ],
+            phone: 985438732
+        },
+                {
+            name: "dummy2",
+            hobbies:
+                [
+                    {title: "Music", frequency: 9},
+                    {title: "Cinema", frequency: 5}
+                ],
+            phone: "985543732",
+            age: 30
+        }
+    ]
+)
+
+&gt; db.users.find({age: {$exists: true}}).pretty()
+
+&gt; db.users.find({age: {$exists: true, $gte: 30}}).pretty()
+
+&gt; db. users.insertOne(
+            {
+            name: "dummy3",
+            hobbies:
+                [
+                    {title: "Yoga", frequency: 5},
+                    {title: "Dancing", frequency: 2}
+                ],
+            phone: 981234732,
+            age: null
+        },
+)
+
+&gt; db.users.find({age: {$exists: true, $ne: null}})
+
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org4ac7bc0" class="outline-4">
+<h4 id="org4ac7bc0">&ldquo;$type&rdquo;</h4>
+<div class="outline-text-4" id="text-org4ac7bc0">
+<p>
+$type selects documents where the value of the field is an instance of the specified BSON type(s).
+Querying by data type is useful when dealing with highly unstructured data where data types are not predictable.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.users.find({phone: {$type: "number"}})
+
+&gt; db.users.find({phone: {$type: "string"}})
+
+&gt; db.users.find({phone: {$type: ["double", "string"]}})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgef156c6" class="outline-3">
+<h3 id="orgef156c6">Evaluation Query Operators</h3>
+<div class="outline-text-3" id="text-orgef156c6">
+</div>
+<div id="outline-container-org8070f6b" class="outline-4">
+<h4 id="org8070f6b">&ldquo;$regex&rdquo;</h4>
+<div class="outline-text-4" id="text-org8070f6b">
+<p>
+Provides regular expression capabilities for pattern matching strings in queries.
+MongoDB uses Perl compatible regular expressions (i.e. “PCRE” ) version 8.42 with UTF-8 support.
+</p>
+
+<p>
+In MongoDB, you can also use regular expression objects (i.e. <i>pattern</i>) to specify regular expressions.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({summary: {$regex: /musical/}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org54c2d34" class="outline-4">
+<h4 id="org54c2d34">&ldquo;$expr&rdquo;</h4>
+<div class="outline-text-4" id="text-org54c2d34">
+<p>
+Allows the use of aggregation expressions within the query language.
+The arguments can be any valid aggregation expression.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">//find all documents where the field volume is bigger than the field target
+&gt; use financialData
+
+&gt; db.sales.insertMany(
+    [
+        {volume: 100, target: 120},
+        {volume: 89, target: 80},
+        {volume: 200, target: 177}
+    ]
+)
+
+&gt; db.sales.find({$expr: {$gt: ["$volume", "$target"]}}).pretty()
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">find all documents that meet the condition
+&gt; db.sales.find(
+    {
+  $expr: {
+    $gt: [
+      {
+        $cond: {
+          if: { $gte: [$volume, 190] },
+          then: { $subtract: [$volume, 10] },
+          else: $volume
+        }
+      },
+      $target
+    ]
+  }
+}
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org1cd51fe" class="outline-3">
+<h3 id="org1cd51fe">Array Query Operators</h3>
+<div class="outline-text-3" id="text-org1cd51fe">
+</div>
+<div id="outline-container-org0a1eef5" class="outline-4">
+<h4 id="org0a1eef5">&ldquo;$size&rdquo;</h4>
+<div class="outline-text-4" id="text-org0a1eef5">
+<p>
+The $size operator matches any array with the number of elements specified by the argument.
+</p>
+
+<p>
+$size does not accept ranges of values. To select documents based on fields with different numbers of elements,
+create a counter field that you increment when you add elements to a field.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.users.find({hobbies: {$size: 3}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge041529" class="outline-4">
+<h4 id="orge041529">&ldquo;$all&rdquo;</h4>
+<div class="outline-text-4" id="text-orge041529">
+<p>
+The $all operator selects the documents where the value of a field is an array that contains all the specified elements.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movieStats.find({genre: {$all: ["action", "thriller"]}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org8298e0d" class="outline-4">
+<h4 id="org8298e0d">&ldquo;$elemMatch&rdquo;</h4>
+<div class="outline-text-4" id="text-org8298e0d">
+<p>
+The $elemMatch operator matches documents that contain an array field with at least one element that matches all the specified query criteria.
+If you specify only a single &lt;query&gt; condition in the $elemMatch expression, and are not using the $not or $ne operators inside of $elemMatch,
+$elemMatch can be omitted. See Single Query Condition.
+</p>
+
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.users.find({hobbies: {$elemMatch: {title: "Sports", frequency: {$gte: 3}}}}).pretty()
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd03e55e" class="outline-3">
+<h3 id="orgd03e55e">Cursors</h3>
+<div class="outline-text-3" id="text-orgd03e55e">
+</div>
+<div id="outline-container-orga060928" class="outline-4">
+<h4 id="orga060928">next()</h4>
+<div class="outline-text-4" id="text-orga060928">
+<p>
+Returns the next document in a cursor.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; use movieData
+
+&gt; const dataCursor = db.movies.find()
+
+&gt; dataCursor.next()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7f677f5" class="outline-4">
+<h4 id="org7f677f5">hasNext()</h4>
+<div class="outline-text-4" id="text-org7f677f5">
+<p>
+Returns true if the cursor has documents and can be iterated.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; dataCursor.hasNext()
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orga507829" class="outline-4">
+<h4 id="orga507829">forEach()</h4>
+<div class="outline-text-4" id="text-orga507829">
+<p>
+Applies a JavaScript function for every document in a cursor.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; dataCursor.forEach(doc =&gt; {
+    printjson(doc)
+})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga5e4e83" class="outline-4">
+<h4 id="orga5e4e83">sort()</h4>
+<div class="outline-text-4" id="text-orga5e4e83">
+<p>
+Returns results ordered according to a sort specification.
+</p>
+
+<p>
+lower to higher: 1
+</p>
+
+<p>
+higher to lower: -1
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find().sort({"ratings.average": 1}).pretty()
+
+&gt; db.movies.find().sort({"ratings.average": 1, runtime: -1}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org862f206" class="outline-4">
+<h4 id="org862f206">skip()</h4>
+<div class="outline-text-4" id="text-org862f206">
+<p>
+Returns a cursor that begins returning results only after passing or skipping a number of documents.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find().sort({"ratings.average": 1, runtime: -1}).skip(10).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org836da9e" class="outline-4">
+<h4 id="org836da9e">limit()</h4>
+<div class="outline-text-4" id="text-org836da9e">
+<p>
+Constrains the size of a cursor’s result set.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find().sort({"ratings.average": 1, runtime: -1}).skip(10).limit(10).pretty()
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6a132b6" class="outline-3">
+<h3 id="org6a132b6">Projection Operators</h3>
+<div class="outline-text-3" id="text-org6a132b6">
+</div>
+<div id="outline-container-org1814fc5" class="outline-4">
+<h4 id="org1814fc5">$ (projection)</h4>
+<div class="outline-text-4" id="text-org1814fc5">
+<p>
+The positional $ operator limits the contents of an &lt;array&gt; to return either:
+</p>
+
+<ul class="org-ul">
+<li>The first element that matches the query condition on the array.</li>
+<li>The first element if no query condition is specified for the array (Starting in MongoDB 4.4).</li>
+</ul>
+
+<p>
+Use $ in the projection document of the find() method or the findOne() method when you only need one particular array element in selected documents.
+</p>
+
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({}, {name: 1, genres: 1, runtime: 1, rating: 1}).pretty()
+
+&gt; db.movies.find({genres: "Drama"}, {"genres.$": 1}).pretty()
+
+&gt; db.movies.find({genres: {$all: ["Drama", "Horror"]}}, {"genres.$": 1})
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgef22d9e" class="outline-4">
+<h4 id="orgef22d9e">$elemMatch (projection)</h4>
+<div class="outline-text-4" id="text-orgef22d9e">
+<p>
+The $elemMatch operator limits the contents of an &lt;array&gt; field from the query results to contain only the first element matching the $elemMatch condition
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({genres: "Drama"}, {genres: {$elemMatch: {$eq: "Horror"}}}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org9f805a8" class="outline-4">
+<h4 id="org9f805a8">$slice (projection)</h4>
+<div class="outline-text-4" id="text-org9f805a8">
+<p>
+The $slice projection operator specifies the number of elements in an array to return in the query result.
+</p>
+
+
+<p>
+$slice: &lt;number&gt;
+</p>
+<ul class="org-ul">
+<li>Specify a positive number n to return the first n elements.</li>
+<li>Specify a negative number n to return the last n elements.</li>
+</ul>
+
+
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: 2}, name: 1})
+</pre>
+</div>
+
+
+<p>
+$slice: [ &lt; number to skip &gt;, &lt; number to return &gt; ]
+Specifies the number of elements to return in the &lt;arrayField&gt; after skipping the specified number of elements starting from the first element.
+You must specify both elements.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascrip">&gt; db.movies.find({"rating.average": {$gt: 9}}, {genres: {$slice: [1, 2]}, name: 1})
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0535bca" class="outline-2">
+<h2 id="org0535bca">Update Operations</h2>
+<div class="outline-text-2" id="text-org0535bca">
+</div>
+</div>
+
+<div id="outline-container-org8390247" class="outline-2">
+<h2 id="org8390247">Update Operations</h2>
+<div class="outline-text-2" id="text-org8390247">
+</div>
+<div id="outline-container-orgd92efbf" class="outline-3">
+<h3 id="orgd92efbf">Update Operators</h3>
+<div class="outline-text-3" id="text-orgd92efbf">
+</div>
+<div id="outline-container-orgcc804e6" class="outline-4">
+<h4 id="orgcc804e6">\$set</h4>
+<div class="outline-text-4" id="text-orgcc804e6">
+<p>
+The $set operator replaces the value of a field with the specified value.
+</p>
+
+<p>
+If the field does not exist, $set will add a new field with the specified value, provided that the new field does not violate a type constraint.
+If you specify a dotted path for a non-existent field, $set will create the embedded documents as needed to fulfill the dotted path to the field.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Updating one field in one document</span>
+&gt; db.users.updateOne({_id: ObjectId(<span style="color: #2aa198;">"5f765f11224c6744c2b0a946"</span>)}, {$set: {hobbies: [{title: <span style="color: #2aa198;">"Sports"</span>, frequency: <span style="color: #d33682; font-weight: bold;">5</span>}, {title: <span style="color: #2aa198;">"Music"</span>, frequency: <span style="color: #d33682; font-weight: bold;">7</span>}, {title: <span style="color: #2aa198;">"Football"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}]}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Updating one field in many documents</span>
+&gt; db.users.updateMany({<span style="color: #2aa198;">"hobbies.title"</span>: <span style="color: #2aa198;">"Sports"</span>}, {$set: {isSporty: <span style="color: #d33682; font-weight: bold;">true</span>}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Updating multiple fields in one document</span>
+&gt; db.users.updateOne({_id: ObjectId(<span style="color: #2aa198;">"5f765f11224c6744c2b0a946"</span>)}, {$set: {age: <span style="color: #d33682; font-weight: bold;">42</span>, phone: <span style="color: #d33682; font-weight: bold;">985348777</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org48cb6e1" class="outline-4">
+<h4 id="org48cb6e1">\$inc</h4>
+<div class="outline-text-4" id="text-org48cb6e1">
+<p>
+The $inc operator increments a field by a specified value.
+</p>
+
+<p>
+The $inc operator accepts positive and negative values.
+If the field does not exist, $inc creates the field and sets the field to the specified value.
+Use of the $inc operator on a field with a null value will generate an error.
+$inc is an atomic operation within a single document.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy2"</span>}, {$inc: {age: <span style="color: #d33682; font-weight: bold;">2</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org1ca202e" class="outline-4">
+<h4 id="org1ca202e">\$min</h4>
+<div class="outline-text-4" id="text-org1ca202e">
+<p>
+The $min updates the value of the field to a specified value if the specified value is less than the current value of the field.
+The $min operator can compare values of different types, using the BSON comparison order.
+</p>
+
+<p>
+If the field does not exist, the \$min operator sets the field to the specified value.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy5"</span>}, {$min: {age: <span style="color: #d33682; font-weight: bold;">40</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb4b532c" class="outline-4">
+<h4 id="orgb4b532c">\$max</h4>
+<div class="outline-text-4" id="text-orgb4b532c">
+<p>
+The $max operator updates the value of the field to a specified value if the specified value is greater than the current value of the field. The $max operator can compare values of different types, using the BSON comparison order.
+</p>
+
+<p>
+If the field does not exist, the \$max operator sets the field to the specified value.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy2"</span>}, {$max: {age: <span style="color: #d33682; font-weight: bold;">40</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org24a1360" class="outline-4">
+<h4 id="org24a1360">\$mull</h4>
+<div class="outline-text-4" id="text-org24a1360">
+<p>
+Multiply the value of a field by a number.
+</p>
+
+<p>
+If the field does not exist in a document, \$mul creates the field and sets the value to zero of the same numeric type as the multiplier.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy2"</span>}, {$mul: {age: <span style="color: #d33682; font-weight: bold;">2</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgfe84258" class="outline-4">
+<h4 id="orgfe84258">\$unset</h4>
+<div class="outline-text-4" id="text-orgfe84258">
+<p>
+The $unset operator deletes a particular field.
+</p>
+
+<p>
+If the field does not exist, then \$unset does nothing (i.e. no operation).
+</p>
+
+<p>
+When used with $ to match an array element, $unset replaces the matching element with null rather than removing the matching element from the array. This behavior keeps consistent the array size and element positions.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateMany({isSporty: <span style="color: #d33682; font-weight: bold;">true</span>}, {$unset: {phone: <span style="color: #2aa198;">""</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc84978e" class="outline-4">
+<h4 id="orgc84978e">\$rename</h4>
+<div class="outline-text-4" id="text-orgc84978e">
+<p>
+The $rename operator updates the name of a field.
+</p>
+
+<p>
+The $rename operator logically performs an $unset of both the old name and the new name, and then performs a \$set operation with the new name. As such, the operation may not preserve the order of the fields in the document; i.e. the renamed field may move within the document.
+</p>
+
+<p>
+If the document already has a field with the &lt;newName&gt;, the \$rename operator removes that field and renames the specified &lt;field&gt; to &lt;newName&gt;.
+</p>
+
+<p>
+If the field to rename does not exist in a document, \$rename does nothing (i.e. no operation).
+</p>
+
+<p>
+For fields in embedded documents, the $rename operator can rename these fields as well as move the fields in and out of embedded documents. $rename does not work if these fields are in array elements.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateMany({}, {$rename: {age: <span style="color: #2aa198;">"totalAge"</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org719e53d" class="outline-4">
+<h4 id="org719e53d">upsert()</h4>
+<div class="outline-text-4" id="text-org719e53d">
+<p>
+If updateOne(), updateMany(), or replaceOne() includes upsert : true and no documents match the specified filter, then the operation creates a new document and inserts it. If there are matching documents, then the operation modifies or replaces the matching document or documents.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy4"</span>}, {$set: {age: <span style="color: #d33682; font-weight: bold;">29</span>, hobbies: [{title: <span style="color: #2aa198;">"Nice dinning"</span>, frequency: <span style="color: #d33682; font-weight: bold;">3</span>}], isSporty: <span style="color: #d33682; font-weight: bold;">true</span>}}, {upsert: <span style="color: #d33682; font-weight: bold;">true</span>})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgffa0257" class="outline-3">
+<h3 id="orgffa0257">Array Update Operators</h3>
+<div class="outline-text-3" id="text-orgffa0257">
+</div>
+<div id="outline-container-org1dc8ef3" class="outline-4">
+<h4 id="org1dc8ef3">\$</h4>
+<div class="outline-text-4" id="text-org1dc8ef3">
+<p>
+The positional $ operator identifies an element in an array to update without explicitly specifying the position of the element in the array.
+</p>
+
+<ul class="org-ul">
+<li>To project, or return, an array element from a read operation, see the $ projection operator instead.</li>
+<li>To update all elements in an array, see the all positional operator $[] instead.</li>
+<li>To update all elements that match an array filter condition or conditions, see the filtered positional operator instead $[&lt;identifier&gt;].</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateMany({hobbies: {$elemMatch: {title: <span style="color: #2aa198;">"Sports"</span>, frequency: {$gte: <span style="color: #d33682; font-weight: bold;">3</span>}}}}, {$set: {<span style="color: #2aa198;">"hobbies.$.highFrequency"</span>: <span style="color: #d33682; font-weight: bold;">true</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org7dd18a7" class="outline-4">
+<h4 id="org7dd18a7">\$[]</h4>
+<div class="outline-text-4" id="text-org7dd18a7">
+<p>
+The all positional operator $[] indicates that the update operator should modify all elements in the specified array field.
+</p>
+
+<p>
+If an upsert operation results in an insert, the query must include an exact equality match on the array field in order to use the \$[] positional operator in the update statement.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateMany({totalAge: {$gt: <span style="color: #d33682; font-weight: bold;">30</span>}}, {$inc: {<span style="color: #2aa198;">"hobbies.$[].frequency"</span>: -<span style="color: #d33682; font-weight: bold;">1</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd887f5c" class="outline-4">
+<h4 id="orgd887f5c">\$[&lt;identifier&gt;]</h4>
+<div class="outline-text-4" id="text-orgd887f5c">
+<p>
+The filtered positional operator $[&lt;identifier&gt;] identifies the array elements that match the arrayFilters conditions for an update operation, e.g. db.collection.update() and db.collection.findAndModify().
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateMany({<span style="color: #2aa198;">"hobbies.frequency"</span>: {$gt: <span style="color: #d33682; font-weight: bold;">2</span>}}, {$set: {<span style="color: #2aa198;">"hobbies.$[el].highFrequency"</span>: <span style="color: #d33682; font-weight: bold;">false</span>}}, {arrayFilters: [{<span style="color: #2aa198;">"el.frequency"</span>: {$gt: <span style="color: #d33682; font-weight: bold;">2</span>}} ]})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga744582" class="outline-4">
+<h4 id="orga744582">\$push</h4>
+<div class="outline-text-4" id="text-orga744582">
+<p>
+The $push operator appends a specified value to an array.
+</p>
+
+<p>
+f the field is absent in the document to update, \$push adds the array field with the value as its element.
+</p>
+
+<p>
+If the field is not an array, the operation will fail.
+</p>
+
+<p>
+If the value is an array, $push appends the whole array as a single element. To add each element of the value separately, use the $each modifier with \$push. For an example, see Append Multiple Values to an Array.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy4"</span>}, {$push: {hobbies: {title: <span style="color: #2aa198;">"Nice dinning"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0dec7b1" class="outline-4">
+<h4 id="org0dec7b1">\$each</h4>
+<div class="outline-text-4" id="text-org0dec7b1">
+<p>
+The $each modifier is available for use with the $addToSet operator and the $push operator.
+</p>
+
+<p>
+Use with the \$addToSet operator to add multiple values to an array &lt;field&gt; if the values do not exist in the &lt;field&gt;.
+</p>
+
+<p>
+Use with the \$push operator to append multiple values to an array &lt;field&gt;.
+</p>
+
+<p>
+The $push operator can use $each modifier with other modifiers.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy4"</span>}, {$push: {hobbies: {$each: [{title: <span style="color: #2aa198;">"nice dinning"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}, {title: <span style="color: #2aa198;">"Sports"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}]}}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org97ff51d" class="outline-4">
+<h4 id="org97ff51d">\$sort</h4>
+<div class="outline-text-4" id="text-org97ff51d">
+<p>
+The $sort modifier orders the elements of an array during a $push operation.
+</p>
+
+<p>
+To use the $sort modifier, it must appear with the $each modifier. You can pass an empty array [] to the $each modifier such that only the $sort modifier has an effect.
+</p>
+
+<p>
+The $sort modifier can sort array elements that are not documents. In previous versions, the $sort modifier required the array elements be documents.
+</p>
+
+<p>
+If the array elements are documents, the modifier can sort by either the whole document or by a specific field in the documents. In previous versions, the \$sort modifier can only sort by a specific field in the documents.
+</p>
+
+<p>
+Trying to use the $sort modifier without the $each modifier results in an error. The $sort no longer requires the $slice modifier.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy3"</span>}, {$push: {hobbies: {$each: [{title: <span style="color: #2aa198;">"Yoga"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}, {title: <span style="color: #2aa198;">"Dancing"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}], $sort: {frequency: -<span style="color: #d33682; font-weight: bold;">1</span>}}}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb720b18" class="outline-4">
+<h4 id="orgb720b18">\$slice</h4>
+<div class="outline-text-4" id="text-orgb720b18">
+<p>
+The $slice modifier limits the number of array elements during a $push operation. To project, or return, a specified number of array elements from a read operation, see the $slice projection operator instead.
+</p>
+
+<p>
+To use the $slice modifier, it must appear with the $each modifier. You can pass an empty array [] to the $each modifier such that only the $slice modifier has an effect.
+</p>
+
+<p>
+The order in which the modifiers appear is immaterial. Previous versions required the $each modifier to appear as the first modifier if used in conjunction with $slice. For a list of modifiers available for \$push, see Modifiers.
+</p>
+
+<p>
+Trying to use the $slice modifier without the $each modifier results in an error.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy3"</span>}, {$push: {hobbies: {$each: [{title: <span style="color: #2aa198;">"Yoga"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}, {title: <span style="color: #2aa198;">"Dancing"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}], $sort: {frequency: -<span style="color: #d33682; font-weight: bold;">1</span>}, $slice: <span style="color: #d33682; font-weight: bold;">1</span>}}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb8c1c33" class="outline-4">
+<h4 id="orgb8c1c33">\$pull</h4>
+<div class="outline-text-4" id="text-orgb8c1c33">
+<p>
+The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
+</p>
+
+<p>
+If you specify a &lt;condition&gt; and the array elements are embedded documents, \$pull operator applies the &lt;condition&gt; as if each array element were a document in a collection. See Remove Items from an Array of Documents for an example.
+</p>
+
+<p>
+If the specified &lt;value&gt; to remove is an array, \$pull removes only the elements in the array that match the specified &lt;value&gt; exactly, including order.
+</p>
+
+<p>
+If the specified &lt;value&gt; to remove is a document, \$pull removes only the elements in the array that have the exact same fields and values. The ordering of the fields can differ.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy5"</span>}, {$pull: {hobbies: {title: <span style="color: #2aa198;">"Music"</span>}}})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org07cc40d" class="outline-4">
+<h4 id="org07cc40d">\$sort</h4>
+<div class="outline-text-4" id="text-org07cc40d">
+<p>
+The $pop operator removes the first or last element of an array. Pass $pop a value of -1 to remove the first element of an array and 1 to remove the last element in an array.
+</p>
+
+<p>
+The \$pop operation fails if the &lt;field&gt; is not an array.
+</p>
+
+<p>
+If the \$pop operator removes the last item in the &lt;field&gt;, the &lt;field&gt; will then hold an empty array.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy4"</span>}, {$pop: {hobbies: <span style="color: #d33682; font-weight: bold;">1</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga6fe875" class="outline-4">
+<h4 id="orga6fe875">$addToSet</h4>
+<div class="outline-text-4" id="text-orga6fe875">
+<p>
+The $addToSet operator adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.updateOne({name: <span style="color: #2aa198;">"dummy4"</span>}, {$addToSet: {hobbies: {title: <span style="color: #2aa198;">"Hiking"</span>, frequency: <span style="color: #d33682; font-weight: bold;">2</span>}}})
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org4fa8b76" class="outline-2">
+<h2 id="org4fa8b76">Delete Operations</h2>
+<div class="outline-text-2" id="text-org4fa8b76">
+</div>
+</div>
+
+
+<div id="outline-container-org2949ed5" class="outline-2">
+<h2 id="org2949ed5">Delete Operations</h2>
+<div class="outline-text-2" id="text-org2949ed5">
+</div>
+<div id="outline-container-org23d2845" class="outline-3">
+<h3 id="org23d2845">deleteOne()</h3>
+<div class="outline-text-3" id="text-org23d2845">
+<p>
+Delete Only One Document that Matches a Condition.
+</p>
+
+<p>
+To delete at most a single document that matches a specified filter (even though multiple documents may match the specified filter) use the db.collection.deleteOne() method.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.deleteOne({name: <span style="color: #2aa198;">"Chris"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org9b9ad61" class="outline-3">
+<h3 id="org9b9ad61">deleteMany()</h3>
+<div class="outline-text-3" id="text-org9b9ad61">
+<p>
+Removes all documents that match the filter from a collection.
+</p>
+
+<p>
+To delete all documents from a collection, pass an empty filter document {} to the db.collection.deleteMany() method.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.deleteMany({})
+</pre>
+</div>
+
+<p>
+You can specify criteria, or filters, that identify the documents to delete. The filters use the same syntax as read operations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.deleteMany({totalAge: {$exists: <span style="color: #d33682; font-weight: bold;">false</span>}, isSporty: <span style="color: #d33682; font-weight: bold;">true</span>})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgccb1359" class="outline-3">
+<h3 id="orgccb1359">drop()</h3>
+<div class="outline-text-3" id="text-orgccb1359">
+<p>
+Removes a collection or view from the database. The method also removes any indexes associated with the dropped collection.
+The method provides a wrapper around the drop command.
+</p>
+
+<p>
+Should only be done by sysAdmins
+</p>
+
+<p>
+&gt; Drops the collection
+#+END<sub>SRC</sub>
+&gt; db.users.drop()
+#+END<sub>SRC</sub>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgfba82a9" class="outline-3">
+<h3 id="orgfba82a9">dropDatabase()</h3>
+<div class="outline-text-3" id="text-orgfba82a9">
+<p>
+Removes the current database, deleting the associated data files.
+</p>
+
+<p>
+&gt; Drops the database
+#+END<sub>SRC</sub>
+&gt; db.dropDatabase()
+#+END<sub>SRC</sub>
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org40fe6d6" class="outline-2">
+<h2 id="org40fe6d6">Indexes</h2>
+<div class="outline-text-2" id="text-org40fe6d6">
+</div>
+</div>
+
+
+<div id="outline-container-orgb9b219b" class="outline-2">
+<h2 id="orgb9b219b">Working With Indexes</h2>
+<div class="outline-text-2" id="text-orgb9b219b">
+<p>
+Indexes support the efficient execution of queries in MongoDB. Without indexes, MongoDB must perform a collection scan, i.e. scan every document in a collection, to select those documents that match the query statement. If an appropriate index exists for a query, MongoDB can use the index to limit the number of documents it must inspect.
+</p>
+
+<p>
+Indexes are special data structures that store a small portion of the collection’s data set in an easy to traverse form.
+The index stores the value of a specific field or set of fields, ordered by the value of the field.
+The ordering of the index entries supports efficient equality matches and range-based query operations.
+In addition, MongoDB can return sorted results by using the ordering in the index.
+</p>
+
+
+
+<div id="orgd7d36ac" class="figure">
+<p><object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/index-for-sort.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+<p><span class="figure-number">Figure 1: </span>Example of working with indexes</p>
+</div>
+
+
+<p>
+Fundamentally, indexes in MongoDB are similar to indexes in other database systems.
+MongoDB defines indexes at the collection level and supports indexes on any field or sub-field of the documents in a MongoDB collection.
+</p>
+</div>
+
+
+<div id="outline-container-orgf7a11e7" class="outline-3">
+<h3 id="orgf7a11e7">Query Diagnosis and Query Planning</h3>
+<div class="outline-text-3" id="text-orgf7a11e7">
+</div>
+<div id="outline-container-org4c93395" class="outline-4">
+<h4 id="org4c93395">db.collection.explain()</h4>
+<div class="outline-text-4" id="text-org4c93395">
+<p>
+Returns information on the query plan for the following methods:
+</p>
+<ul class="org-ul">
+<li>aggregate()</li>
+<li>count()</li>
+<li>find()</li>
+<li>remove()</li>
+<li>update()</li>
+<li>distinct()</li>
+<li>findAndModify()</li>
+<li>mapReduce()</li>
+</ul>
+
+
+<p>
+The db.collection.explain() method has the following parameter:
+</p>
+<ul class="org-ul">
+<li>verbosity - Optional. Specifies the verbosity mode for the explain output. The possible modes are:
+<ul class="org-ul">
+<li>&ldquo;queryPlanner&rdquo; (Default)</li>
+<li>&ldquo;executionStats&rdquo;</li>
+<li>&ldquo;allPlansExecution&rdquo;</li>
+</ul></li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.explain(<span style="color: #2aa198;">"executionStats"</span>).find({<span style="color: #2aa198;">"dob.age"</span>: {$gt: <span style="color: #d33682; font-weight: bold;">60</span>}})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org6892a41" class="outline-3">
+<h3 id="org6892a41">Single Find Indexes</h3>
+<div class="outline-text-3" id="text-org6892a41">
+<p>
+MongoDB provides complete support for indexes on any field in a collection of documents. By default, all collections have an index on the _id field, and applications and users may add additional indexes to support important queries and operations.
+</p>
+
+
+
+<div id="orgadcd8ae" class="figure">
+<p><object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/index-ascending.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+<p><span class="figure-number">Figure 2: </span>Single Find Index Example</p>
+</div>
+</div>
+
+<div id="outline-container-orga28cf6f" class="outline-4">
+<h4 id="orga28cf6f">createIndex()</h4>
+<div class="outline-text-4" id="text-orga28cf6f">
+<p>
+Creates indexes on collections.
+</p>
+
+<p>
+db.collection.createIndex() takes the following parameters:
+</p>
+<ul class="org-ul">
+<li>keys - A document that contains the field and value pairs where the field is the index key and the value describes the type of index for that field. For an   ascending index on a field, specify a value of 1; for descending index, specify a value of -1.</li>
+<li>options - Optional. A document that contains a set of options that controls the creation of the index.</li>
+<li>commitQuorum - Optional. The minimum number of data-bearing voting replica set members (i.e. commit quorum), including the primary, that must report a successful index build before the primary marks the indexes as ready. A “voting” member is any replica set member where members[n].votes is greater than 0.</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.createIndex({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org5c71e33" class="outline-3">
+<h3 id="org5c71e33">dropIndex()</h3>
+<div class="outline-text-3" id="text-org5c71e33">
+<p>
+Drops or removes the specified index from a collection. The db.collection.dropIndex() method provides a wrapper around the dropIndexes command.
+</p>
+
+<p>
+The db.collection.dropIndex() method takes the following parameter:
+</p>
+<ul class="org-ul">
+<li>index - Optional. Specifies the index to drop. You can specify the index either by the index name or by the index specification document.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.dropIndex({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org40da0af" class="outline-3">
+<h3 id="org40da0af">Compound Indexes</h3>
+<div class="outline-text-3" id="text-org40da0af">
+<p>
+MongoDB supports compound indexes, where a single index structure holds references to multiple fields within a collection’s documents.
+The following diagram illustrates an example of a compound index on two fields:
+</p>
+
+<p>
+![Compound Indexes](<object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>)
+</p>
+
+<p>
+[(<object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/index-compound-key.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>[]]
+</p>
+
+<p>
+Compound indexes can support queries that match on multiple fields.
+</p>
+</div>
+
+<div id="outline-container-org7763069" class="outline-4">
+<h4 id="org7763069">Create a Compound Index</h4>
+<div class="outline-text-4" id="text-org7763069">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.createIndex({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">1</span>, gender: <span style="color: #d33682; font-weight: bold;">1</span>})
+
+&gt; db.contacts.explain(<span style="color: #2aa198;">"executionStats"</span>).find({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">35</span>, gender: <span style="color: #2aa198;">"male"</span>})
+</pre>
+</div>
+
+<p>
+The value of the field in the index specification describes the kind of index for that field.
+For example, a value of 1 specifies an index that orders items in ascending order.
+A value of -1 specifies an index that orders items in descending order.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org603544b" class="outline-4">
+<h4 id="org603544b">Sorting Indexes</h4>
+<div class="outline-text-4" id="text-org603544b">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.explain().find({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">35</span>}).sort({gender: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfdbaa84" class="outline-4">
+<h4 id="orgfdbaa84">getIndexes()</h4>
+<div class="outline-text-4" id="text-orgfdbaa84">
+<p>
+Returns an array that holds a list of documents that identify and describe the existing indexes on the collection, including hidden indexes.
+You must call db.collection.getIndexes() on a collection.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.getIndexes()
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7b2be99" class="outline-3">
+<h3 id="org7b2be99">Index Properties</h3>
+<div class="outline-text-3" id="text-org7b2be99">
+</div>
+<div id="outline-container-org1e03b5a" class="outline-4">
+<h4 id="org1e03b5a">Unique Indexes</h4>
+<div class="outline-text-4" id="text-org1e03b5a">
+<p>
+The unique property for an index causes MongoDB to reject duplicate values for the indexed field.
+Other than the unique constraint, unique indexes are functionally interchangeable with other MongoDB indexes.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.createIndex({email: <span style="color: #d33682; font-weight: bold;">1</span>}, {unique: <span style="color: #d33682; font-weight: bold;">true</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgec40f0f" class="outline-4">
+<h4 id="orgec40f0f">Partial Indexes</h4>
+<div class="outline-text-4" id="text-orgec40f0f">
+<p>
+Partial indexes only index the documents in a collection that meet a specified filter expression.
+By indexing a subset of the documents in a collection, partial indexes have lower storage requirements and reduced performance costs for index creation and maintenance.
+</p>
+
+<p>
+Partial indexes offer a superset of the functionality of sparse indexes and should be preferred over sparse indexes.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.createIndex({<span style="color: #2aa198;">"dob.age"</span>: <span style="color: #d33682; font-weight: bold;">1</span>}, {partialFilterExpression: {gender: <span style="color: #2aa198;">"male"</span>}})
+
+&gt; db.contacts.explain().find({<span style="color: #2aa198;">"dob.age"</span>: {$gt: <span style="color: #d33682; font-weight: bold;">60</span>}, gender: <span style="color: #2aa198;">"male"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgdc5db6b" class="outline-4">
+<h4 id="orgdc5db6b">Sparse Indexes</h4>
+<div class="outline-text-4" id="text-orgdc5db6b">
+<p>
+The sparse property of an index ensures that the index only contain entries for documents that have the indexed field. The index skips documents that do not have the indexed field.
+</p>
+
+<p>
+You can combine the sparse index option with the unique index option to prevent inserting documents that have duplicate values for the indexed field(s) and skip indexing documents that lack the indexed field(s).
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.users.insertMany(
+    [
+        {name: <span style="color: #2aa198;">"user1"</span>, email: <span style="color: #2aa198;">"user1@test.com"</span>},
+        {name: <span style="color: #2aa198;">"user2"</span>}
+    ]
+)
+
+&gt; db.users.createIndex({email: <span style="color: #d33682; font-weight: bold;">1</span>}, {unique: <span style="color: #d33682; font-weight: bold;">true</span>})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">This will throw an duplicate key error, because the null value is already used</span>
+*+BEGIN_SRC javascript
+&gt; db.users.insertOne({name: <span style="color: #2aa198;">"user3"</span>})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">To avoid this defaul behaviour</span>
+&gt; db.users.dropIndex({email: <span style="color: #d33682; font-weight: bold;">1</span>}, {unique: <span style="color: #d33682; font-weight: bold;">true</span>})
+
+&gt; db.users.createIndex({email: <span style="color: #d33682; font-weight: bold;">1</span>}, {unique: <span style="color: #d33682; font-weight: bold;">true</span>, partialFilterExpression: {email: {$exists: <span style="color: #d33682; font-weight: bold;">true</span>}}})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">Now the insertion of an user without an email succeds without any errors</span>
+&gt; db.users.insertOne({name: <span style="color: #2aa198;">"user3"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd951b36" class="outline-4">
+<h4 id="orgd951b36">TTL Indexes</h4>
+<div class="outline-text-4" id="text-orgd951b36">
+<p>
+TTL indexes are special indexes that MongoDB can use to automatically remove documents from a collection after a certain amount of time.
+This is ideal for certain types of information like machine generated event data, logs, and session information that only need to persist in a database for a finite amount of time.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">//</span><span style="color: #405A61;">inserts s recored with the current Date</span>
+&gt; db.sessions.insertOne({data: <span style="color: #2aa198;">"randomData1"</span>, createdAt: <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Date</span>()})
+
+<span style="color: #405A61;">//</span><span style="color: #405A61;">create a index with the expireAfterSeconds to remove documents after a finite amount of time</span>
+&gt; db.sessions.createIndex({createdAt: <span style="color: #d33682; font-weight: bold;">1</span>}, {expireAfterSeconds: <span style="color: #d33682; font-weight: bold;">10</span>})
+
+<span style="color: #405A61;">//</span><span style="color: #405A61;">this new record will be delete after 10 seconds</span>
+&gt; db.sessions.insertOne({data: <span style="color: #2aa198;">"randomData2"</span>, createdAt: <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Date</span>()})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org21c8507" class="outline-4">
+<h4 id="org21c8507">Text Indexes</h4>
+<div class="outline-text-4" id="text-org21c8507">
+<p>
+To create a text index, use the db.collection.createIndex() method. To index a field that contains a string or an array of string elements, include the field and specify the string literal &ldquo;text&rdquo; in the index document.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.products.insertMany(
+    [
+        {title: <span style="color: #2aa198;">"product1"</span>, description: <span style="color: #2aa198;">"Some random description"</span>},
+        {title: <span style="color: #2aa198;">"product2"</span>, description: <span style="color: #2aa198;">"Another random description"</span>},
+        {title: <span style="color: #2aa198;">"product3"</span>, description: <span style="color: #2aa198;">"Yet another random description"</span>}
+    ]
+)
+
+&gt; db.products.find().pretty()
+
+&gt; db.products.createIndex({description: <span style="color: #2aa198;">"text"</span>})
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"description"</span>}}).pretty()
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"\"another random description\""</span>}}).pretty()
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org59e3dea" class="outline-5">
+<h5 id="org59e3dea">Create Compound Text Indexes</h5>
+<div class="outline-text-5" id="text-org59e3dea">
+<p>
+You can index multiple fields for the text index. The following example creates a text index on the fields subject and comments.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.products.dropIndex(<span style="color: #2aa198;">"description_text"</span>)
+
+&gt; db.products.createIndex({title: <span style="color: #2aa198;">"text"</span>, description: <span style="color: #2aa198;">"text"</span>})
+
+&gt; db.products.insertOne({title: <span style="color: #2aa198;">"item"</span>, description: <span style="color: #2aa198;">"A specific item description"</span>})
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"item"</span>}})
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgd4f5319" class="outline-5">
+<h5 id="orgd4f5319">Text Indexes and sorting</h5>
+<div class="outline-text-5" id="text-orgd4f5319">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"random description"</span>}}, {score: {$meta: <span style="color: #2aa198;">"textScore"</span>}}).pretty()
+
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"random description"</span>}}, {score: {$meta: <span style="color: #2aa198;">"textScore"</span>}}).sort({score: {$meta: <span style="color: #2aa198;">"textScore"</span>}}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org0165c39" class="outline-5">
+<h5 id="org0165c39">Using Text Indexes to exclude words</h5>
+<div class="outline-text-5" id="text-org0165c39">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.products.insertMany(
+    [
+        {title: <span style="color: #2aa198;">"product5"</span>, description: <span style="color: #2aa198;">"a description"</span>},
+        {title: <span style="color: #2aa198;">"product6"</span>, description: <span style="color: #2aa198;">"a specific description"</span>},
+        {title: <span style="color: #2aa198;">"product7"</span>, description: <span style="color: #2aa198;">"a special description"</span>}
+    ]
+)
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"description -random"</span>}}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4ef00a7" class="outline-5">
+<h5 id="org4ef00a7">Seting default language and specifying Weights</h5>
+<div class="outline-text-5" id="text-org4ef00a7">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.products.dropIndex(<span style="color: #2aa198;">"title_text_description_text"</span>)
+
+&gt; db.products.createIndex({title: <span style="color: #2aa198;">"text"</span>, description: <span style="color: #2aa198;">"text"</span>}, {default_language: <span style="color: #2aa198;">"english"</span>, weights: {title: <span style="color: #d33682; font-weight: bold;">1</span>, description: <span style="color: #d33682; font-weight: bold;">10</span>}})
+
+&gt; db.products.find({$text: {$search: <span style="color: #2aa198;">"specific"</span>}}, {score: {$meta: <span style="color: #2aa198;">"textScore"</span>}}).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc966c31" class="outline-5">
+<h5 id="orgc966c31">Building Indexes</h5>
+<div class="outline-text-5" id="text-orgc966c31">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; mongo credit-rating.js
+
+&gt; db.ratings.createIndex({age: <span style="color: #d33682; font-weight: bold;">1</span>}, {background: <span style="color: #d33682; font-weight: bold;">true</span>})
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9af450a" class="outline-3">
+<h3 id="org9af450a">Query Optimization</h3>
+<div class="outline-text-3" id="text-org9af450a">
+</div>
+<div id="outline-container-org11cf01c" class="outline-4">
+<h4 id="org11cf01c">Covered Query</h4>
+<div class="outline-text-4" id="text-org11cf01c">
+<p>
+A covered query is a query that can be satisfied entirely using an index and does not have to examine any documents. An index covers a query when all of the following apply:
+</p>
+
+<ul class="org-ul">
+<li>all the fields in the query are part of an index, <b><b>and</b></b></li>
+<li>all the fields returned in the results are in the same index.</li>
+<li>no fields in the query are equal to <b><b>null</b></b> (i.e. {<b><b>&ldquo;field&rdquo;</b></b> : <b><b>null</b></b>} or {<b><b>&ldquo;field&rdquo;</b></b> : {<b><b>$eq</b></b> : <b><b>null</b></b>}} ).</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.customers.insertMany(
+    [
+        {name: <span style="color: #2aa198;">"user1"</span>, age: <span style="color: #d33682; font-weight: bold;">30</span>, salary: <span style="color: #d33682; font-weight: bold;">3000</span>},
+        {name: <span style="color: #2aa198;">"user2"</span>, age: <span style="color: #d33682; font-weight: bold;">40</span>, salary: <span style="color: #d33682; font-weight: bold;">5000</span>}
+    ]
+)
+
+&gt; db.customers.createIndex({name: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Returns all the fields that are also the indexed fields</span>
+&gt; db.customers.explain(<span style="color: #2aa198;">"executionStats"</span>).find({name: <span style="color: #2aa198;">"user1"</span>}, {_id: <span style="color: #d33682; font-weight: bold;">0</span>, name: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.customers.getIndexes()
+
+&gt; db.customers.createIndexes({age: <span style="color: #d33682; font-weight: bold;">1</span>, name: <span style="color: #d33682; font-weight: bold;">1</span>})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgcdbcd65" class="outline-3">
+<h3 id="orgcdbcd65">Query Plans</h3>
+<div class="outline-text-3" id="text-orgcdbcd65">
+<p>
+For a query, the MongoDB query optimizer chooses and caches the most efficient query plan given the available indexes.
+The evaluation of the most efficient query plan is based on the number of “work units” (works) performed by the query execution plan when the query planner evaluates candidate plans.
+</p>
+
+<p>
+The associated plan cache entry is used for subsequent queries with the same query shape.
+</p>
+</div>
+
+<div id="outline-container-org0e9fc2e" class="outline-4">
+<h4 id="org0e9fc2e">Query Plan and Cache Information</h4>
+<div class="outline-text-4" id="text-org0e9fc2e">
+<p>
+To view the query plan information for a given query, you can use db.collection.explain() or the cursor.explain() .
+</p>
+
+<p>
+Starting in MongoDB 4.2, you can use the $planCacheStats aggregation stage to view plan cache information for a collection.
+Plan Cache Flushes
+</p>
+
+<p>
+The query plan cache does not persist if a mongod restarts or shuts down. In addition:
+</p>
+
+<ul class="org-ul">
+<li>Catalog operations like index or collection drops clear the plan cache.</li>
+<li>Least recently used (LRU) cache replacement mechanism clears the least recently accessed cache entry, regardless of state.</li>
+</ul>
+
+<p>
+Users can also:
+</p>
+
+<ul class="org-ul">
+<li>Manually clear the entire plan cache using the PlanCache.clear() method.</li>
+<li>Manually clear specific plan cache entries using the PlanCache.clearPlansByQuery() method.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgceeffd2" class="outline-3">
+<h3 id="orgceeffd2">Multi-Key Indexes</h3>
+<div class="outline-text-3" id="text-orgceeffd2">
+<p>
+To index a field that holds an array value, MongoDB creates an index key for each element in the array. These multikey indexes support efficient queries against array fields. Multikey indexes can be constructed over arrays that hold both scalar values [1] (e.g. strings, numbers) and nested documents.
+</p>
+
+
+<div id="org9e99fb2" class="figure">
+<p><object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/index-multikey.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+<p><span class="figure-number">Figure 3: </span>an example of a multikey index</p>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.contacts.insertOne({name: <span style="color: #2aa198;">"user1"</span>, hobbies: [<span style="color: #2aa198;">"hobbie1"</span>, <span style="color: #2aa198;">"hoobie2"</span>], addresses: [{street: <span style="color: #2aa198;">"street nowhere"</span>}, {street: <span style="color: #2aa198;">"street anywhere"</span>}]})
+
+&gt; db.contacts.find().pretty()
+
+&gt; db.contacts.createIndex({hobbies: <span style="color: #d33682; font-weight: bold;">1</span>})
+
+&gt; db.contacts.find({hobbies: <span style="color: #2aa198;">"hobbie1"</span>}).pretty()
+
+&gt; db.contacts.explain(<span style="color: #2aa198;">"executionStats"</span>).find({hobbies: <span style="color: #2aa198;">"hobbie1"</span>})
+
+&gt; db.contacts.createIndex({addresses: <span style="color: #d33682; font-weight: bold;">1</span>})
+
+&gt; db.contacts.explain(<span style="color: #2aa198;">"executionStats"</span>).find({<span style="color: #2aa198;">"addresses.street"</span>: <span style="color: #2aa198;">"street nowhere"</span>})
+
+&gt; db.contacts.explain(<span style="color: #2aa198;">"executionStats"</span>).find({addresses: {street: <span style="color: #2aa198;">"street nowhere"</span>}})
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org4649419" class="outline-4">
+<h4 id="org4649419">Create Multikey Index</h4>
+<div class="outline-text-4" id="text-org4649419">
+<p>
+To create a multikey index, use the db.collection.createIndex() method.
+</p>
+
+<p>
+MongoDB automatically creates a multikey index if any indexed field is an array; you do not need to explicitly specify the multikey type.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org12d8078" class="outline-4">
+<h4 id="org12d8078">Index Bounds</h4>
+<div class="outline-text-4" id="text-org12d8078">
+<p>
+If an index is multikey, then computation of the index bounds follows special rules.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbc30d07" class="outline-4">
+<h4 id="orgbc30d07">Unique Multikey Index</h4>
+<div class="outline-text-4" id="text-orgbc30d07">
+<p>
+For unique indexes, the unique constraint applies across separate documents in the collection rather than within a single document.
+</p>
+
+<p>
+Because the unique constraint applies to separate documents, for a unique multikey index, a document may have array elements that result in repeating index key values as long as the index key values for that document do not duplicate those of another document.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1b58586" class="outline-4">
+<h4 id="org1b58586">Limitations</h4>
+<div class="outline-text-4" id="text-org1b58586">
+<p>
+For a compound multikey index, each indexed document can have at most one indexed field whose value is an array.
+</p>
+
+<ul class="org-ul">
+<li>You cannot create a compound multikey index if more than one to-be-indexed field of a document is an array.</li>
+<li>Or, if a compound multikey index already exists, you cannot insert a document that would violate this restriction.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org85a68a6" class="outline-2">
+<h2 id="org85a68a6">GeoSpatial Data</h2>
+<div class="outline-text-2" id="text-org85a68a6">
+</div>
+</div>
+
+
+<div id="outline-container-orgc83737b" class="outline-2">
+<h2 id="orgc83737b">Working with GeoSpatial Data</h2>
+<div class="outline-text-2" id="text-orgc83737b">
+<p>
+To specify GeoJSON data, use an embedded document with:
+</p>
+
+<ul class="org-ul">
+<li>a field named type that specifies the GeoJSON object type and</li>
+
+<li>a field named coordinates that specifies the object’s coordinates.
+If specifying latitude and longitude coordinates, list the longitude first and then latitude:
+<ul class="org-ul">
+<li>Valid longitude values are between -180 and 180, both inclusive.</li>
+<li>Valid latitude values are between -90 and 90, both inclusive.</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-org1ed93ce" class="outline-3">
+<h3 id="org1ed93ce">Creating GeoJSON Data</h3>
+<div class="outline-text-3" id="text-org1ed93ce">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use awesomeplaces
+
+&gt; db.places.insertOne({name: <span style="color: #2aa198;">"Torre dos Clerigos"</span>, location: { type: <span style="color: #2aa198;">"Point"</span>, coordinates: [ -<span style="color: #d33682; font-weight: bold;">8.6167872</span>, <span style="color: #d33682; font-weight: bold;">41.1456793</span> ] }})
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span style="color: #405A61;">// </span><span style="color: #405A61;">Adding a Geospatial Index</span>
+&gt; db.places.createIndex({location: <span style="color: #2aa198;">"2dsphere"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb46767e" class="outline-3">
+<h3 id="orgb46767e">Running Geo Queries</h3>
+<div class="outline-text-3" id="text-orgb46767e">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.places.find({location: {$near: {$geometry: {type: <span style="color: #2aa198;">"Point"</span>, coordinates: [-<span style="color: #d33682; font-weight: bold;">8.6188578</span>, <span style="color: #d33682; font-weight: bold;">41.1458833</span>]}}}})
+
+&gt; db.places.find({location: {$near: {$geometry: {type: <span style="color: #2aa198;">"Point"</span>, coordinates: [-<span style="color: #d33682; font-weight: bold;">8.6188578</span>, <span style="color: #d33682; font-weight: bold;">41.1458833</span>]}, $maxDistance: <span style="color: #d33682; font-weight: bold;">200</span>, $minDistance: <span style="color: #d33682; font-weight: bold;">100</span> }}}).pretty()
+
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc240a70" class="outline-3">
+<h3 id="orgc240a70">Adding additional locations</h3>
+<div class="outline-text-3" id="text-orgc240a70">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.places.insertMany(
+    [
+       {name: <span style="color: #2aa198;">"Aliados"</span>, location: { type: <span style="color: #2aa198;">"Point"</span>, coordinates: [ -<span style="color: #d33682; font-weight: bold;">8.6172163</span>, <span style="color: #d33682; font-weight: bold;">41.1474184</span> ] }},
+       {name: <span style="color: #2aa198;">"Palacio Cristal"</span>, location: { type: <span style="color: #2aa198;">"Point"</span>, coordinates: [ -<span style="color: #d33682; font-weight: bold;">8.6224198</span>, <span style="color: #d33682; font-weight: bold;">41.1468932</span> ] }},
+       {name: <span style="color: #2aa198;">"Alfandega do porto"</span>, location: { type: <span style="color: #2aa198;">"Point"</span>, coordinates: [ -<span style="color: #d33682; font-weight: bold;">8.6224198</span>, <span style="color: #d33682; font-weight: bold;">41.1447926</span> ] }}
+    ]
+)
+
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">p1</span> = [ -<span style="color: #d33682; font-weight: bold;">8.60643</span> ,<span style="color: #d33682; font-weight: bold;">41.1508</span> ]
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">p2</span> = [-<span style="color: #d33682; font-weight: bold;">8.61197</span>, <span style="color: #d33682; font-weight: bold;">41.14106</span>]
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">p3</span> = [ -<span style="color: #d33682; font-weight: bold;">8.63302</span>, <span style="color: #d33682; font-weight: bold;">41.14778</span>]
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">p4</span> = [ -<span style="color: #d33682; font-weight: bold;">8.61628</span>, <span style="color: #d33682; font-weight: bold;">41.1589</span>]
+
+&gt; db.places.find({location: {$geoWithin: {$geometry: {type: <span style="color: #2aa198;">"Polygon"</span>, coordinates: [[p1, p2, p3, p4, p1]]}}}})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdeb126f" class="outline-3">
+<h3 id="orgdeb126f">Finding if a user inside a specific area</h3>
+<div class="outline-text-3" id="text-orgdeb126f">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.areas.insertOne({name: <span style="color: #2aa198;">"Porto"</span>, area: { type: <span style="color: #2aa198;">"Polygon"</span>, coordinates: [[p1, p2, p3, p4, p1]] }})
+
+&gt; db.areas.createIndex({area: <span style="color: #2aa198;">"2dsphere"</span>})
+
+&gt; db.areas.find({area: {$geoIntersects: {$geometry: {type: <span style="color: #2aa198;">"Point"</span>, coordinates: [ -<span style="color: #d33682; font-weight: bold;">8.62224</span>, <span style="color: #d33682; font-weight: bold;">41.15858</span> ] }}}})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org46a50cb" class="outline-3">
+<h3 id="org46a50cb">Finding Places Within a Certain Radius</h3>
+<div class="outline-text-3" id="text-org46a50cb">
+<pre class="example">
+&gt; db.places.find({location: {$geoWithin: {$centerSphere: [[-8.62224, 41.15858], 1 / 6378.1] }}})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org94f7630" class="outline-2">
+<h2 id="org94f7630">Numeric Data</h2>
+<div class="outline-text-2" id="text-org94f7630">
+</div>
+</div>
+
+
+<div id="outline-container-orgdf7a466" class="outline-2">
+<h2 id="orgdf7a466">Working With Numeric Data</h2>
+<div class="outline-text-2" id="text-orgdf7a466">
+<p>
+MongoDB Numeric Data types supported:
+</p>
+
+<ul class="org-ul">
+<li><b><b>double</b></b></li>
+<li><b><b>32-bit integer</b></b></li>
+<li><b><b>64-bit integer</b></b></li>
+<li><b><b>decimal</b></b></li>
+</ul>
+</div>
+
+<div id="outline-container-orge7e5c84" class="outline-3">
+<h3 id="orge7e5c84">Integer</h3>
+<div class="outline-text-3" id="text-orge7e5c84">
+<p>
+Simple plain numbers without decimal points, 32 bytes or 64 bytes, are saved as Int and retrieves as same.
+</p>
+</div>
+
+<div id="outline-container-org873cd66" class="outline-4">
+<h4 id="org873cd66">32-bit integer</h4>
+<div class="outline-text-4" id="text-org873cd66">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.insertOne({age: NumberInt(<span style="color: #d33682; font-weight: bold;">32</span>)})
+
+&gt; optimal method
+&gt; db.persons.insertOne({age: NumberInt(<span style="color: #2aa198;">"32"</span>)})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgef854fc" class="outline-4">
+<h4 id="orgef854fc">64-bit integer</h4>
+<div class="outline-text-4" id="text-orgef854fc">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.companies.insertOne({valuation: NumberLong(<span style="color: #d33682; font-weight: bold;">5000000000</span>)})
+
+&gt; optimal method
+&gt; db.companies.insertOne({valuation: NumberLong(<span style="color: #2aa198;">"5000000000"</span>)})
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8b67ad6" class="outline-3">
+<h3 id="org8b67ad6">Doing Maths with Floats int32s &amp; int64</h3>
+<div class="outline-text-3" id="text-org8b67ad6">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.accounts.insertOne({name: <span style="color: #2aa198;">"testUser"</span>, amount: NumberInt(<span style="color: #2aa198;">"10"</span>)})
+
+&gt; db.accounts.updateOne({}, {$inc:  {amount: NumberInt(<span style="color: #2aa198;">"10"</span>)}})
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.companies.insertOne({valuation: NumberLong(<span style="color: #2aa198;">"25432000000"</span>)})
+
+&gt; db.companies.updateOne({}, {$inc:  {valuation: NumberLong(<span style="color: #2aa198;">"360555"</span>)}})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga183605" class="outline-3">
+<h3 id="orga183605">Double</h3>
+<div class="outline-text-3" id="text-orga183605">
+<p>
+Double is implemented for storing floating-point data in MongoDB.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.science.insertOne({a: NumberDecimal(<span style="color: #2aa198;">"3.141592"</span>), b: NumberDecimal(<span style="color: #2aa198;">"3.141"</span>)})
+
+&gt; db.science.aggregate([{$project: {result: {$subtract: [<span style="color: #2aa198;">"$a"</span>, <span style="color: #2aa198;">"$b"</span>]}}}])
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgff6791e" class="outline-2">
+<h2 id="orgff6791e">Aggregation Framework</h2>
+<div class="outline-text-2" id="text-orgff6791e">
+<p>
+Aggregation operations process data records and return computed results.
+Aggregation operations group values from multiple documents together, and can perform a variety of operations on the grouped data to return a single result.
+MongoDB provides three ways to perform aggregation: the aggregation pipeline, the map-reduce function, and single purpose aggregation methods.
+</p>
+</div>
+
+
+<div id="outline-container-org19e6a5d" class="outline-3">
+<h3 id="org19e6a5d">Pipeline Concept</h3>
+<div class="outline-text-3" id="text-org19e6a5d">
+<p>
+In UNIX command, shell pipeline means the possibility to execute an operation on some input and use the output as the input for the next command and so on. MongoDB also supports same concept in aggregation framework. There is a set of possible stages and each of those is taken as a set of documents as an input and produces a resulting set of documents (or the final resulting JSON document at the end of the pipeline). This can then in turn be used for the next stage and so on.
+</p>
+
+
+<p>
+Following are the possible stages in aggregation framework:
+</p>
+<ul class="org-ul">
+<li>$project − Used to select some specific fields from a collection.</li>
+<li>$match − This is a filtering operation and thus this can reduce the amount of documents that are given as input to the next stage</li>
+<li>$group − This does the actual aggregation as discussed above.</li>
+<li>$sort − Sorts the documents.</li>
+<li>$skip − With this, it is possible to skip forward in the list of documents for a given amount of documents.</li>
+<li>$limit − This limits the amount of documents to look at, by the given number starting from the current positions.</li>
+<li>$unwind − This is used to unwind document that are using arrays. When using an array, the data is kind of pre-joined and this operation will be undone with this to have individual documents again. Thus with this stage we will increase the amount of documents for the next stage.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org768a208" class="outline-3">
+<h3 id="org768a208">Group Stage</h3>
+<div class="outline-text-3" id="text-org768a208">
+<p>
+Groups input documents by the specified _id expression and for each distinct grouping, outputs a document.
+The _id field of each output document contains the unique group by value.
+The output documents can also contain computed fields that hold the values of some accumulator expression.
+</p>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; mongoimport persons.json -d analytics -c persons --jsonArray
+
+&gt; db.persons.aggregate(
+    [
+        { $match: {gender: <span style="color: #2aa198;">"female"</span>}}
+    ]
+).pretty()
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        { $match: {gender: <span style="color: #2aa198;">"female"</span>}},
+        { $group: { _id: { state: <span style="color: #2aa198;">"$location.state"</span> }, totalPersons: { $sum: <span style="color: #d33682; font-weight: bold;">1</span>} }}
+    ]
+).pretty()
+
+&gt; db.persons.find({<span style="color: #2aa198;">"location.state"</span>: <span style="color: #2aa198;">"sinop"</span>}).pretty()
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        { $match: {gender: <span style="color: #2aa198;">"female"</span>}},
+        { $group: { _id: { state: <span style="color: #2aa198;">"$location.state"</span> }, totalPersons: { $sum: <span style="color: #d33682; font-weight: bold;">1</span>} }},
+        { $sort: { totalPersons: -<span style="color: #d33682; font-weight: bold;">1</span> }}
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org614ecaa" class="outline-3">
+<h3 id="org614ecaa">Project Stage</h3>
+<div class="outline-text-3" id="text-org614ecaa">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        { $project:
+            { _id: <span style="color: #d33682; font-weight: bold;">0</span>, fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.first"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]},
+                    <span style="color: #2aa198;">" "</span>,
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.last"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgde4440d" class="outline-3">
+<h3 id="orgde4440d">Turning the Location Into a geoJSON Object</h3>
+<div class="outline-text-3" id="text-orgde4440d">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                name: <span style="color: #d33682; font-weight: bold;">1</span>,
+                email: <span style="color: #d33682; font-weight: bold;">1</span>,
+                location: {
+                    type: <span style="color: #2aa198;">"Point"</span>,
+                    coordinates: [
+                        { $convert: { input: <span style="color: #2aa198;">"$location.coordinates.longitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}},
+                        { $convert: { input:  <span style="color: #2aa198;">"$location.coordinates.latitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}}
+                    ]
+                }
+            }
+        },
+        { $project:
+            { gender: <span style="color: #d33682; font-weight: bold;">1</span>, email: <span style="color: #d33682; font-weight: bold;">1</span>, location: <span style="color: #d33682; font-weight: bold;">1</span>, fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.first"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]},
+                    <span style="color: #2aa198;">" "</span>,
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.last"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org16ff173" class="outline-3">
+<h3 id="org16ff173">Transforming the Birthdate</h3>
+<div class="outline-text-3" id="text-org16ff173">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                name: <span style="color: #d33682; font-weight: bold;">1</span>,
+                email: <span style="color: #d33682; font-weight: bold;">1</span>,
+                birthdate: { $convert: { input: <span style="color: #2aa198;">"$dob.date"</span>, to: <span style="color: #2aa198;">"date"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span> } },
+                age: <span style="color: #2aa198;">"$dob.age"</span>,
+                location: {
+                    type: <span style="color: #2aa198;">"Point"</span>,
+                    coordinates: [
+                        { $convert: { input: <span style="color: #2aa198;">"$location.coordinates.longitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}},
+                        { $convert: { input:  <span style="color: #2aa198;">"$location.coordinates.latitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}}
+                    ]
+                }
+            }
+        },
+        { $project: {
+            gender: <span style="color: #d33682; font-weight: bold;">1</span>,
+            email: <span style="color: #d33682; font-weight: bold;">1</span>,
+            location: <span style="color: #d33682; font-weight: bold;">1</span>,
+            birthdate: <span style="color: #d33682; font-weight: bold;">1</span>,
+            age: <span style="color: #d33682; font-weight: bold;">1</span>,
+            fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.first"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]},
+                    <span style="color: #2aa198;">" "</span>,
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.last"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org6671b4d" class="outline-3">
+<h3 id="org6671b4d">Using Shortcuts for Transformations</h3>
+<div class="outline-text-3" id="text-org6671b4d">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                name: <span style="color: #d33682; font-weight: bold;">1</span>,
+                email: <span style="color: #d33682; font-weight: bold;">1</span>,
+                birthdate: { $toDate: <span style="color: #2aa198;">"$dob.date"</span> },
+                age: <span style="color: #2aa198;">"$dob.age"</span>,
+                location: {
+                    type: <span style="color: #2aa198;">"Point"</span>,
+                    coordinates: [
+                        { $convert: { input: <span style="color: #2aa198;">"$location.coordinates.longitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}},
+                        { $convert: { input:  <span style="color: #2aa198;">"$location.coordinates.latitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}}
+                    ]
+                }
+            }
+        },
+        { $project: {
+            gender: <span style="color: #d33682; font-weight: bold;">1</span>,
+            email: <span style="color: #d33682; font-weight: bold;">1</span>,
+            location: <span style="color: #d33682; font-weight: bold;">1</span>,
+            birthdate: <span style="color: #d33682; font-weight: bold;">1</span>,
+            age: <span style="color: #d33682; font-weight: bold;">1</span>,
+            fullName: {
+                $concat: [
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.first"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]},
+                    <span style="color: #2aa198;">" "</span>,
+                    { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                    { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.last"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]}
+                    ]
+            }
+
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org6e94390" class="outline-3">
+<h3 id="org6e94390">Understanding the $isoWeekYear Operator</h3>
+<div class="outline-text-3" id="text-org6e94390">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $project: {
+                _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                name: <span style="color: #d33682; font-weight: bold;">1</span>,
+                email: <span style="color: #d33682; font-weight: bold;">1</span>,
+                birthdate: { $toDate: <span style="color: #2aa198;">"$dob.date"</span> },
+                age: <span style="color: #2aa198;">"$dob.age"</span>,
+                location: {
+                    type: <span style="color: #2aa198;">"Point"</span>,
+                    coordinates: [
+                        { $convert: { input: <span style="color: #2aa198;">"$location.coordinates.longitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}},
+                        { $convert: { input:  <span style="color: #2aa198;">"$location.coordinates.latitude"</span>, to: <span style="color: #2aa198;">"double"</span>, onError: <span style="color: #d33682; font-weight: bold;">0.0</span>, onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>}}
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                gender: <span style="color: #d33682; font-weight: bold;">1</span>,
+                email: <span style="color: #d33682; font-weight: bold;">1</span>,
+                location: <span style="color: #d33682; font-weight: bold;">1</span>,
+                birthdate: <span style="color: #d33682; font-weight: bold;">1</span>,
+                age: <span style="color: #d33682; font-weight: bold;">1</span>,
+                fullName: {
+                    $concat: [
+                        { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                        { $substrCP: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.first"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]},
+                        <span style="color: #2aa198;">" "</span>,
+                        { $toUpper: { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}},
+                        { $substrCP: [<span style="color: #2aa198;">"$name.last"</span>, <span style="color: #d33682; font-weight: bold;">1</span>, { $subtract: [ {$strLenCP: <span style="color: #2aa198;">"$name.last"</span>}, <span style="color: #d33682; font-weight: bold;">1</span> ] } ]}
+                        ]
+                }
+            }
+        },
+        {
+            $group: { _id: { birthYear: { $isoWeekYear: <span style="color: #2aa198;">"$birthdate"</span>} }, numPersons: { $sum: <span style="color: #d33682; font-weight: bold;">1</span> } },
+        },
+        {
+            $sort: { numPersons: -<span style="color: #d33682; font-weight: bold;">1</span>}
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3c6db04" class="outline-3">
+<h3 id="org3c6db04">Pushing Elements Into Newly Created Arrays</h3>
+<div class="outline-text-3" id="text-org3c6db04">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; mongoimport array-data.json -d analytics -c friends --jsonArray
+
+&gt; db.friends.aggregate(
+    [
+        { $group: { _id: { age: <span style="color: #2aa198;">"$age"</span>}, allHobbies: { $push: <span style="color: #2aa198;">"$hobbies"</span> } } }
+    ]
+).pretty()
+
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orge83f6e4" class="outline-3">
+<h3 id="orge83f6e4">unWind Stage</h3>
+<div class="outline-text-3" id="text-orge83f6e4">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        { $unwind: <span style="color: #2aa198;">"$hobbies"</span>},
+        { $group: { _id: { age: <span style="color: #2aa198;">"$age"</span>}, allHobbies: { $push: <span style="color: #2aa198;">"$hobbies"</span> } } }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org09e50d2" class="outline-3">
+<h3 id="org09e50d2">addToSet Stage</h3>
+<div class="outline-text-3" id="text-org09e50d2">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        { $unwind: <span style="color: #2aa198;">"$hobbies"</span>},
+        { $group: { _id: { age: <span style="color: #2aa198;">"$age"</span>}, allHobbies: { $addToSet: <span style="color: #2aa198;">"$hobbies"</span> } } }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1de7792" class="outline-3">
+<h3 id="org1de7792">slice operator</h3>
+<div class="outline-text-3" id="text-org1de7792">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        { $project: { _id: <span style="color: #d33682; font-weight: bold;">0</span>, examScore: { $slice: [<span style="color: #2aa198;">"$examScores"</span>, <span style="color: #d33682; font-weight: bold;">2</span>, <span style="color: #d33682; font-weight: bold;">1</span>]}}}
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf75b809" class="outline-3">
+<h3 id="orgf75b809">$slice operator</h3>
+<div class="outline-text-3" id="text-orgf75b809">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        { $project: { _id: <span style="color: #d33682; font-weight: bold;">0</span>, numScores: { $size: <span style="color: #2aa198;">"$examScores"</span>}}}
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4d14a38" class="outline-3">
+<h3 id="org4d14a38">$filter operator</h3>
+<div class="outline-text-3" id="text-org4d14a38">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        {
+            $project: {
+                _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                scores: { $filter: { input: <span style="color: #2aa198;">"$examScores"</span>, as: <span style="color: #2aa198;">"sc"</span>, cond: { $gt: [<span style="color: #2aa198;">"$$sc.score"</span>, <span style="color: #d33682; font-weight: bold;">60</span>] }}}
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd535cc7" class="outline-3">
+<h3 id="orgd535cc7">Aplying Multiple Operations to an array</h3>
+<div class="outline-text-3" id="text-orgd535cc7">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.friends.aggregate(
+    [
+        { $unwind: <span style="color: #2aa198;">"$examScores"</span>},
+        { $project: { _id: <span style="color: #d33682; font-weight: bold;">1</span>, name: <span style="color: #d33682; font-weight: bold;">1</span>, age: <span style="color: #d33682; font-weight: bold;">1</span>, score: <span style="color: #2aa198;">"$examScores.score"</span>}},
+        { $sort: { score: -<span style="color: #d33682; font-weight: bold;">1</span>}},
+        { $group: { _id: <span style="color: #2aa198;">"$_id"</span>, name: { $first: <span style="color: #2aa198;">"$name"</span>}, maxScore: { $max: <span style="color: #2aa198;">"$score"</span>}}},
+        { $sort: { maxScore: -<span style="color: #d33682; font-weight: bold;">1</span>}}
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org23ddbf6" class="outline-3">
+<h3 id="org23ddbf6">$bucket Stage</h3>
+<div class="outline-text-3" id="text-org23ddbf6">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $bucket: {
+                groupBy: <span style="color: #2aa198;">"$dob.age"</span>,
+                boundaries: [<span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">18</span>, <span style="color: #d33682; font-weight: bold;">30</span>, <span style="color: #d33682; font-weight: bold;">50</span>, <span style="color: #d33682; font-weight: bold;">80</span>, <span style="color: #d33682; font-weight: bold;">120</span>],
+                output: {
+                    numPersons: { $sum: <span style="color: #d33682; font-weight: bold;">1</span> },
+                    averageAge: { $avg: <span style="color: #2aa198;">'$dob.age'</span> }
+                }
+            }
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga9510ad" class="outline-3">
+<h3 id="orga9510ad">Aditional Stages</h3>
+<div class="outline-text-3" id="text-orga9510ad">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.persons.aggregate(
+    [
+        {
+            $match: {
+                gender: <span style="color: #2aa198;">"male"</span>
+            }
+        },
+        {
+             $project: {
+                 _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+                 name: { $concat: [<span style="color: #2aa198;">"$name.first"</span>, <span style="color: #2aa198;">" "</span>, <span style="color: #2aa198;">"$name.last"</span>]},
+                 gender: <span style="color: #d33682; font-weight: bold;">1</span>,
+                 birthdate: { $toDate: <span style="color: #2aa198;">"$dob.date"</span>}
+            }
+        },
+        {
+            $sort: {
+                birthdate: <span style="color: #d33682; font-weight: bold;">1</span>
+            }
+        },
+        {
+            $skip: <span style="color: #d33682; font-weight: bold;">10</span>
+        },
+        {
+            $limit: <span style="color: #d33682; font-weight: bold;">10</span>
+        }
+    ]
+).pretty()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgaf0feeb" class="outline-3">
+<h3 id="orgaf0feeb">Writing Pipelines into a new collection</h3>
+<div class="outline-text-3" id="text-orgaf0feeb">
+<div class="org-src-container">
+<pre class="src src-javascript">db.persons.aggregate([
+    {
+      $project: {
+        _id: <span style="color: #d33682; font-weight: bold;">0</span>,
+        name: <span style="color: #d33682; font-weight: bold;">1</span>,
+        email: <span style="color: #d33682; font-weight: bold;">1</span>,
+        birthdate: { $toDate: <span style="color: #2aa198;">'$dob.date'</span> },
+        age: <span style="color: #2aa198;">"$dob.age"</span>,
+        location: {
+          type: <span style="color: #2aa198;">'Point'</span>,
+          coordinates: [
+            {
+              $convert: {
+                input: <span style="color: #2aa198;">'$location.coordinates.longitude'</span>,
+                to: <span style="color: #2aa198;">'double'</span>,
+                onError: <span style="color: #d33682; font-weight: bold;">0.0</span>,
+                onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>
+              }
+            },
+            {
+              $convert: {
+                input: <span style="color: #2aa198;">'$location.coordinates.latitude'</span>,
+                to: <span style="color: #2aa198;">'double'</span>,
+                onError: <span style="color: #d33682; font-weight: bold;">0.0</span>,
+                onNull: <span style="color: #d33682; font-weight: bold;">0.0</span>
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      $project: {
+        gender: <span style="color: #d33682; font-weight: bold;">1</span>,
+        email: <span style="color: #d33682; font-weight: bold;">1</span>,
+        location: <span style="color: #d33682; font-weight: bold;">1</span>,
+        birthdate: <span style="color: #d33682; font-weight: bold;">1</span>,
+        age: <span style="color: #d33682; font-weight: bold;">1</span>,
+        fullName: {
+          $concat: [
+            { $toUpper: { $substrCP: [<span style="color: #2aa198;">'$name.first'</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>] } },
+            {
+              $substrCP: [
+                <span style="color: #2aa198;">'$name.first'</span>,
+                <span style="color: #d33682; font-weight: bold;">1</span>,
+                { $subtract: [{ $strLenCP: <span style="color: #2aa198;">'$name.first'</span> }, <span style="color: #d33682; font-weight: bold;">1</span>] }
+              ]
+            },
+            <span style="color: #2aa198;">' '</span>,
+            { $toUpper: { $substrCP: [<span style="color: #2aa198;">'$name.last'</span>, <span style="color: #d33682; font-weight: bold;">0</span>, <span style="color: #d33682; font-weight: bold;">1</span>] } },
+            {
+              $substrCP: [
+                <span style="color: #2aa198;">'$name.last'</span>,
+                <span style="color: #d33682; font-weight: bold;">1</span>,
+                { $subtract: [{ $strLenCP: <span style="color: #2aa198;">'$name.last'</span> }, <span style="color: #d33682; font-weight: bold;">1</span>] }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    { $out: <span style="color: #2aa198;">"transformedPersons"</span> }
+  ]).pretty();
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgff6c70d" class="outline-3">
+<h3 id="orgff6c70d">*geoNear Stage</h3>
+<div class="outline-text-3" id="text-orgff6c70d">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.transformedPersons.createIndex({location: <span style="color: #2aa198;">"2dsphere"</span>})
+
+&gt; db.transformedPersons.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: <span style="color: #2aa198;">'Point'</span>,
+          coordinates: [-<span style="color: #d33682; font-weight: bold;">18.4</span>, -<span style="color: #d33682; font-weight: bold;">42.8</span>]
+        },
+        maxDistance: <span style="color: #d33682; font-weight: bold;">1000000</span>,
+        query: { age: { $gt: <span style="color: #d33682; font-weight: bold;">30</span> } },
+        distanceField: <span style="color: #2aa198;">'distance'</span>
+      }
+    },
+    { $limit : <span style="color: #d33682; font-weight: bold;">10</span> }
+  ]).pretty()
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org5d2ab28" class="outline-2">
+<h2 id="org5d2ab28">MongoDB &amp; Securtiy</h2>
+<div class="outline-text-2" id="text-org5d2ab28">
+<p>
+MongoDB provides various features, such as authentication, access control, encryption, to secure your MongoDB deployments. Some key security features include:
+</p>
+<ul class="org-ul">
+<li>Authentication</li>
+<li>Authorization</li>
+<li>TLS/SSL</li>
+<li>Encryption</li>
+</ul>
+</div>
+
+
+<div id="outline-container-orgbac54b9" class="outline-3">
+<h3 id="orgbac54b9">Starting mongo servers with authorization</h3>
+</div>
+
+<div id="outline-container-org0495fb4" class="outline-3">
+<h3 id="org0495fb4">Create a user</h3>
+</div>
+
+<div id="outline-container-org031d632" class="outline-3">
+<h3 id="org031d632">with admin privileges</h3>
+<div class="outline-text-3" id="text-org031d632">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use admin
+
+&gt; db.createUser({user: <span style="color: #2aa198;">"user"</span>, pwd: <span style="color: #2aa198;">"password"</span>, roles: [<span style="color: #2aa198;">"userAdminAnyDatabase"</span>]})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org68cf12c" class="outline-3">
+<h3 id="org68cf12c">with restricted privileges</h3>
+<div class="outline-text-3" id="text-org68cf12c">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use shop
+
+&gt; db.createUser({user: <span style="color: #2aa198;">"appdev"</span>, pwd: <span style="color: #2aa198;">"appdevpwd"</span>, roles: [<span style="color: #2aa198;">"readWrite"</span>]})
+
+&gt; db.auth(<span style="color: #2aa198;">"appdev"</span>, <span style="color: #2aa198;">"appdevpwd"</span>)
+
+&gt; db.products.insertOne({name: <span style="color: #2aa198;">"Book"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgc3caedc" class="outline-3">
+<h3 id="orgc3caedc">Update a user</h3>
+<div class="outline-text-3" id="text-orgc3caedc">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.updateUser(<span style="color: #2aa198;">"appdev"</span>, {roles: [<span style="color: #2aa198;">"readWrite"</span>, {role: <span style="color: #2aa198;">"readWrite"</span>, db: <span style="color: #2aa198;">"blog"</span>}]})
+
+&gt; db.blog.insertOne({title: <span style="color: #2aa198;">"Test blog post"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org46320fc" class="outline-3">
+<h3 id="org46320fc">Logging to the server with auth</h3>
+<div class="outline-text-3" id="text-org46320fc">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; db.auth(<span style="color: #2aa198;">"user"</span>, <span style="color: #2aa198;">"password"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgca7583e" class="outline-3">
+<h3 id="orgca7583e">Adding SSL Transport Encryption</h3>
+<div class="outline-text-3" id="text-orgca7583e">
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; generate a self certified certificate and create a mongodb.pem file
+
+openssl req -newkey rsa:<span style="color: #d33682; font-weight: bold;">2048</span> -<span style="color: #859900; font-weight: bold;">new</span> -x509 -days <span style="color: #d33682; font-weight: bold;">365</span> -nodes -out mongodb-cert.crt -keyout mongodb-cert.key
+
+cat mongodb-cert.key mongodb-cert.crt &gt;mongodb.pem
+
+&gt; start mongo server <span style="color: #859900; font-weight: bold;">with</span> tsl encryption
+&gt; mongod --tlsMode requireTLS --tlsCertificateKeyFile /home/mdlima/.certs/mongodb.pem --dbpath /home/mdlima/
+
+&gt; start mongo client <span style="color: #859900; font-weight: bold;">with</span> tsl encryption
+&gt; mongo --tls --tlsCAFile /home/mdlima/.certs/mongodb.pem --host localhost
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgd0640ce" class="outline-2">
+<h2 id="orgd0640ce">Performance, Fault Tolerancy &amp; Deployment</h2>
+<div class="outline-text-2" id="text-orgd0640ce">
+</div>
+</div>
+
+
+<div id="outline-container-orgf4be749" class="outline-2">
+<h2 id="orgf4be749">Performance, Fault Tolerancy &amp; Deployment</h2>
+<div class="outline-text-2" id="text-orgf4be749">
+</div>
+<div id="outline-container-org0ab5b25" class="outline-3">
+<h3 id="org0ab5b25">Capped Collections</h3>
+<div class="outline-text-3" id="text-org0ab5b25">
+<p>
+Capped collections are fixed-size collections that support high-throughput operations that insert and retrieve documents based on insertion order.
+Capped collections work in a way similar to circular buffers: once a collection fills its allocated space, it makes room for new documents by overwriting the oldest documents in the collection.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use performance
+
+&gt; db.createCollection(<span style="color: #2aa198;">"capped"</span>, {capped: <span style="color: #d33682; font-weight: bold;">true</span>, size: <span style="color: #d33682; font-weight: bold;">10000</span>, max: <span style="color: #d33682; font-weight: bold;">3</span>})
+
+&gt; db.capped.inserOne({name: <span style="color: #2aa198;">"user1"</span>})
+
+&gt; db.capped.inserOne({name: <span style="color: #2aa198;">"user2"</span>})
+
+&gt; db.capped.insertOne({name: <span style="color: #2aa198;">"user3"</span>})
+
+&gt; db.capped.find().sort({$natural: -<span style="color: #d33682; font-weight: bold;">1</span>}).pretty()
+
+&gt; db.capped.inserOne({name: <span style="color: #2aa198;">"user4"</span>})
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3747378" class="outline-3">
+<h3 id="org3747378">Sharding</h3>
+<div class="outline-text-3" id="text-org3747378">
+<p>
+Sharding is a method for distributing data across multiple machines. MongoDB uses sharding to support deployments with very large data sets and high throughput operations.
+</p>
+
+<p>
+Database systems with large data sets or high throughput applications can challenge the capacity of a single server.
+For example, high query rates can exhaust the CPU capacity of the server. Working set sizes larger than the system’s RAM stress the I/O capacity of disk drives.
+</p>
+
+<p>
+There are two methods for addressing system growth: vertical and horizontal scaling:
+</p>
+<ul class="org-ul">
+<li>Vertical Scaling</li>
+<li>Horizontal Scaling</li>
+</ul>
+</div>
+
+
+<div id="outline-container-org0949ae3" class="outline-4">
+<h4 id="org0949ae3">Sharded Cluster</h4>
+<div class="outline-text-4" id="text-org0949ae3">
+<p>
+A MongoDB sharded cluster consists of the following components:
+</p>
+
+<ul class="org-ul">
+<li>shard: Each shard contains a subset of the sharded data. Each shard can be deployed as a replica set.</li>
+<li>mongos: The mongos acts as a query router, providing an interface between client applications and the sharded cluster. Starting in MongoDB 4.4, mongos can support hedged reads to minimize latencies.</li>
+<li>config servers: Config servers store metadata and configuration settings for the cluster.</li>
+</ul>
+
+
+<div id="org883e211" class="figure">
+<p><object type="image/svg+xml" data="https://docs.mongodb.com/manual/_images/sharded-cluster-production-architecture.bakedsvg.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+<p><span class="figure-number">Figure 4: </span>interaction of components within a sharded cluster</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4c1a0d4" class="outline-3">
+<h3 id="org4c1a0d4">Using MongoDB Atlas</h3>
+<div class="outline-text-3" id="text-org4c1a0d4">
+</div>
+<div id="outline-container-org7ce4ff0" class="outline-4">
+<h4 id="org7ce4ff0">Connecting to the cluster</h4>
+<div class="outline-text-4" id="text-org7ce4ff0">
+<p>
+To create and use a cluster on MongoDB is necessary to:
+</p>
+
+<ul class="org-ul">
+<li>create and account, then create a cluster with the desired space and configurations.</li>
+<li>create a user or users with the desired permissions.</li>
+<li>allow the ip&rsquo;s necessary for the connection.</li>
+<li>connect using the link provided.</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; mongo <span style="color: #2aa198;">"mongodb+sr*V://.8qaxe.mongodb.net/products"</span> --username mdlima
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org9a818bd" class="outline-2">
+<h2 id="org9a818bd">Transactions</h2>
+<div class="outline-text-2" id="text-org9a818bd">
+<p>
+In MongoDB, an operation on a single document is atomic. Because you can use embedded documents and arrays to capture relationships between data in a single document structure instead of normalizing across multiple documents and collections, this single-document atomicity obviates the need for multi-document transactions for many practical use cases.
+</p>
+
+<p>
+For situations that require atomicity of reads and writes to multiple documents (in a single or multiple collections), MongoDB supports multi-document transactions. With distributed transactions, transactions can be used across multiple operations, collections, databases, documents, and shards.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt; use blog
+
+&gt; db.users.insertOne({name: <span style="color: #2aa198;">"user1"</span>})
+
+&gt; db.posts.insertMany(
+    [
+        {title: <span style="color: #2aa198;">"test post one"</span>, userId: ObjectId(<span style="color: #2aa198;">"5f8108c80ad78b612ea094f1"</span>)},
+        {title: <span style="color: #2aa198;">"test post two"</span>, userId: ObjectId(<span style="color: #2aa198;">"5f8108c80ad78b612ea094f1"</span>)}
+    ]
+)
+
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">session</span> = db.getMongo().startSession()
+
+&gt; session.startTransaction()
+
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">usersCol</span> = session.getDatabase(<span style="color: #2aa198;">"blog"</span>).users
+
+&gt; <span style="color: #859900; font-weight: bold;">const</span> <span style="color: #839496;">postsCol</span> = session.getDatabase(<span style="color: #2aa198;">"posts"</span>).posts
+
+&gt; db.users.find({ObjectId(<span style="color: #2aa198;">"5f8102850ad78b612ea094eb"</span>)}).pretty()
+
+&gt; usersCol.deleteOne({_id: ObjectId(<span style="color: #2aa198;">"5f8108c80ad78b612ea094f1"</span>)})
+
+&gt; postsCol.deleteMany({userId: ObjectId(<span style="color: #2aa198;">"5f8107110ad78b612ea094ee"</span>)})
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">to commit the changes</span>
+&gt; session.commitTransaction()
+
+<span style="color: #405A61;">// </span><span style="color: #405A61;">to abort the transacation</span>
+&gt; session.abortTransaction()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgb83befd" class="outline-2">
+<h2 id="orgb83befd">Useful Resources and Links</h2>
+<div class="outline-text-2" id="text-orgb83befd">
+<ul class="org-ul">
+<li><a href="https://docs.mongodb.com/manual/tutorial/getting-started/">Mongo Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/ecosystem/drivers/">MongoDB Drivers</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/schema-validation/">Schema Validation</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/limits/">Data Type Limits</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/bson-types/">Suported Types</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/configuration-options/">Config Files</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/program/mongo/">Shell (mongo) Options</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/program/mongod/">Server (mongod) Options</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/">InsertOne() Method</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/">InsertMany() Method</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/write-operations-atomicity/#atomicity">Atomicity</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/write-concern/">Write Concern</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/program/mongoimport/index.html">Using mongoimport</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/method/db.collection.find/">find()</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/iterate-a-cursor/">Cursors</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/operator/query/">Query Operator Reference</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/update-documents/">Updating Documents</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/remove-documents/">Deleting Documents
+</a></li>
+<li><a href="https://docs.mongodb.com/manual/core/index-partial/">partialFilterExpressions</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages">Supported default<sub>languages</sub></a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/#create-a-text-index-for-a-collection-in-multiple-languages">Different Languages in the same index</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/geospatial-queries/">GeoSpatial Documents</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/operator/query-geospatial/">Geospatial Query Operators</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">Aggregation Framework Documentation</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/reference/operator/aggregation/cond/">$cond</a></li>
+
+<li><a href="https://stackoverflow.com/questions/618535/difference-between-decimal-float-and-double-in-net">Float vs Double vs Decimal - A Discussion on Precision</a></li>
+
+<li><a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/d2f723c7-f00a-4600-945a-72da23cbc53d/can-anyone-explain-clearly-about-float-vs-decimal-vs-double-?forum=csharpgeneral">Number Ranges</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/model-monetary-data/">Modelling Number/ Monetary Data in MongoDB</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/security-encryption-at-rest/">Official &ldquo;Encryption at Rest&rdquo; Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/administration/security-checklist/">Official Security Checklist</a></li>
+
+<li><a href="https://www.acunetix.com/blog/articles/tls-security-what-is-tls-ssl-part-1/">What is SSL/ TLS?</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/tutorial/configure-ssl/">Official MongoDB SSL Setup Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/authentication/">Official MongoDB Users &amp; Auth Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/security-built-in-roles/">Official Built-in Roles Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/security-user-defined-roles/">Official Custom Roles Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/replication/">Official Documentation on Replica Sets</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/sharding/">Official Documentation on Sharding</a></li>
+
+<li><a href="https://docs.mongodb.com/manual/core/transactions/">Transactions</a></li>
+
+<li><a href="https://docs.mongodb.com/stitch/">Official Stitch Docs</a></li>
+
+<li><a href="https://docs.mongodb.com/stitch/authentication/userpass/">Complete Stitch Username + Password Auth Flow</a></li>
+
+<li><a href="https://docs.mongodb.com/stitch/reference/partner-services/amazon-service/">Stitch Services (AWS S3)</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 10-10-2020</p>
+<p class="author">Author: Martim Lima</p>
+<p class="date">Created: 2020-10-11 dom 02:20</p>
+</div>
+</body>
+</html>
